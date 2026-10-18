@@ -1,0 +1,115 @@
+{
+  "variant_id": "v05",
+  "recipe": {
+    "hook": "m5",
+    "length": 15,
+    "pacing": "raw_punch",
+    "captions": "word_pop",
+    "hook_title": false,
+    "ending": "loop",
+    "channel": "TikTok",
+    "aspect": "9:16"
+  },
+  "hook_text": "There's just no price you can put on that.",
+  "hook_phrase": "There's just no price you",
+  "hook_boundary": "pause",
+  "aspect": "9:16",
+  "resolution": [
+    1080,
+    1920
+  ],
+  "hook_src_start": 25.282307692307693,
+  "channel": "TikTok",
+  "duration_s": 13.99,
+  "video_path": "runs/demo_pd_kendra/v05.mp4",
+  "segments": [
+    {
+      "src_start": 25.282,
+      "src_end": 27.633,
+      "out_start": 0.0,
+      "punch_in": 1.08
+    },
+    {
+      "src_start": 27.633,
+      "src_end": 29.551,
+      "out_start": 2.351,
+      "punch_in": 1.2
+    },
+    {
+      "src_start": 29.201,
+      "src_end": 32.201,
+      "out_start": 4.269,
+      "punch_in": 1.0
+    },
+    {
+      "src_start": 32.201,
+      "src_end": 35.201,
+      "out_start": 7.269,
+      "punch_in": 1.2
+    },
+    {
+      "src_start": 35.201,
+      "src_end": 38.201,
+      "out_start": 10.269,
+      "punch_in": 1.0
+    },
+    {
+      "src_start": 38.201,
+      "src_end": 38.751,
+      "out_start": 13.269,
+      "punch_in": 1.2
+    }
+  ],
+  "captions": [
+    {
+      "start": 0.0,
+      "end": 1.37,
+      "text": "THERE'S JUST NO"
+    },
+    {
+      "start": 1.32,
+      "end": 2.67,
+      "text": "PRICE YOU CAN"
+    },
+    {
+      "start": 2.62,
+      "end": 3.97,
+      "text": "PUT ON THAT."
+    },
+    {
+      "start": 3.92,
+      "end": 5.62,
+      "text": "MY MOTHER WORKS"
+    },
+    {
+      "start": 5.57,
+      "end": 6.92,
+      "text": "AT NIOSH AND"
+    },
+    {
+      "start": 6.87,
+      "end": 8.22,
+      "text": "HAS BEEN THERE"
+    },
+    {
+      "start": 11.17,
+      "end": 12.37,
+      "text": "SINCE I WAS"
+    },
+    {
+      "start": 12.32,
+      "end": 13.52,
+      "text": "A YOUNG CHILD."
+    }
+  ],
+  "hook_end_s": 2.35,
+  "cut_times_s": [
+    2.351,
+    4.269,
+    7.269,
+    10.269,
+    13.269
+  ],
+  "silence_removed_s": 0,
+  "loop_end": true
+}

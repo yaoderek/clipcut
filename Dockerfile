@@ -9,7 +9,9 @@ RUN pip install -r requirements-deploy.txt
 RUN python -c "from faster_whisper import WhisperModel; WhisperModel('base', device='cpu', compute_type='float32')"
 COPY . .
 # runs/ is a Fly volume (empty on first boot) -> keep the preload demo run outside it and seed on start
-RUN mkdir -p /app/preload && if [ -d runs/v2_niosh_multi ]; then mv runs/v2_niosh_multi /app/preload/; fi
+RUN mkdir -p /app/preload && for d in runs/v2_niosh_multi runs/demo_pd_kendra runs/demo_pd_calvin; do \
+      if [ -d "$d" ]; then mv "$d" /app/preload/; fi; \
+    done
 RUN chmod +x docker-entrypoint.sh
 EXPOSE 8000
 CMD ["./docker-entrypoint.sh"]

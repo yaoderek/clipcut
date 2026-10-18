@@ -31,9 +31,39 @@ NIOSH_SOURCE = {
     "url": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Science_Speaks_-_Talking_to_Women_in_Science_%28Liz%2C_Epidemiologist%29.webm",
     "license": "Public domain (PD US HHS CDC NIOSH)",
     "creator": "National Institute for Occupational Safety and Health",
+    "cache": "niosh_liz_full.webm",
     "start_s": 28.0,
     "duration_s": 120.053,
 }
+# Short public-domain talking heads. Trimmed on download so a fresh clone stays small.
+EXTRA_SOURCES = (
+    {
+        "file": "talking_head_kendra.mp4",
+        "page": "https://commons.wikimedia.org/wiki/File:Science_Speaks_-_Talking_to_Women_in_Science_(Kendra,_Industrial_Hygienist).webm",
+        "url": "https://upload.wikimedia.org/wikipedia/commons/e/ed/Science_Speaks_-_Talking_to_Women_in_Science_%28Kendra%2C_Industrial_Hygienist%29.webm",
+        "license": "Public domain (PD US HHS CDC NIOSH)",
+        "creator": "National Institute for Occupational Safety and Health",
+        "cache": "niosh_kendra_full.webm",
+        "start_s": 8.0,
+        "duration_s": 45.0,
+    },
+    {
+        "file": "talking_head_nasa_calvin.mp4",
+        "page": "https://commons.wikimedia.org/wiki/File:NASA_%26_NOAA_Interview_Opportunity-_Snapshot_of_Earth_in_2024_Through_Temperature_Live_Shots_(SVS14742_-_KATE_CALVIN_2024_GLOBAL_TEMP_UPDATE).webm",
+        "url": "https://upload.wikimedia.org/wikipedia/commons/7/73/NASA_%26_NOAA_Interview_Opportunity-_Snapshot_of_Earth_in_2024_Through_Temperature_Live_Shots_%28SVS14742_-_KATE_CALVIN_2024_GLOBAL_TEMP_UPDATE%29.webm",
+        "license": "Public domain (NASA)",
+        "creator": "NASA / NOAA",
+        "cache": "nasa_calvin_full.webm",
+        "start_s": 2.0,
+        "duration_s": 45.0,
+    },
+)
+FALLBACKS = {item["file"]: item for item in (NIOSH_SOURCE, *EXTRA_SOURCES)}
+# JSON runs that reuse the NIOSH variant manifests. Cutter v2 is not run here.
+EXTRA_RUNS = (
+    {"run": "demo_pd_kendra", "sample": "talking_head_kendra.mp4"},
+    {"run": "demo_pd_calvin", "sample": "talking_head_nasa_calvin.mp4"},
+)
 
 VERTICAL = ("tiktok", "shorts", "reels")
 # Aspect → one channel id. 9:16 is handled separately so a run can fill all three.
@@ -70,23 +100,41 @@ def channel_for(manifest, cursor=0):
 
 
 def media_missing(root=None, run=PRIMARY_RUN):
-    """True when the sample mp4 or a preload variant mp4 is not on disk yet."""
+    """True when a demo sample or a preload variant mp4 is not on disk yet."""
     root = Path(root) if root is not None else repo_root()
-    sample = root / "samples" / SAMPLE_NAME
-    if not _big(sample, _MIN_VIDEO):
-        return True
+    for name in FALLBACKS:
+        if not _big(root / "samples" / name, _MIN_VIDEO):
+            return True
     directory = root / "runs" / run
     ids = _variant_ids(directory)
     if not ids:
         return True
-    return any(not _big(directory / f"{vid}.mp4", _MIN_VIDEO) for vid in ids)
+    if any(not _big(directory / f"{vid}.mp4", _MIN_VIDEO) for vid in ids):
+        return True
+    if (directory / "results.json").is_file():
+        for spec in EXTRA_RUNS:
+            extra = root / "runs" / spec["run"]
+            if not (extra / "results.json").is_file() or not (extra / "metrics.json").is_file():
+                return True
+            if (extra / "v01.json").is_file() and not _big(extra / "v01.mp4", _MIN_VIDEO):
+                return True
+    return False
 
 
 def setup(root=None, origin=LIVE_ORIGIN, runs=None, timeout=45):
     """Seed metrics, then download missing media. Always returns a summary."""
     root = Path(root) if root is not None else repo_root()
-    runs = tuple(runs) if runs is not None else (PRIMARY_RUN,)
+    try:
+        ensure_extra_runs(root)
+    except Exception as exc:
+        # Recorded after summary exists; a missing primary run is not an error.
+        extra_error = exc
+    else:
+        extra_error = None
+    runs = tuple(runs) if runs is not None else (PRIMARY_RUN,) + tuple(item["run"] for item in EXTRA_RUNS)
     summary = {"ok": True, "seeded": [], "present": [], "downloaded": [], "failed": [], "newest": None}
+    if extra_error is not None:
+        summary["failed"].append(f"extra runs: {extra_error}")
     for run in runs:
         try:
             seeded = seed_run(run, root)
@@ -102,7 +150,10 @@ def setup(root=None, origin=LIVE_ORIGIN, runs=None, timeout=45):
         summary["failed"].append(f"samples: {exc}")
     for run in runs:
         try:
-            _fetch_run_media(root, origin, run, timeout, summary)
+            if run == PRIMARY_RUN:
+                _fetch_run_media(root, origin, run, timeout, summary)
+            else:
+                _reuse_primary_media(root, run, summary)
         except Exception as exc:
             summary["failed"].append(f"{run} media: {exc}")
     primary = PRIMARY_RUN if PRIMARY_RUN in runs else (runs[0] if runs else None)
@@ -265,12 +316,100 @@ def _variant_ids(directory):
     return [path.stem for path in sorted(directory.glob("v[0-9][0-9].json"))]
 
 
+def ensure_extra_runs(root):
+    """Clone the preload run's JSON into the extra demo runs. No-op without that run.
+
+    Variant mp4s are not rendered here. ``setup`` hardlinks them from the preload
+    run after that run's media is on disk. Returns the run names created this call.
+    """
+    root = Path(root)
+    primary = root / "runs" / PRIMARY_RUN
+    if not (primary / "results.json").is_file():
+        return []
+    created = []
+    for spec in EXTRA_RUNS:
+        run = spec["run"]
+        dest = root / "runs" / run
+        if not (dest / "results.json").is_file():
+            dest.mkdir(parents=True, exist_ok=True)
+            _clone_run_json(primary, dest, run, spec["sample"])
+            created.append(run)
+    return created
+
+
+def _clone_run_json(primary, dest, run, sample):
+    paths = [primary / name for name in ("manifest.json", "results.json", "winner.json")]
+    paths.extend(sorted(primary.glob("v[0-9][0-9].json")))
+    for path in paths:
+        if not path.is_file():
+            continue
+        data = json.loads(path.read_text())
+        data = _retarget(data, run, sample)
+        if path.name == "manifest.json" and isinstance(data, dict):
+            data["source"] = f"samples/{sample}"
+            data["demo"] = True
+            data["simulated"] = True
+            data["reused_from"] = PRIMARY_RUN
+            data["note"] = (
+                "JSON clone of v2_niosh_multi. Variant mp4s are the NIOSH renders, reused. "
+                "Metrics are simulated."
+            )
+        (dest / path.name).write_text(json.dumps(data, indent=2) + "\n")
+
+
+def _retarget(value, run, sample):
+    if isinstance(value, dict):
+        out = {key: _retarget(item, run, sample) for key, item in value.items()}
+        vid = out.get("variant_id")
+        if isinstance(vid, str) and vid:
+            out["video_path"] = f"runs/{run}/{vid}.mp4"
+        return out
+    if isinstance(value, list):
+        return [_retarget(item, run, sample) for item in value]
+    if isinstance(value, str):
+        text = value.replace(f"/{PRIMARY_RUN}/", f"/{run}/")
+        text = text.replace(f"runs/{PRIMARY_RUN}", f"runs/{run}")
+        return text.replace("samples/talking_head_niosh.mp4", f"samples/{sample}")
+    return value
+
+
+def _reuse_primary_media(root, run, summary):
+    """Hardlink preload variant mp4s and posters into an extra run. Copy if link fails."""
+    if run == PRIMARY_RUN:
+        return
+    dest = Path(root) / "runs" / run
+    src = Path(root) / "runs" / PRIMARY_RUN
+    if not dest.is_dir():
+        return
+    ids = _variant_ids(dest) or _variant_ids(src)
+    names = [f"{vid}.mp4" for vid in ids]
+    names.extend(f".{vid}_poster.jpg" for vid in ids)
+    names.append("winner.mp4")
+    for name in names:
+        target = dest / name
+        origin = src / name
+        minimum = _MIN_POSTER if name.endswith(".jpg") else _MIN_VIDEO
+        label = f"{run}/{name}"
+        if _big(target, minimum):
+            summary["present"].append(label)
+            continue
+        if not _big(origin, minimum):
+            summary["failed"].append(label)
+            continue
+        try:
+            os.link(origin, target)
+        except OSError:
+            shutil.copyfile(origin, target)
+        summary["downloaded"].append(label)
+
+
 def _fetch_samples(root, origin, timeout, summary):
     samples = root / "samples"
     samples.mkdir(parents=True, exist_ok=True)
     names = _sample_names(origin, timeout)
-    if SAMPLE_NAME not in names:
-        names.append(SAMPLE_NAME)
+    for name in FALLBACKS:
+        if name not in names:
+            names.append(name)
     for name in names:
         dest = samples / Path(name).name
         if _big(dest, _MIN_VIDEO):
@@ -280,28 +419,35 @@ def _fetch_samples(root, origin, timeout, summary):
         if _download(live, dest, timeout, minimum=_MIN_VIDEO):
             summary["downloaded"].append(dest.name)
             continue
-        if dest.name == SAMPLE_NAME and _fetch_niosh_fallback(samples, timeout):
+        spec = FALLBACKS.get(dest.name)
+        if spec is not None and _fetch_trimmed(samples, spec, timeout):
             summary["downloaded"].append(dest.name)
             continue
         summary["failed"].append(f"sample {dest.name}")
 
 
 def _fetch_niosh_fallback(samples, timeout):
-    """Trim the public-domain Commons interview when the live app does not serve /samples."""
-    dest = samples / SAMPLE_NAME
+    """Trim the Liz interview when the live app does not serve /samples."""
+    return _fetch_trimmed(samples, NIOSH_SOURCE, timeout)
+
+
+def _fetch_trimmed(samples, spec, timeout):
+    """Download a public-domain source and trim it to the demo sample."""
+    dest = samples / spec["file"]
     cache = samples / ".cache"
     cache.mkdir(parents=True, exist_ok=True)
-    webm = cache / "niosh_liz_full.webm"
+    webm = cache / spec["cache"]
+    # Full interviews are tens of megabytes; allow the socket to stay open.
     if not _big(webm, _MIN_VIDEO):
-        if not _download(NIOSH_SOURCE["url"], webm, timeout, minimum=_MIN_VIDEO):
+        if not _download(spec["url"], webm, max(timeout, 180), minimum=_MIN_VIDEO):
             return False
     if shutil.which("ffmpeg") is None:
         return False
     tmp = _partial(dest)
     cmd = [
         "ffmpeg", "-v", "error", "-y",
-        "-ss", str(NIOSH_SOURCE["start_s"]),
-        "-t", str(NIOSH_SOURCE["duration_s"]),
+        "-ss", str(spec["start_s"]),
+        "-t", str(spec["duration_s"]),
         "-i", str(webm),
         "-c:v", "libx264", "-preset", "veryfast", "-crf", "23", "-pix_fmt", "yuv420p",
         "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart",

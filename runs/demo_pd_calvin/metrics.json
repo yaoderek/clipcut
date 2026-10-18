@@ -1,0 +1,156 @@
+{
+  "_meta": {
+    "simulated": true,
+    "simulated_reason": "generator clipcut.demo_setup simulated demo; variant simulated flag; declared",
+    "generator": "clipcut.demo_setup simulated demo",
+    "source": "json",
+    "updated_at": "2026-10-18T03:22:52Z",
+    "n": 16,
+    "demo": true,
+    "note": "Simulated from the hand-set persona aggregate plus noise. Not platform data."
+  },
+  "v01": {
+    "views": 6646,
+    "avg_watch_pct": 77.96,
+    "shares": 264,
+    "channel": "tiktok",
+    "likes": 620,
+    "simulated": true,
+    "demo": true
+  },
+  "v02": {
+    "views": 6668,
+    "avg_watch_pct": 68.63,
+    "shares": 263,
+    "channel": "shorts",
+    "likes": 649,
+    "simulated": true,
+    "demo": true
+  },
+  "v03": {
+    "views": 5838,
+    "avg_watch_pct": 61.15,
+    "shares": 222,
+    "channel": "shorts",
+    "likes": 619,
+    "simulated": true,
+    "demo": true
+  },
+  "v04": {
+    "views": 7185,
+    "avg_watch_pct": 81.56,
+    "shares": 284,
+    "channel": "reels",
+    "likes": 977,
+    "simulated": true,
+    "demo": true
+  },
+  "v05": {
+    "views": 5985,
+    "avg_watch_pct": 70.23,
+    "shares": 241,
+    "channel": "tiktok",
+    "likes": 600,
+    "simulated": true,
+    "demo": true
+  },
+  "v06": {
+    "views": 6502,
+    "avg_watch_pct": 74.35,
+    "shares": 269,
+    "channel": "tiktok",
+    "likes": 1166,
+    "simulated": true,
+    "demo": true
+  },
+  "v07": {
+    "views": 7375,
+    "avg_watch_pct": 80.1,
+    "shares": 304,
+    "channel": "reels",
+    "likes": 1052,
+    "simulated": true,
+    "demo": true
+  },
+  "v08": {
+    "views": 6345,
+    "avg_watch_pct": 61.24,
+    "shares": 220,
+    "channel": "reels",
+    "likes": 942,
+    "simulated": true,
+    "demo": true
+  },
+  "v09": {
+    "views": 7304,
+    "avg_watch_pct": 77.74,
+    "shares": 290,
+    "channel": "shorts",
+    "likes": 706,
+    "simulated": true,
+    "demo": true
+  },
+  "v10": {
+    "views": 6199,
+    "avg_watch_pct": 64.84,
+    "shares": 248,
+    "channel": "reels",
+    "likes": 1072,
+    "simulated": true,
+    "demo": true
+  },
+  "v11": {
+    "views": 6483,
+    "avg_watch_pct": 73.53,
+    "shares": 256,
+    "channel": "shorts",
+    "likes": 1129,
+    "simulated": true,
+    "demo": true
+  },
+  "v12": {
+    "views": 5846,
+    "avg_watch_pct": 58.46,
+    "shares": 194,
+    "channel": "reels",
+    "likes": 453,
+    "simulated": true,
+    "demo": true
+  },
+  "v13": {
+    "views": 6851,
+    "avg_watch_pct": 77.07,
+    "shares": 286,
+    "channel": "x",
+    "likes": 1224,
+    "simulated": true,
+    "demo": true
+  },
+  "v14": {
+    "views": 6618,
+    "avg_watch_pct": 74.45,
+    "shares": 266,
+    "channel": "x",
+    "likes": 1117,
+    "simulated": true,
+    "demo": true
+  },
+  "v15": {
+    "views": 6719,
+    "avg_watch_pct": 73.77,
+    "shares": 254,
+    "channel": "linkedin",
+    "likes": 978,
+    "simulated": true,
+    "demo": true
+  },
+  "v16": {
+    "views": 6455,
+    "avg_watch_pct": 68.2,
+    "shares": 267,
+    "channel": "linkedin",
+    "likes": 709,
+    "simulated": true,
+    "demo": true
+  }
+}

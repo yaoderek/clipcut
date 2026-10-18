@@ -1,0 +1,313 @@
+{
+  "variant_id": "v06",
+  "recipe": {
+    "hook": "m4",
+    "length": 30,
+    "pacing": "tight_punch",
+    "captions": "word_pop",
+    "hook_title": false,
+    "ending": "loop",
+    "channel": "TikTok",
+    "aspect": "9:16"
+  },
+  "hook_text": "One of the reasons I went into psychology was there was no math or science, or so I thought.",
+  "hook_phrase": "One of the reasons I went into psychology was there was no",
+  "hook_boundary": "word",
+  "aspect": "9:16",
+  "resolution": [
+    1080,
+    1920
+  ],
+  "hook_src_start": 69.20805555555555,
+  "channel": "TikTok",
+  "duration_s": 31.29,
+  "video_path": "runs/demo_pd_kendra/v06.mp4",
+  "segments": [
+    {
+      "src_start": 69.208,
+      "src_end": 72.127,
+      "out_start": 0.0,
+      "punch_in": 1.08
+    },
+    {
+      "src_start": 72.127,
+      "src_end": 74.006,
+      "out_start": 2.919,
+      "punch_in": 1.2
+    },
+    {
+      "src_start": 74.381,
+      "src_end": 76.313,
+      "out_start": 4.798,
+      "punch_in": 1.0
+    },
+    {
+      "src_start": 76.233,
+      "src_end": 76.693,
+      "out_start": 6.73,
+      "punch_in": 1.2
+    },
+    {
+      "src_start": 81.47,
+      "src_end": 84.47,
+      "out_start": 7.19,
+      "punch_in": 1.0
+    },
+    {
+      "src_start": 84.47,
+      "src_end": 87.47,
+      "out_start": 10.19,
+      "punch_in": 1.2
+    },
+    {
+      "src_start": 87.47,
+      "src_end": 88.35,
+      "out_start": 13.19,
+      "punch_in": 1.0
+    },
+    {
+      "src_start": 88.27,
+      "src_end": 90.465,
+      "out_start": 14.07,
+      "punch_in": 1.2
+    },
+    {
+      "src_start": 90.385,
+      "src_end": 93.385,
+      "out_start": 16.265,
+      "punch_in": 1.0
+    },
+    {
+      "src_start": 93.385,
+      "src_end": 96.095,
+      "out_start": 19.265,
+      "punch_in": 1.2
+    },
+    {
+      "src_start": 96.289,
+      "src_end": 97.919,
+      "out_start": 21.975,
+      "punch_in": 1.0
+    },
+    {
+      "src_start": 97.839,
+      "src_end": 98.098,
+      "out_start": 23.605,
+      "punch_in": 1.2
+    },
+    {
+      "src_start": 98.325,
+      "src_end": 99.355,
+      "out_start": 23.864,
+      "punch_in": 1.0
+    },
+    {
+      "src_start": 99.275,
+      "src_end": 102.08,
+      "out_start": 24.894,
+      "punch_in": 1.2
+    },
+    {
+      "src_start": 102.0,
+      "src_end": 105.197,
+      "out_start": 27.699,
+      "punch_in": 1.0
+    }
+  ],
+  "captions": [
+    {
+      "start": 0.0,
+      "end": 0.77,
+      "text": "ONE OF THE"
+    },
+    {
+      "start": 0.72,
+      "end": 1.5,
+      "text": "REASONS I WENT"
+    },
+    {
+      "start": 1.45,
+      "end": 2.22,
+      "text": "INTO PSYCHOLOGY WAS"
+    },
+    {
+      "start": 2.17,
+      "end": 2.95,
+      "text": "THERE WAS NO"
+    },
+    {
+      "start": 2.9,
+      "end": 4.49,
+      "text": "MATH OR SCIENCE,"
+    },
+    {
+      "start": 5.36,
+      "end": 6.7,
+      "text": "I THOUGHT."
+    },
+    {
+      "start": 7.19,
+      "end": 8.32,
+      "text": "THE TEACHING ASSISTANT"
+    },
+    {
+      "start": 8.27,
+      "end": 9.4,
+      "text": "FOR THAT COURSE"
+    },
+    {
+      "start": 9.35,
+      "end": 10.47,
+      "text": "REALLY HAD A"
+    },
+    {
+      "start": 10.42,
+      "end": 11.55,
+      "text": "HUGE INFLUENCE ON"
+    },
+    {
+      "start": 11.5,
+      "end": 12.63,
+      "text": "MY TRAJECTORY INTO"
+    },
+    {
+      "start": 12.58,
+      "end": 13.69,
+      "text": "THE FIELD OF"
+    },
+    {
+      "start": 13.64,
+      "end": 14.04,
+      "text": "SCIENCE."
+    },
+    {
+      "start": 13.99,
+      "end": 15.18,
+      "text": "SHE GOT ME"
+    },
+    {
+      "start": 15.13,
+      "end": 16.24,
+      "text": "THROUGH THAT COURSE."
+    },
+    {
+      "start": 16.19,
+      "end": 17.37,
+      "text": "SHE REALLY HELPED"
+    },
+    {
+      "start": 17.32,
+      "end": 18.43,
+      "text": "ME WITH STATISTICS,"
+    },
+    {
+      "start": 18.38,
+      "end": 19.18,
+      "text": "BUT MORE THAN"
+    },
+    {
+      "start": 19.13,
+      "end": 19.43,
+      "text": "THAT,"
+    },
+    {
+      "start": 19.38,
+      "end": 19.94,
+      "text": "SHE SAID,"
+    },
+    {
+      "start": 19.89,
+      "end": 20.69,
+      "text": "LOOK YOU NEED"
+    },
+    {
+      "start": 20.64,
+      "end": 21.44,
+      "text": "TO BE A"
+    },
+    {
+      "start": 21.39,
+      "end": 21.94,
+      "text": "RESEARCH ASSISTANT."
+    },
+    {
+      "start": 22.2,
+      "end": 22.96,
+      "text": "TO GET INTO"
+    },
+    {
+      "start": 22.91,
+      "end": 23.58,
+      "text": "THE HONORS PROGRAM."
+    },
+    {
+      "start": 23.53,
+      "end": 24.45,
+      "text": "YOU BE A"
+    },
+    {
+      "start": 24.4,
+      "end": 24.86,
+      "text": "TEACHING ASSISTANT."
+    },
+    {
+      "start": 24.81,
+      "end": 25.56,
+      "text": "HERE ARE THE"
+    },
+    {
+      "start": 25.51,
+      "end": 26.25,
+      "text": "THINGS YOU NEED"
+    },
+    {
+      "start": 26.2,
+      "end": 27.1,
+      "text": "TO DO TO"
+    },
+    {
+      "start": 27.05,
+      "end": 27.67,
+      "text": "GO FORWARD."
+    },
+    {
+      "start": 27.62,
+      "end": 28.6,
+      "text": "AND WITHOUT HER,"
+    },
+    {
+      "start": 28.55,
+      "end": 29.45,
+      "text": "I DON'T THINK"
+    },
+    {
+      "start": 29.4,
+      "end": 30.3,
+      "text": "I WOULD HAVE"
+    },
+    {
+      "start": 30.25,
+      "end": 30.87,
+      "text": "DONE WELL."
+    }
+  ],
+  "hook_end_s": 2.92,
+  "cut_times_s": [
+    2.919,
+    4.798,
+    6.73,
+    7.19,
+    10.19,
+    13.19,
+    14.07,
+    16.265,
+    19.265,
+    21.975,
+    23.605,
+    23.864,
+    24.894,
+    27.699
+  ],
+  "silence_removed_s": 0.8,
+  "loop_end": true
+}

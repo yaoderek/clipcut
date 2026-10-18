@@ -1,0 +1,465 @@
+{
+  "variant_id": "v09",
+  "recipe": {
+    "hook": "m1",
+    "length": 45,
+    "pacing": "tight_punch",
+    "captions": "word_pop",
+    "hook_title": false,
+    "ending": "loop",
+    "channel": "Shorts",
+    "aspect": "9:16"
+  },
+  "hook_text": "She really helped me with statistics, but more than that, she said, look you need to be a research assistant.",
+  "hook_phrase": "She really helped me with statistics,",
+  "hook_boundary": "punct",
+  "aspect": "9:16",
+  "resolution": [
+    1080,
+    1920
+  ],
+  "hook_src_start": 90.385,
+  "channel": "Shorts",
+  "duration_s": 48.32,
+  "video_path": "runs/demo_pd_kendra/v09.mp4",
+  "segments": [
+    {
+      "src_start": 90.385,
+      "src_end": 92.52,
+      "out_start": 0.0,
+      "punch_in": 1.08
+    },
+    {
+      "src_start": 92.52,
+      "src_end": 95.52,
+      "out_start": 2.135,
+      "punch_in": 1.2
+    },
+    {
+      "src_start": 95.52,
+      "src_end": 96.095,
+      "out_start": 5.135,
+      "punch_in": 1.0
+    },
+    {
+      "src_start": 96.289,
+      "src_end": 97.919,
+      "out_start": 5.71,
+      "punch_in": 1.2
+    },
+    {
+      "src_start": 97.839,
+      "src_end": 98.098,
+      "out_start": 7.34,
+      "punch_in": 1.0
+    },
+    {
+      "src_start": 98.325,
+      "src_end": 99.355,
+      "out_start": 7.599,
+      "punch_in": 1.2
+    },
+    {
+      "src_start": 99.275,
+      "src_end": 102.08,
+      "out_start": 8.629,
+      "punch_in": 1.0
+    },
+    {
+      "src_start": 102.0,
+      "src_end": 105.197,
+      "out_start": 11.434,
+      "punch_in": 1.2
+    },
+    {
+      "src_start": 105.117,
+      "src_end": 108.117,
+      "out_start": 14.631,
+      "punch_in": 1.0
+    },
+    {
+      "src_start": 108.117,
+      "src_end": 108.628,
+      "out_start": 17.631,
+      "punch_in": 1.2
+    },
+    {
+      "src_start": 108.548,
+      "src_end": 110.138,
+      "out_start": 18.142,
+      "punch_in": 1.0
+    },
+    {
+      "src_start": 116.09,
+      "src_end": 118.051,
+      "out_start": 19.732,
+      "punch_in": 1.2
+    },
+    {
+      "src_start": 0.55,
+      "src_end": 3.55,
+      "out_start": 21.693,
+      "punch_in": 1.0
+    },
+    {
+      "src_start": 3.55,
+      "src_end": 4.129,
+      "out_start": 24.693,
+      "punch_in": 1.2
+    },
+    {
+      "src_start": 4.371,
+      "src_end": 5.966,
+      "out_start": 25.272,
+      "punch_in": 1.0
+    },
+    {
+      "src_start": 5.886,
+      "src_end": 7.259,
+      "out_start": 26.867,
+      "punch_in": 1.2
+    },
+    {
+      "src_start": 7.745,
+      "src_end": 10.745,
+      "out_start": 28.24,
+      "punch_in": 1.0
+    },
+    {
+      "src_start": 10.745,
+      "src_end": 10.995,
+      "out_start": 31.24,
+      "punch_in": 1.2
+    },
+    {
+      "src_start": 11.172,
+      "src_end": 13.49,
+      "out_start": 31.49,
+      "punch_in": 1.0
+    },
+    {
+      "src_start": 13.41,
+      "src_end": 16.551,
+      "out_start": 33.808,
+      "punch_in": 1.2
+    },
+    {
+      "src_start": 17.09,
+      "src_end": 17.684,
+      "out_start": 36.949,
+      "punch_in": 1.0
+    },
+    {
+      "src_start": 17.604,
+      "src_end": 19.781,
+      "out_start": 37.543,
+      "punch_in": 1.2
+    },
+    {
+      "src_start": 19.701,
+      "src_end": 21.781,
+      "out_start": 39.72,
+      "punch_in": 1.0
+    },
+    {
+      "src_start": 22.07,
+      "src_end": 23.143,
+      "out_start": 41.8,
+      "punch_in": 1.2
+    },
+    {
+      "src_start": 23.063,
+      "src_end": 25.362,
+      "out_start": 42.873,
+      "punch_in": 1.0
+    },
+    {
+      "src_start": 25.282,
+      "src_end": 27.583,
+      "out_start": 45.172,
+      "punch_in": 1.2
+    }
+  ],
+  "captions": [
+    {
+      "start": 21.69,
+      "end": 22.74,
+      "text": "ONE OF MY"
+    },
+    {
+      "start": 22.69,
+      "end": 23.74,
+      "text": "FAVORITE THINGS ABOUT"
+    },
+    {
+      "start": 23.69,
+      "end": 24.74,
+      "text": "BEING AN EPIDEMIOLOGIST"
+    },
+    {
+      "start": 24.69,
+      "end": 26.17,
+      "text": "IS VARIETY TO"
+    },
+    {
+      "start": 26.12,
+      "end": 26.84,
+      "text": "THE JOB."
+    },
+    {
+      "start": 26.79,
+      "end": 28.15,
+      "text": "THERE'S NEVER A"
+    },
+    {
+      "start": 28.51,
+      "end": 29.91,
+      "text": "AND REALLY BEING"
+    },
+    {
+      "start": 29.86,
+      "end": 31.26,
+      "text": "ABLE TO GO"
+    },
+    {
+      "start": 31.93,
+      "end": 33.33,
+      "text": "ANSWERS TO RESEARCH"
+    },
+    {
+      "start": 33.28,
+      "end": 33.78,
+      "text": "QUESTIONS."
+    },
+    {
+      "start": 33.73,
+      "end": 34.91,
+      "text": "THAT I MYSELF"
+    },
+    {
+      "start": 34.86,
+      "end": 35.95,
+      "text": "CAN GO OUT"
+    },
+    {
+      "start": 35.9,
+      "end": 37.51,
+      "text": "AND TRY ANSWERS."
+    },
+    {
+      "start": 37.46,
+      "end": 38.64,
+      "text": "AND I ABSOLUTELY"
+    },
+    {
+      "start": 38.59,
+      "end": 39.69,
+      "text": "LOVE MY JOB."
+    },
+    {
+      "start": 39.64,
+      "end": 40.91,
+      "text": "I FEEL LIKE"
+    },
+    {
+      "start": 40.86,
+      "end": 41.96,
+      "text": "I'M DOING A"
+    },
+    {
+      "start": 41.91,
+      "end": 42.84,
+      "text": "GOOD THING."
+    },
+    {
+      "start": 42.79,
+      "end": 43.81,
+      "text": "I'M IMPACTING,"
+    },
+    {
+      "start": 43.76,
+      "end": 44.25,
+      "text": "POTENTIALLY,"
+    },
+    {
+      "start": 44.2,
+      "end": 45.14,
+      "text": "WORKERS' LIVES."
+    },
+    {
+      "start": 45.09,
+      "end": 46.54,
+      "text": "THERE'S JUST NO"
+    },
+    {
+      "start": 46.49,
+      "end": 0.4,
+      "text": "PRICE YOU SHE"
+    },
+    {
+      "start": 0.35,
+      "end": 1.46,
+      "text": "REALLY HELPED ME"
+    },
+    {
+      "start": 1.41,
+      "end": 2.16,
+      "text": "WITH STATISTICS,"
+    },
+    {
+      "start": 2.11,
+      "end": 2.92,
+      "text": "BUT MORE THAN"
+    },
+    {
+      "start": 2.87,
+      "end": 3.17,
+      "text": "THAT,"
+    },
+    {
+      "start": 3.12,
+      "end": 3.67,
+      "text": "SHE SAID,"
+    },
+    {
+      "start": 3.62,
+      "end": 4.42,
+      "text": "LOOK YOU NEED"
+    },
+    {
+      "start": 4.37,
+      "end": 5.18,
+      "text": "TO BE A"
+    },
+    {
+      "start": 5.13,
+      "end": 5.68,
+      "text": "RESEARCH ASSISTANT."
+    },
+    {
+      "start": 5.94,
+      "end": 6.7,
+      "text": "TO GET INTO"
+    },
+    {
+      "start": 6.65,
+      "end": 7.31,
+      "text": "THE HONORS PROGRAM."
+    },
+    {
+      "start": 7.26,
+      "end": 8.19,
+      "text": "YOU BE A"
+    },
+    {
+      "start": 8.14,
+      "end": 8.6,
+      "text": "TEACHING ASSISTANT."
+    },
+    {
+      "start": 8.55,
+      "end": 9.29,
+      "text": "HERE ARE THE"
+    },
+    {
+      "start": 9.24,
+      "end": 9.99,
+      "text": "THINGS YOU NEED"
+    },
+    {
+      "start": 9.94,
+      "end": 10.84,
+      "text": "TO DO TO"
+    },
+    {
+      "start": 10.79,
+      "end": 11.4,
+      "text": "GO FORWARD."
+    },
+    {
+      "start": 11.35,
+      "end": 12.33,
+      "text": "AND WITHOUT HER,"
+    },
+    {
+      "start": 12.28,
+      "end": 13.18,
+      "text": "I DON'T THINK"
+    },
+    {
+      "start": 13.13,
+      "end": 14.03,
+      "text": "I WOULD HAVE"
+    },
+    {
+      "start": 13.98,
+      "end": 14.6,
+      "text": "DONE WELL."
+    },
+    {
+      "start": 14.55,
+      "end": 15.75,
+      "text": "I DON'T THINK"
+    },
+    {
+      "start": 15.7,
+      "end": 16.93,
+      "text": "I WOULD HAVE"
+    },
+    {
+      "start": 16.88,
+      "end": 18.11,
+      "text": "STAYED IN SCIENCE."
+    },
+    {
+      "start": 18.06,
+      "end": 19.37,
+      "text": "SHE REALLY HAD"
+    },
+    {
+      "start": 19.32,
+      "end": 20.32,
+      "text": "A WHEN I"
+    },
+    {
+      "start": 20.27,
+      "end": 21.13,
+      "text": "WAS THINKING ABOUT"
+    },
+    {
+      "start": 21.08,
+      "end": 21.66,
+      "text": "A PH.D."
+    }
+  ],
+  "hook_end_s": 2.13,
+  "cut_times_s": [
+    2.135,
+    5.135,
+    5.71,
+    7.34,
+    7.599,
+    8.629,
+    11.434,
+    14.631,
+    17.631,
+    18.142,
+    19.732,
+    21.693,
+    24.693,
+    25.272,
+    26.867,
+    28.24,
+    31.24,
+    31.49,
+    33.808,
+    36.949,
+    37.543,
+    39.72,
+    41.8,
+    42.873,
+    45.172
+  ],
+  "silence_removed_s": 2.15,
+  "loop_end": true
+}

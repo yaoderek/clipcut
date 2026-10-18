@@ -8,6 +8,10 @@ models
 # runs: ship only the preload demo
 runs/*
 !runs/v2_niosh_multi
+!runs/demo_pd_kendra
+!runs/demo_pd_calvin
 runs/v2_niosh_multi/frames
+runs/demo_pd_kendra/frames
+runs/demo_pd_calvin/frames
 runs/*.log
 samples/raw_test.mp4
