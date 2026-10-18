@@ -49,9 +49,9 @@
     pick_winner: { label: "Pick winner", desc: "Choose which rule ships.", color: "#fbbf24", order: 8, emits: "winner", accepts: ["scores", "tests", "winner"],
       tip: "Persona winner uses aggregate. Channel winner is the simulated A/B pick. Legacy winner is the saved run's caption tie-break. These are different rules. Don't compare the numbers as one scale.",
       idle: "Connect scores or a channel test.", defaults: { prefer: "persona", channel: "reels" } },
-    publish: { label: "Publish", desc: "Copy the winner file locally.", color: "#c084fc", order: 9, emits: null, accepts: ["winner", "scores", "tests"],
-      tip: "POST /api/deploy copies the run's legacy winner mp4. It does not post to TikTok, Reels, Shorts, X, or LinkedIn. It does not re-rank with the persona aggregate.",
-      idle: "Connect a winner.", defaults: { action: "local" } }
+    publish: { label: "Publish", desc: "Export a file bundle.", color: "#c084fc", order: 9, emits: null, accepts: ["winner", "scores", "tests"],
+      tip: "Exports are files. Nothing is posted unless publish reports uploaded (private).",
+      idle: "Connect a winner.", defaults: { action: "export", copy: "auto", channels: ["tiktok", "shorts", "reels", "x", "linkedin"] } }
   };
   const TYPE_ORDER = ["branch", "ingest", "transcribe", "hook_pick", "clip", "subtitle", "crop", "persona_score", "hook_rewrite", "channel_test", "pick_winner", "publish"];
 
@@ -109,7 +109,7 @@
       ["n_persona", "persona_score", 400, 196, { mode: "auto" }],
       ["n_channel", "channel_test", 400, 368, { channels: ["tiktok", "reels", "shorts", "x", "linkedin"] }],
       ["n_win", "pick_winner", 400, 540, { prefer: "persona", channel: "reels" }],
-      ["n_pub", "publish", 400, 712, { action: "local" }]
+      ["n_pub", "publish", 400, 712, { action: "export", copy: "auto", channels: ["tiktok", "shorts", "reels", "x", "linkedin"] }]
     ];
     return {
       name: "Default ClipCut pipeline", version: 1,
@@ -216,7 +216,7 @@
     if (incoming && (n.type === "publish" || n.type === "persona_score")) {
       const ans = ancestors(n.id);
       const hasClip = [...ans].some((id) => { const x = nodeById(id); return x && x.type === "clip"; });
-      if (!hasClip && n.type === "publish") msgs.push("Publish is connected, but no Clip step is upstream. The file copy waits until a clip sits upstream.");
+      if (!hasClip && n.type === "publish") msgs.push("Publish is connected, but no Clip step is upstream. The export waits until a clip sits upstream.");
       if (!hasClip && n.type === "persona_score") msgs.push("Persona score is connected, but no Clip step is upstream, so there is nothing to score.");
     }
     return msgs;
@@ -257,6 +257,14 @@
       const count = (r.variants || []).reduce((sum, v) => sum + ((v.suggestions || []).length), 0);
       return `${hookChipHTML(r.source)}<span class="mut">source ${esc(r.source || "—")}</span><div>${count} lines</div>`;
     }
+    if (o.type === "publish") {
+      const exp = o.export || {};
+      const ch = (exp.channels || []).find((c) => c.video && c.video.url) || (exp.channels || [])[0] || {};
+      const vid = ch.video && ch.video.url;
+      const tag = o.statusTag || exp.copy_source || "export";
+      const zip = exp.bundle_url ? `<a class="zip" href="${esc(exp.bundle_url)}" title="Download bundle">⬇</a>` : "";
+      return `<span class="chip">${esc(tag)}</span>${zip}` + (vid ? `<video src="${esc(vid)}" muted playsinline loop style="width:100%;border-radius:8px;margin-top:6px;background:#000"></video>` : `<div class="mut">${esc(o.note || t.idle)}</div>`);
+    }
     if (o.type === "ingest") return `<div><b>${esc(o.runId || "")}</b></div><div class="mut">${esc(o.note || "")}</div>`;
     if (o.type === "text") return `<div>${esc(o.title || "")}</div><div class="mut clamp">${esc(o.body || "")}</div>`;
     if (o.html) return o.html;
@@ -275,7 +283,7 @@
     el.innerHTML =
       `<header data-tip="${esc(t.tip)}"><i class="accent"></i><div><div class="kicker">${esc(kicker)}</div><div class="title">${esc(title)}</div></div>` +
       `<button class="x" type="button" aria-label="Remove ${esc(t.label)}">×</button></header>` +
-      `<p class="desc">${esc(n.approach && n.nick ? t.desc : t.desc)}</p>` +
+      (n.type === "publish" ? "" : `<p class="desc">${esc(t.desc)}</p>`) +
       (t.accepts.length ? `<button class="port in" type="button" data-dir="in" data-tip="Input. Accepts ${esc(t.accepts.map((x) => PLAIN[x]).join(" or "))}. Drag from another step's output." aria-label="Input port"></button>` : "") +
       (t.emits ? `<button class="port out" type="button" data-dir="out" data-tip="Output: ${esc(PLAIN[t.emits])}. Drag onto the next step's input." aria-label="Output port"></button>` : "") +
       `<div class="sum">${summaryHTML(n)}${issues.length ? `<div class="issue">${esc(issues[0])}</div>` : ""}</div>`;
@@ -522,9 +530,66 @@
     if (n.type === "pick_winner") return field("Rule", "Persona aggregate, simulated A/B, or the legacy caption tie-break. The numbers are not one scale.",
       `<select data-key="prefer">${opts([["persona", "Persona aggregate"], ["channel", "Simulated channel A/B"], ["run", "Legacy run winner"]], c.prefer)}</select>`) +
       (c.prefer === "channel" ? field("Channel", "Which simulated test to read.", `<select data-key="channel">${opts(CHANNELS, c.channel)}</select>`) : "");
-    if (n.type === "publish") return `<p class="mut">Copies the legacy winner file on the server. Nothing is posted to a platform.</p>`;
+    if (n.type === "publish") {
+      const five = [["tiktok", "TikTok"], ["shorts", "Shorts"], ["reels", "Reels"], ["x", "X"], ["linkedin", "LinkedIn"]];
+      const action = c.action === "publish" ? "publish" : "export";
+      return field("Action", "Export writes files. Publish runs only when this is set to Publish. Nothing is posted unless the status is uploaded (private).",
+        `<select data-key="action">${opts([["export", "Export"], ["publish", "Publish"]], action)}</select>`) +
+        field("Copy", "auto uses Grok when a key is set, otherwise templates. template never calls the model.",
+          `<select data-key="copy">${opts([["auto", "Auto"], ["template", "Template"]], c.copy || "auto")}</select>`) +
+        field("Channels", "Lowercase ids. Leave them on to export TikTok, Shorts, Reels, X, and LinkedIn.",
+          checks("channels", five, c.channels || five.map((x) => x[0])));
+    }
     if (n.type === "branch") return "";
     return "";
+  }
+
+  function publishDetailHTML(o) {
+    if (o.error && !o.export) return `<details><summary>Details</summary><p class="issue">${esc(o.error)}</p><p class="mut">${esc(o.note || "")}</p></details>`;
+    const exp = o.export || {};
+    const rows = (exp.channels || []).map((c) => {
+      const copy = c.copy || {};
+      const video = c.video || {};
+      const caps = c.captions || {};
+      const sel = c.selection && c.selection !== "requested" ? " · " + c.selection : "";
+      const links = [
+        caps.srt_url ? `<a href="${esc(caps.srt_url)}">SRT</a>` : "",
+        caps.vtt_url ? `<a href="${esc(caps.vtt_url)}">VTT</a>` : "",
+        c.post_url ? `<a href="${esc(c.post_url)}">Post</a>` : ""
+      ].filter(Boolean).join(" · ");
+      return `<p><b>${esc(c.label || c.channel)}</b> · ${esc(c.variant_id || "")}${esc(sel)} · ${esc(video.status || "")}</p>` +
+        (copy.title ? `<p>${esc(copy.title)}</p>` : "") +
+        (copy.caption ? `<p class="mut">${esc(copy.caption)}</p>` : "") +
+        (copy.source ? `<p class="mut">${esc(copy.source)}</p>` : "") +
+        (video.note ? `<p class="mut">${esc(video.note)}</p>` : "") +
+        (links ? `<p>${links}</p>` : "");
+    }).join("");
+    const dash = o.dashboard;
+    let dashHTML = "";
+    if (dash) {
+      if (!dash.metrics_available) dashHTML += `<p class="mut">${esc(dash.metrics_note || "No campaign metrics yet.")}</p>`;
+      else {
+        const overall = dash.overall || {};
+        dashHTML += `<p>Thompson ${esc(overall.thompson_winner || "–")} · actual ${esc(overall.top_actual || "–")}</p>`;
+        dashHTML += (dash.channels || []).map((c) => {
+          const w = c.winner_actual || {};
+          return `<p>${esc(c.label || c.channel)} actual ${esc(w.id || "–")} · predicted ${esc(c.predicted_top || "–")}` +
+            (c.thompson_winner ? ` · thompson ${esc(c.thompson_winner)}` : "") + `</p>`;
+        }).join("");
+      }
+      if (dash.simulated && dash.disclaimer) dashHTML += `<p class="mut">${esc(dash.disclaimer)}</p>`;
+      if (dash.publish_disclaimer) dashHTML += `<p class="mut">${esc(dash.publish_disclaimer)}</p>`;
+    }
+    const pub = o.publish;
+    let pubHTML = "";
+    if (pub) {
+      if (pub.disclaimer) pubHTML += `<p class="mut">${esc(pub.disclaimer)}</p>`;
+      const entries = pub.channels || pub.entries || [];
+      pubHTML += (Array.isArray(entries) ? entries : []).map((e) => `<p>${esc(e.label || e.channel)} · ${esc(e.status || "")}</p>`).join("");
+    }
+    return `<details><summary>Details</summary><p class="mut">Exports are files. Nothing is posted unless publish reports uploaded (private).</p>${rows}` +
+      (exp.disclaimer ? `<p class="mut">${esc(exp.disclaimer)}</p>` : "") + dashHTML + pubHTML +
+      (o.error ? `<p class="issue">${esc(o.error)}</p>` : "") + `</details>`;
   }
 
   function resultHTML(n) {
@@ -534,7 +599,7 @@
     if (o.type === "hooks" && o.response) return hooksHTML(o.response);
     if (o.type === "channel") return channelHTML(o);
     if (o.type === "winner") return `<h3>Choice</h3><p><b>${esc(o.id || "–")}</b></p><p>${esc(o.note || "")}</p>` + (o.aggregate != null ? `<p>Persona aggregate ${fmtPersona(o.aggregate)} <span class="mut">(0–1, not the legacy channel score)</span></p>` : "");
-    if (o.type === "publish") return `<h3>Publish</h3><p>${esc(o.note || "")}</p>` + (o.url ? `<p><a href="${esc(o.url)}">Open the local winner file</a></p>` : "") + (o.error ? `<p class="issue">${esc(o.error)}</p>` : "");
+    if (o.type === "publish") return publishDetailHTML(o);
     if (o.type === "text" || o.type === "ingest") return `<h3>Result</h3><p>${esc(o.title || o.runId || "")}</p><p class="mut">${esc(o.body || o.note || "")}</p>` + (o.lines ? `<ul>${o.lines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>` : "") + (o.video ? `<video src="${esc(o.video)}" controls style="width:100%;border-radius:8px;margin-top:8px"></video>` : "");
     if (o.type === "branch" && o.winner) return `<h3>Winning branch</h3><p><b>${esc(o.winner.name)}</b> · aggregate ${fmtPersona(o.winner.aggregate)}</p><p class="mut">${esc(o.winner.note || "")}</p><ul>${(o.winner.reasons || []).map((r) => `<li>${esc(r)}</li>`).join("")}</ul>`;
     return "";
@@ -1010,15 +1075,30 @@
     if (n.type === "publish") {
       const ans = ancestors(n.id);
       const hasClip = [...ans].some((id) => { const x = nodeById(id); return x && x.type === "clip"; });
-      if (!hasClip) return { output: { type: "publish", note: "Skipped. Publish is not downstream of a clip, so nothing was copied." } };
+      if (!hasClip) return { output: { type: "publish", note: "Skipped. Publish is not downstream of a clip, so nothing was exported." } };
+      if (!packet.runId) return { output: { type: "publish", error: "No run to export." } };
+      const channels = (c.channels && c.channels.length) ? c.channels : ["tiktok", "shorts", "reels", "x", "linkedin"];
+      const body = { run: packet.runId, channels: channels, mode: c.copy || "auto" };
+      if (packet.chosen && packet.chosen.id) body.variant_id = packet.chosen.id;
       try {
-        const d = await j("/api/deploy/" + encodeURIComponent(packet.runId), { method: "POST" });
-        const personaId = packet.chosen && packet.chosen.id;
-        let note = "Copied " + d.winner + " locally. Nothing was posted to a platform.";
-        if (personaId && personaId !== d.winner) note += " Persona winner was " + personaId + ". Deploy uses the legacy file, not the persona aggregate.";
-        return { output: { type: "publish", url: d.url, note } };
+        const exp = await j("/api/distribution/export", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+        let publish = null, statusTag = exp.copy_source || "template";
+        if (c.action === "publish") {
+          publish = await j("/api/distribution/publish", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ run: packet.runId, export_id: exp.export_id }) });
+          for (let i = 0; i < 40; i++) {
+            const rows = publish.channels || publish.entries || [];
+            if (!rows.some((e) => e.state === "uploading" || e.status === "uploading")) break;
+            await new Promise((r) => setTimeout(r, 800));
+            publish = await j("/api/distribution/publish/" + encodeURIComponent(packet.runId));
+          }
+          const rows = publish.channels || publish.entries || [];
+          statusTag = (rows.find((e) => e.status && e.status !== "exported") || rows[0] || {}).status || "exported";
+        }
+        let dashboard = null;
+        try { dashboard = await j("/api/distribution/dashboard/" + encodeURIComponent(packet.runId)); } catch (e) { dashboard = null; }
+        return { output: { type: "publish", export: exp, publish: publish, dashboard: dashboard, statusTag: statusTag } };
       } catch (e) {
-        return { output: { type: "publish", error: e.message, note: "Deploy did not copy a file. The mp4 may be missing from this checkout." } };
+        return { output: { type: "publish", error: e.message, note: "Export did not finish." } };
       }
     }
     return { output: viewText(TYPES[n.type].label, "Nothing to show.") };

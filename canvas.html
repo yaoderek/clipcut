@@ -34,6 +34,9 @@ button,select{background:var(--panel2);color:var(--txt);border:1px solid var(--l
 #chips [data-chip]:active{cursor:grabbing}
 .blk.hot{outline:2px solid var(--acc2);outline-offset:2px}
 #ghost{position:fixed;z-index:30;pointer-events:none;display:none;padding:6px 10px;border-radius:8px;background:#7c5cff;color:#fff;font-weight:700}
+a.zip{margin-left:auto;color:var(--txt);text-decoration:none;font-size:14px;line-height:1}
+a.zip[hidden]{display:none}
+#detail select{margin-left:6px}
 #detail{position:fixed;left:16px;bottom:16px;width:260px;z-index:6;background:#141821e6;border:1px solid var(--line);border-radius:12px;backdrop-filter:blur(6px)}
 #detail summary{cursor:pointer;padding:8px 10px;font-weight:700}
 #detail .bd{padding:8px 10px 12px;max-height:36vh;overflow:auto;border-top:1px solid var(--line)}
@@ -44,7 +47,7 @@ button,select{background:var(--panel2);color:var(--txt);border:1px solid var(--l
  <button id="fit">⤢ Zoom to fit</button><button id="zout">−</button><span id="zoomlbl" class="mut">100%</span><button id="zin">+</button>
  <select id="addch"><option value="">+ Add channel</option></select><label class="pri" style="background:linear-gradient(90deg,#7c5cff,#5b8cff);border-radius:8px;padding:6px 10px;cursor:pointer;font-weight:600">⬆ Upload video<input id="up" type="file" accept="video/*" hidden></label><span id="jobmsg" class="mut"></span><span class="pill">heuristic scores · simulated A/B</span><a href="/classic" style="margin-left:6px">classic view</a></div>
 <canvas id="mini" width="480" height="320"></canvas>
-<div id="chips"><b>Edit</b><span data-chip="captions">Captions</span><span data-chip="zoom">Zoom punch-ins</span><span data-chip="len15">15s</span><span data-chip="len30">30s</span><span data-chip="len45">45s</span><span data-chip="hook">Hook</span><span data-chip="crop">Crop</span><span data-chip="music">Music</span><span data-chip="approaches">Try approaches</span></div>
+<div id="chips"><b>Edit</b><span data-chip="captions">Captions</span><span data-chip="zoom">Zoom punch-ins</span><span data-chip="len15">15s</span><span data-chip="len30">30s</span><span data-chip="len45">45s</span><span data-chip="hook">Hook</span><span data-chip="crop">Crop</span><span data-chip="music">Music</span><span data-chip="approaches">Try approaches</span><span data-chip="publish">Publish</span></div>
 <div id="ghost"></div>
 <details id="detail"><summary>Details</summary><div class="bd" id="detailbody"></div></details>
 <script>
@@ -144,7 +147,8 @@ $('#up').onchange=async e=>{const fl=e.target.files[0];if(!fl)return;const st=aw
   $('#jobmsg').textContent='';$('#runsel').add(new Option(b.run,b.run));$('#runsel').value=b.run;load(b.run)};poll()};
 (async()=>{const runs=await j('/api/runs');runs.forEach(r=>$('#runsel').add(new Option(r,r)));$('#runsel').onchange=e=>load(e.target.value);if(runs.length)await load(runs[0]);window.READY=true})();
 // Drag an edit chip onto a video. New node shows that video at once, then /api/branch swaps in the render.
-const CHIP_NAME={captions:'Captions',zoom:'Zoom punch-ins',len15:'15s',len30:'30s',len45:'45s',hook:'Hook',crop:'Crop',music:'Music',approaches:'Try approaches'};
+const CHIP_NAME={captions:'Captions',zoom:'Zoom punch-ins',len15:'15s',len30:'30s',len45:'45s',hook:'Hook',crop:'Crop',music:'Music',approaches:'Try approaches',publish:'Publish'};
+const DIST_CHANNELS=['tiktok','shorts','reels','x','linkedin'];
 let seq=1, chipDrag=null;
 function chipSettings(chips){
   const s={hook:'strongest',length:30,pacing:'tight_punch',captions:'sentence',hook_title:false,ending:'loop',aspect:'9:16',channel:'TikTok'};
@@ -253,10 +257,128 @@ async function callBranch(el, chips, variant, video){
     if(done && done.status==='done')$('#jobmsg').textContent='';
   }catch(e){$('#jobmsg').textContent='Preview stays on this clip';}
 }
+function detailP(text){const el=document.createElement('p'); el.className='mut'; el.textContent=text; return el}
+function detailLink(href, label){const a=document.createElement('a'); a.href=href; a.textContent=label; a.target='_blank'; return a}
+function setDetail(nodes){const b=$('#detailbody'); if(!b)return; b.replaceChildren(); (nodes||[]).forEach(n=>b.appendChild(n))}
+function publishStatusTag(rows){
+  const list=Array.isArray(rows)?rows:[];
+  const order=['failed','uploading','uploaded (private)','scheduled (demo)','exported'];
+  for(const s of order){if(list.some(e=>e.status===s))return s}
+  return (list[0]&&list[0].status)||'exported';
+}
+function renderDistDetail(el){
+  const data=el._export||{}, nodes=[];
+  nodes.push(detailP('Exports are files. Nothing is posted unless publish reports uploaded (private).'));
+  const sel=document.createElement('select');
+  sel.innerHTML='<option value="export">Export</option><option value="publish">Publish</option>';
+  sel.value=el.dataset.action==='publish'?'publish':'export';
+  sel.onchange=()=>{el.dataset.action=sel.value; if(sel.value==='publish')runPublish(el)};
+  const lab=document.createElement('p'); lab.className='mut'; lab.append('Action ', sel); nodes.push(lab);
+  (data.channels||[]).forEach(c=>{
+    const copy=c.copy||{}, video=c.video||{}, caps=c.captions||{};
+    const extra=c.selection&&c.selection!=='requested'?' · '+c.selection:'';
+    nodes.push(detailP((c.label||c.channel||'')+' · '+(c.variant_id||'')+extra+' · '+(video.status||'')));
+    if(copy.title)nodes.push(detailP(copy.title));
+    if(copy.caption)nodes.push(detailP(copy.caption));
+    if(copy.source)nodes.push(detailP(copy.source));
+    if(video.note)nodes.push(detailP(video.note));
+    const links=document.createElement('p');
+    if(caps.srt_url){links.append(detailLink(caps.srt_url,'SRT'), ' ')}
+    if(caps.vtt_url){links.append(detailLink(caps.vtt_url,'VTT'), ' ')}
+    if(c.post_url)links.append(detailLink(c.post_url,'Post'));
+    if(links.childNodes.length)nodes.push(links);
+  });
+  if(data.disclaimer)nodes.push(detailP(data.disclaimer));
+  const dash=el._dash;
+  if(dash){
+    if(!dash.metrics_available)nodes.push(detailP(dash.metrics_note||'No campaign metrics yet.'));
+    else{
+      const o=dash.overall||{};
+      nodes.push(detailP('Thompson '+(o.thompson_winner||'–')+' · actual '+(o.top_actual||'–')));
+      (dash.channels||[]).forEach(c=>{
+        const w=c.winner_actual||{};
+        nodes.push(detailP((c.label||c.channel)+' actual '+(w.id||'–')+' · predicted '+(c.predicted_top||'–')+(c.thompson_winner?' · thompson '+c.thompson_winner:'')));
+      });
+    }
+    if(dash.simulated&&dash.disclaimer)nodes.push(detailP(dash.disclaimer));
+  }
+  const pub=el._publish;
+  if(pub){
+    if(pub.disclaimer)nodes.push(detailP(pub.disclaimer));
+    const rows=pub.channels||pub.entries||[];
+    (Array.isArray(rows)?rows:[]).forEach(e=>nodes.push(detailP((e.label||e.channel||'')+' · '+(e.status||''))));
+  }
+  setDetail(nodes);
+}
+async function runPublish(el){
+  const exp=el._export; if(!exp||!RUN)return;
+  $('#jobmsg').textContent='Publishing…';
+  try{
+    const r=await fetch('/api/distribution/publish',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({run:RUN, export_id:exp.export_id})});
+    let status=await r.json().catch(()=>({}));
+    if(!r.ok){setTag(el,'failed'); $('#jobmsg').textContent=status.error||'Publish failed'; return}
+    for(let i=0;i<40;i++){
+      const rows=status.channels||status.entries||[];
+      if(!rows.some(e=>e.state==='uploading'||e.status==='uploading'))break;
+      await new Promise(res=>setTimeout(res,800));
+      const g=await fetch('/api/distribution/publish/'+encodeURIComponent(RUN));
+      if(!g.ok)break;
+      status=await g.json();
+    }
+    el._publish=status;
+    setTag(el, publishStatusTag(status.channels||status.entries||[]));
+    $('#jobmsg').textContent='';
+    renderDistDetail(el);
+  }catch(e){setTag(el,'failed'); $('#jobmsg').textContent='Publish failed'}
+}
+async function runExport(el, variant){
+  $('#jobmsg').textContent='Exporting…';
+  const body={run:RUN, channels:DIST_CHANNELS, mode:'auto'};
+  if(variant)body.variant_id=variant;
+  try{
+    const r=await fetch('/api/distribution/export',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});
+    const data=await r.json().catch(()=>({}));
+    if(!r.ok){setTag(el,'failed'); $('#jobmsg').textContent=data.error||'Export failed'; setDetail([detailP(data.error||'Export failed')]); return}
+    el._export=data;
+    const src=data.copy_source||'template';
+    setTag(el, src);
+    const zip=el.querySelector('a.zip');
+    if(zip&&data.bundle_url){zip.hidden=false; zip.href=data.bundle_url}
+    const chs=data.channels||[];
+    const mine=chs.find(c=>c.variant_id===variant&&c.video&&c.video.url)||chs.find(c=>c.video&&c.video.url);
+    const v=el.querySelector('video');
+    if(mine&&mine.video&&mine.video.url&&v){v.src=mine.video.url; v.play().catch(()=>{})}
+    try{
+      const dr=await fetch('/api/distribution/dashboard/'+encodeURIComponent(RUN));
+      if(dr.ok)el._dash=await dr.json();
+    }catch(e){}
+    renderDistDetail(el);
+    if(el.dataset.action==='publish')await runPublish(el);
+    else $('#jobmsg').textContent='';
+  }catch(e){setTag(el,'failed'); $('#jobmsg').textContent='Export failed'}
+}
+function spawnPublish(parent, media, variant){
+  const id='pub_'+(seq++);
+  const p=pos(parent);
+  const head=`<span class="k">Publish</span><span class="tag" data-srctag>export</span><a class="zip" hidden href="#" title="Download bundle">⬇</a>`;
+  const body=`<div class="thumb" data-v="${media.video}"><video src="${media.video}" poster="${media.poster||''}" muted loop playsinline autoplay></video></div>`;
+  const el=blk(world,id,'clip',p.x,p.y+parent.offsetHeight+28,200,head,body);
+  el.dataset.variant=variant||'';
+  el.dataset.kind='publish';
+  el.dataset.action='export';
+  LINKS.push([parent.id,id,'#c084fc',2,.75]);
+  wires();
+  return el;
+}
 function dropChip(chip, parent){
   const media=mediaOf(parent); if(!media||!media.video)return;
   const prev=(parent.dataset.chips||'').split(',').filter(Boolean);
   const variant=parent.dataset.variant||'';
+  if(chip==='publish'){
+    const el=spawnPublish(parent, media, variant);
+    runExport(el, variant);
+    return;
+  }
   if(chip==='approaches'){
     const specs=[['Fast punchy','len15','zoom','captions'],['Calm story','len45'],['Big captions','len30','captions','hook']];
     specs.forEach((spec,i)=>{

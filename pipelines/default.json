@@ -70,7 +70,7 @@
       "type": "publish",
       "x": 400,
       "y": 712,
-      "config": { "action": "local" }
+      "config": { "action": "export", "copy": "auto", "channels": ["tiktok", "shorts", "reels", "x", "linkedin"] }
     }
   ],
   "edges": [
