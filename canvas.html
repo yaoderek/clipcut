@@ -182,16 +182,40 @@ function spawnNode(parent, chips, label, video, poster, variant){
   wires();
   return el;
 }
+function chipObject(name){
+  if(name==='captions')return {type:'captions', params:{style:'bold'}};
+  if(name==='zoom')return {type:'zoom', params:{punch_ins:true, intensity:1}};
+  if(name==='len15')return {type:'length', params:{seconds:15}};
+  if(name==='len30')return {type:'length', params:{seconds:30}};
+  if(name==='len45')return {type:'length', params:{seconds:45}};
+  if(name==='hook')return {type:'hook', params:{}};
+  if(name==='crop')return {type:'crop', params:{aspect:'9:16'}};
+  if(name==='music')return {type:'music', params:{track:'upbeat'}};
+  return null;
+}
+function addDetail(text){
+  if(!text)return;
+  const b=$('#detailbody'); if(!b)return;
+  if([...b.children].some(n=>n.textContent===text))return;
+  const p=document.createElement('p'); p.className='mut'; p.textContent=text; b.appendChild(p);
+}
 function applyBranch(el, body){
   if(!body)return;
   const v=el.querySelector('video'); if(!v)return;
-  const poster=body.poster||body.preview_poster||body.thumbnail;
-  const preview=body.preview_video||body.preview_url||body.preview;
-  const full=body.video||body.output||body.mp4;
+  const st=String(body.status||'');
+  const poster=body.thumb_url||body.poster||body.thumbnail;
   if(poster)v.poster=poster;
-  const src=full||preview;
+  let src=null;
+  if(st==='done')src=body.video_url||null;
+  else if(st==='preview')src=body.preview_url||body.preview_video||null;
   if(src && src!==v.getAttribute('src')){v.src=src; v.play().catch(()=>{})}
-  if(body.source)setTag(el, body.source==='llm'?'Grok':(body.source==='model'?'calibrated':(body.status==='done'?body.source:'simulated')));
+  if(st==='preview')el.dataset.sawPreview='1';
+  if(st==='done')el.dataset.sawFull='1';
+  const srcTag=(body.score&&body.score.source)||body.source;
+  if(srcTag==='heuristic'||srcTag==='simulated')setTag(el, srcTag);
+  if(body.music_placeholder)addDetail(body.music_label||'ffmpeg-generated sine bed (placeholder, not a licensed track)');
+  if(body.score&&body.score.disclaimer)addDetail(body.score.disclaimer);
+  if(body.timing)el._timing=body.timing;
 }
 function noteDetail(lines){const b=$('#detailbody'); if(!b)return; b.replaceChildren(); (lines||[]).forEach(line=>{const p=document.createElement('p'); p.className='mut'; p.textContent=line; b.appendChild(p)})}
 async function quickScore(el, run){
@@ -209,14 +233,17 @@ async function quickScore(el, run){
   }catch(e){setTag(el,'simulated')}
 }
 async function pollLive(el, id){
-  for(let i=0;i<180;i++){
-    await new Promise(r=>setTimeout(r,800));
+  for(let i=0;i<160;i++){
+    if(i)await new Promise(r=>setTimeout(r,400));
     let body=null;
-    try{body=await j('/api/branch/'+encodeURIComponent(id))}catch(e){return}
+    try{body=await j('/api/branch/'+encodeURIComponent(id))}catch(e){if(i<4)continue; throw e}
     applyBranch(el, body);
-    const st=String(body.status||body.phase||'');
-    if(/^(done|error|complete|ready|failed)$/i.test(st) || (!st && body.video)){ if(body.run)quickScore(el, body.run); return body }
+    el.dataset.branchStatus=body.status||'';
+    if(body.status==='preview' && !el.dataset.tPreview)el.dataset.tPreview=String(Date.now());
+    if(body.status==='done'){el.dataset.tDone=String(Date.now()); return body}
+    if(body.status==='error')return body;
   }
+  throw new Error('branch timed out');
 }
 async function pollStub(el, batch){
   for(let i=0;i<180;i++){
@@ -224,38 +251,68 @@ async function pollStub(el, batch){
     let st; try{st=await j('/api/branch/status?batch='+encodeURIComponent(batch))}catch(e){return}
     const item=(st.items||[])[0]; if(!item)continue;
     if(item.status==='done' && item.video){
-      applyBranch(el,{video:item.video, poster:'/runs/'+item.run+'/.v01_poster.jpg', status:'done'});
+      applyBranch(el,{video_url:item.video, thumb_url:'/runs/'+item.run+'/.v01_poster.jpg', status:'done', source:'simulated'});
       quickScore(el, item.run);
       return item;
     }
     if(item.status==='error'){$('#jobmsg').textContent=item.error||'render failed'; return item}
   }
 }
+let branchInflight=0;
+function settleId(el, id){if(el._settled)return; el._settled=true; if(el._resolveId)el._resolveId(id||'')}
+async function postJson(url, payload){
+  const r=await fetch(url,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)});
+  const body=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(body.detail||body.error||'branch failed');
+  return body;
+}
+async function fallbackQueue(el, chips){
+  const q=await j('/api/branch/queue',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({
+    sample:'talking_head_niosh.mp4',
+    branches:[{key:'b1', name:el.querySelector('.k').textContent, settings:chipSettings(chips)}]
+  })});
+  await pollStub(el, q.batch);
+}
 async function callBranch(el, chips, variant, video){
-  $('#jobmsg').textContent='Rendering preview…';
-  const payload={run:RUN, variant_id:variant||null, parent:el.dataset.parent||null, chips, video, settings:chipSettings(chips)};
+  const parentEl=el.dataset.parent?document.getElementById(el.dataset.parent):null;
+  if(parentEl&&parentEl._idReady)await Promise.race([parentEl._idReady, new Promise(r=>setTimeout(r,4000))]);
+  const branchParent=parentEl&&parentEl.dataset.branchId;
+  const names=(chips||[]).filter(c=>c&&c!=='approaches');
+  const prevNames=parentEl?(parentEl.dataset.chips||'').split(',').filter(Boolean):[];
+  const tail=branchParent?names.slice(prevNames.length):names;
+  const todo=branchParent?(tail.length?tail:names.slice(-1)):names;
+  branchInflight++; $('#jobmsg').textContent='Rendering preview…';
+  el.dataset.t0=String(Date.now());
   try{
-    const r=await fetch('/api/branch',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)});
-    if(r.ok){
-      const body=await r.json();
-      applyBranch(el, body);
-      const id=body.id||body.branch_id||body.branch;
-      const st=String(body.status||body.phase||'');
-      if(id && !/^(done|error|complete|ready|failed)$/i.test(st))await pollLive(el, id);
-      else if(body.run)quickScore(el, body.run);
-      $('#jobmsg').textContent='';
-      return;
+    let body;
+    if(branchParent){
+      let parent=branchParent;
+      for(const name of todo){
+        const spec=chipObject(name); if(!spec)continue;
+        body=await postJson('/api/branch',{run:RUN, parent_variant_id:parent, chip:spec, video, variant_id:variant||null});
+        parent=body.branch_id||body.id;
+      }
+    }else{
+      body=await postJson('/api/branch',{run:RUN, variant_id:variant||null, parent:el.dataset.parent||null, chips:names, video, settings:chipSettings(names)});
     }
-  }catch(e){}
-  // Until POST /api/branch lands, queue one real cutter render and keep the preview playing.
-  try{
-    const q=await j('/api/branch/queue',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({
-      sample:'talking_head_niosh.mp4',
-      branches:[{key:'b1', name:el.querySelector('.k').textContent, settings:chipSettings(chips)}]
-    })});
-    const done=await pollStub(el, q.batch);
-    if(done && done.status==='done')$('#jobmsg').textContent='';
-  }catch(e){$('#jobmsg').textContent='Preview stays on this clip';}
+    const id=body&&(body.id||body.branch_id);
+    if(!id)throw new Error('no branch id');
+    el.dataset.branchId=id; settleId(el, id);
+    applyBranch(el, body);
+    const final=await pollLive(el, id);
+    if(!final||final.status==='error')throw new Error((final&&final.error)||'branch error');
+  }catch(e){
+    settleId(el, el.dataset.branchId||'');
+    if(el.dataset.sawPreview)addDetail(e.message||'Full render failed. Preview stays.');
+    else{try{await fallbackQueue(el, names)}catch(err){$('#jobmsg').textContent='Preview stays on this clip'}}
+  }finally{
+    branchInflight=Math.max(0, branchInflight-1);
+    if(!branchInflight)$('#jobmsg').textContent='';
+  }
+}
+function startBranch(el, chips, variant, video){
+  el._idReady=new Promise(res=>{el._resolveId=res});
+  callBranch(el, chips, variant, video);
 }
 function detailP(text){const el=document.createElement('p'); el.className='mut'; el.textContent=text; return el}
 function detailLink(href, label){const a=document.createElement('a'); a.href=href; a.textContent=label; a.target='_blank'; return a}
@@ -386,14 +443,14 @@ function dropChip(chip, parent){
       const el=spawnNode(parent, chips, name, media.video, media.poster, variant);
       el.style.left=(pos(parent).x+i*215)+'px';
       el.dataset.parent=parent.id;
-      callBranch(el, chips, variant, media.video);
+      startBranch(el, chips, variant, media.video);
     });
     wires(); return;
   }
   const chips=prev.concat([chip]);
   const el=spawnNode(parent, chips, CHIP_NAME[chip]||chip, media.video, media.poster, variant);
   el.dataset.parent=parent.id;
-  callBranch(el, chips, variant, media.video);
+  startBranch(el, chips, variant, media.video);
 }
 const ghost=$('#ghost');
 document.querySelectorAll('#chips [data-chip]').forEach(ch=>{
