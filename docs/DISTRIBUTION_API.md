@@ -176,3 +176,55 @@ No other platform uploads; those stay `exported` / `scheduled (demo)`. Credentia
 
 `{"run", "updated_at", "youtube_configured", "disclaimer", "entries": {channel: latest entry}, "channels": [latest entries in channel order], "history": [last 100 entries]}`.
 `entries` is `{}` and `channels` `[]` before the first publish.
+
+## `GET /api/distribution/dashboard/{run}` (campaign dashboard contract)
+
+One call for the canvas results panel. Wraps `clipcut.persona_api.compare_run` in Python (same data as
+`GET /api/persona/compare/<run>`), and joins the latest export and `publish.json`. It has **no store of its own** and
+never writes metrics: upload observed numbers with `POST /api/persona/metrics` (channel ids as above).
+
+```json
+{
+  "run": "v2_niosh_multi",
+  "metrics_available": true,
+  "metrics_note": null,
+  "simulated": true,
+  "simulated_reason": "...",
+  "disclaimer": "<compare's disclaimer, verbatim — show it whenever simulated is true>",
+  "outcome": {"watch_weight": 0.6, "share_weight": 0.4, "note": "..."},
+  "overall": {"thompson_winner": "v07", "thompson_confident": false, "top_actual": "v07",
+              "spearman": 0.2, "spearman_calibrated": null, "n": 16, "n_paired": 16},
+  "predicted_vs_actual": [{"id": "v01", "predicted": 0.71, "predicted_calibrated": null, "actual": 0.48,
+                           "views": 1200, "avg_watch_pct": 54.3, "shares": 31, "likes": null, "channel": "tiktok"}],
+  "by_channel_source": "compare",
+  "by_channel_note": "...",
+  "channels": [
+    {"channel": "tiktok", "label": "TikTok", "variants": ["v01", "v05"], "n": 2,
+     "winner_actual": {"id": "v05", "actual": 0.55, "predicted": 0.66, "views": 4000},
+     "predicted_top": "v01", "agree": false,
+     "thompson_winner": "v05", "thompson_confident": false, "spearman": null,
+     "compare": {"...": "compare's by_channel block, passed through (only when by_channel_source is compare)"},
+     "export": {"export_id": "ex_...", "variant_id": "v01", "selection": "channel_target", "title": null,
+                "caption": "...", "hashtags": ["#Research"], "copy_source": "template",
+                "video_url": "/runs/...mp4", "video_status": "copied", "ready": true},
+     "publish": {"status": "scheduled (demo)", "state": "scheduled", "demo": true, "url": null, "video_id": null,
+                 "scheduled_for": "2026-10-20T17:00:00+00:00", "error": null, "at": "...", "variant_id": "v01"}}
+  ],
+  "export_id": "ex_...",
+  "publish_updated_at": "...",
+  "youtube_configured": false,
+  "publish_disclaimer": "..."
+}
+```
+
+- `by_channel_source: "compare"`: compare returned `by_channel`; per-channel rows and `thompson_winner` come from it
+  (per-channel Thompson is derek-personas' logic, not recomputed here). `"grouped"`: compare had no `by_channel`, so
+  variant rows are grouped on their `channel`; `thompson_winner` is `null` per channel and the winner is the top `actual`.
+- `winner_actual` is the highest `actual` in the channel; `predicted_top` the highest hand-set `predicted`; `agree` whether they match.
+- Metric rows with no channel go under `"unassigned"` (listed last). Channels that only have an export or publish entry
+  appear with `n: 0`. Order: tiktok, shorts, reels, x, linkedin, then others.
+- No `metrics.json`: `metrics_available: false`, `overall: null`, `predicted_vs_actual: []`, `metrics_note` says how to upload;
+  export/publish joins still render. 404 only for an unknown run.
+- `simulated` / `disclaimer` are compare's, passed through. The UI must show the disclaimer when `simulated` is true.
+
+Follow-up (not done here): per-channel Thompson when compare lacks `by_channel` is intentionally not forked from `clipcut/ab.py`.

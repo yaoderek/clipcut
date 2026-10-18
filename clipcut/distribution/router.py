@@ -84,3 +84,12 @@ def distribution_publish_status(run: str, request: Request):
         return publish_status(run, root=_root(request))
     except DistributionError as exc:
         return _err(exc)
+
+
+@router.get("/dashboard/{run}")
+def distribution_dashboard(run: str, request: Request):
+    from .dashboard import dashboard
+    try:
+        return dashboard(run, root=_root(request))
+    except DistributionError as exc:
+        return _err(exc)
