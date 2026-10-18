@@ -29,7 +29,7 @@ PERSONA_ORDER = ("fast_swiper", "casual_browser", "completionist", "sharer_engag
 PERSONAS = {
     "fast_swiper": dict(
         label="Fast swiper",
-        description="Younger swipe-feed viewer (TikTok / Stories, roughly 16-24). Leaves in the first seconds unless the hook is immediate and the cut rate stays high.",
+        description="Hand-written sketch of a younger swipe-feed viewer (TikTok / Stories). Leaves in the first seconds unless the hook is immediate and the cut rate stays high. Not a measured age segment.",
         weight=0.30,
         base=0.40,
         interests=("trend", "hack", "secret", "wait", "pov", "challenge", "storytime"),
@@ -43,7 +43,7 @@ PERSONAS = {
     ),
     "casual_browser": dict(
         label="Casual browser",
-        description="Lean-back Reels / Shorts viewer (roughly 18-34), often watching muted. Captions and a mid-length clip matter more than a frantic cut rate.",
+        description="Hand-written sketch of a lean-back Reels / Shorts viewer, often watching muted. Captions and a mid-length clip matter more than a frantic cut rate. Not a measured age segment.",
         weight=0.30,
         base=0.46,
         interests=("story", "day", "life", "relatable", "family", "mom", "work", "you"),
@@ -57,7 +57,7 @@ PERSONAS = {
     ),
     "completionist": dict(
         label="Completionist",
-        description="Will finish a longer informative clip (LinkedIn / YouTube, roughly 25-44). Tolerates a slower open and longer shots; drops off when the clip runs long.",
+        description="Hand-written sketch of someone who will finish a longer informative clip (LinkedIn / YouTube). Tolerates a slower open and longer shots; drops off when the clip runs long. Not a measured age segment.",
         weight=0.30,
         base=0.52,
         interests=("research", "learn", "career", "study", "health", "data", "because", "work"),
@@ -71,7 +71,7 @@ PERSONAS = {
     ),
     "sharer_engager": dict(
         label="Sharer",
-        description="Forwards a claim-shaped, loopable clip (X / Facebook, roughly 18-40). The hook line and a loop weigh more than raw pacing.",
+        description="Hand-written sketch of someone who forwards a claim-shaped, loopable clip (X / Facebook). The hook line and a loop weigh more than raw pacing. Not a measured age segment.",
         weight=0.10,
         base=0.48,
         interests=("truth", "never", "always", "share", "wrong", "stop", "actually", "secret"),
