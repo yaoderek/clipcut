@@ -1,0 +1,23 @@
+1
+00:00:00,200 --> 00:00:03,200
+Safety starts with a clear question.
+
+2
+00:00:03,500 --> 00:00:06,800
+A fast cut keeps the first line tight.
+
+3
+00:00:07,100 --> 00:00:10,600
+A calm version lets the story breathe.
+
+4
+00:00:10,900 --> 00:00:14,800
+Big captions carry the point on mute.
+
+5
+00:00:15,100 --> 00:00:18,400
+The last line should land and then loop.
+
+6
+00:00:18,700 --> 00:00:21,500
+That is the whole short.

@@ -1,0 +1,87 @@
+{
+  "name": "Default ClipCut pipeline",
+  "version": 1,
+  "nodes": [
+    {
+      "id": "n_ingest",
+      "type": "ingest",
+      "x": 36,
+      "y": 24,
+      "config": { "source": "run", "run": "v2_niosh_multi", "sample": "", "n": 12, "fileName": "" }
+    },
+    {
+      "id": "n_transcribe",
+      "type": "transcribe",
+      "x": 36,
+      "y": 196,
+      "config": { "engine": "auto" }
+    },
+    {
+      "id": "n_hook",
+      "type": "hook_pick",
+      "x": 36,
+      "y": 368,
+      "config": { "n": 5, "minLen": 15, "maxLen": 45 }
+    },
+    {
+      "id": "n_clip",
+      "type": "clip",
+      "x": 36,
+      "y": 540,
+      "config": { "lengths": [15, 30, 45], "pacing": "any", "n": 12 }
+    },
+    {
+      "id": "n_sub",
+      "type": "subtitle",
+      "x": 36,
+      "y": 712,
+      "config": { "style": "any", "hookTitle": "any" }
+    },
+    {
+      "id": "n_crop",
+      "type": "crop",
+      "x": 400,
+      "y": 24,
+      "config": { "aspects": ["9:16", "1:1", "4:5", "16:9"] }
+    },
+    {
+      "id": "n_persona",
+      "type": "persona_score",
+      "x": 400,
+      "y": 196,
+      "config": { "mode": "auto" }
+    },
+    {
+      "id": "n_channel",
+      "type": "channel_test",
+      "x": 400,
+      "y": 368,
+      "config": { "channels": ["tiktok", "reels", "shorts", "x", "linkedin"] }
+    },
+    {
+      "id": "n_win",
+      "type": "pick_winner",
+      "x": 400,
+      "y": 540,
+      "config": { "prefer": "persona", "channel": "reels" }
+    },
+    {
+      "id": "n_pub",
+      "type": "publish",
+      "x": 400,
+      "y": 712,
+      "config": { "action": "local" }
+    }
+  ],
+  "edges": [
+    { "id": "e1", "from": "n_ingest", "to": "n_transcribe" },
+    { "id": "e2", "from": "n_transcribe", "to": "n_hook" },
+    { "id": "e3", "from": "n_hook", "to": "n_clip" },
+    { "id": "e4", "from": "n_clip", "to": "n_sub" },
+    { "id": "e5", "from": "n_sub", "to": "n_crop" },
+    { "id": "e6", "from": "n_crop", "to": "n_persona" },
+    { "id": "e7", "from": "n_persona", "to": "n_channel" },
+    { "id": "e8", "from": "n_channel", "to": "n_win" },
+    { "id": "e9", "from": "n_win", "to": "n_pub" }
+  ]
+}

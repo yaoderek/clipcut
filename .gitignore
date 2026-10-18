@@ -11,3 +11,5 @@ runs/**
 .env
 .secrets
 /tmp
+pipelines/*
+!pipelines/default.json
