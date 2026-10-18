@@ -12,6 +12,7 @@ SRT = {"talking_head_niosh.mp4": ("niosh_liz.en.srt", 28.0), "demo_talk.mp4": ("
 TIE = 0.005
 app = FastAPI(title="ClipCut"); app.mount("/runs", StaticFiles(directory=str(RUNS)), name="runs")
 app.mount("/static", StaticFiles(directory=str(STATIC)), name="static")
+from clipcut.distribution.router import router as distribution_router; app.include_router(distribution_router)  # docs/DISTRIBUTION_API.md
 JOBS = {}  # run -> {proc, n, log}
 
 def pick_winner(res):

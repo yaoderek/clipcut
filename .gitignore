@@ -13,3 +13,5 @@ runs/**
 /tmp
 pipelines/*
 !pipelines/default.json
+runs/*/distribution/
+runs/*/publish.json
