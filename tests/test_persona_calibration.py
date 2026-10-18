@@ -360,6 +360,47 @@ def test_compare_reports_spearman_and_the_thompson_winner(tmp_path):
     assert all(row["predicted_calibrated"] is None for row in sim["variants"])
     assert "simulated" in sim["disclaimer"]
     assert sim["thompson_winner"] == analyze(MOCK, seed=0)["winner"]
+    assert sim["by_channel"] == {}
+
+
+def test_compare_by_channel_thompson_is_the_subset(tmp_path):
+    _directory, metrics = _plant(tmp_path, n=4)
+    metrics["v01"]["channel"] = "tiktok"
+    metrics["v01"]["avg_watch_pct"] = 30
+    metrics["v01"]["shares"] = 4
+    metrics["v02"]["channel"] = "TikTok"
+    metrics["v02"]["avg_watch_pct"] = 55
+    metrics["v02"]["shares"] = 12
+    metrics["v03"]["channel"] = "x"
+    metrics["v03"]["avg_watch_pct"] = 92
+    metrics["v03"]["shares"] = 80
+    metrics["v04"]["channel"] = "x"
+    metrics["v04"]["avg_watch_pct"] = 22
+    metrics["v04"]["shares"] = 1
+    metrics["v04"].pop("channel")
+    store_metrics(run="plant", payload={"metrics": metrics}, runs_root=tmp_path)
+    report = compare_run("plant", runs_root=tmp_path)
+    assert set(report) >= {"run", "simulated", "variants", "thompson_winner", "spearman", "calibration", "by_channel"}
+    assert set(report["by_channel"]) == {"tiktok", "x"}
+    assert report["by_channel"]["tiktok"]["n"] == 2
+    assert [row["id"] for row in report["by_channel"]["tiktok"]["variants"]] == ["v01", "v02"]
+    assert "predicted" in report["by_channel"]["tiktok"]["variants"][0]
+    assert "actual" in report["by_channel"]["x"]["variants"][0]
+    assert all(row["id"] != "v04" for block in report["by_channel"].values() for row in block["variants"])
+
+    def rows_of(block):
+        return {row["id"]: {"views": row["views"], "avg_watch_pct": row["avg_watch_pct"], "shares": row["shares"]} for row in block["variants"]}
+
+    tiktok = report["by_channel"]["tiktok"]
+    x_block = report["by_channel"]["x"]
+    assert tiktok["ab_seed"] == 0 and tiktok["ab_draws"] == 20000
+    assert tiktok["thompson_winner"] == analyze(rows_of(tiktok), seed=0)["winner"]
+    assert x_block["thompson_winner"] == analyze(rows_of(x_block), seed=0)["winner"]
+    assert [row["variant_id"] for row in tiktok["thompson"]] == [row["variant_id"] for row in analyze(rows_of(tiktok), seed=0)["table"]]
+    full = {row["id"]: {"views": row["views"], "avg_watch_pct": row["avg_watch_pct"], "shares": row["shares"]} for row in report["variants"]}
+    assert report["thompson_winner"] == analyze(full, seed=0)["winner"]
+    assert tiktok["thompson_winner"] in {"v01", "v02"}
+    assert report["thompson_winner"] != tiktok["thompson_winner"]
 
 
 def test_http_contracts(tmp_path, monkeypatch):

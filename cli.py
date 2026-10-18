@@ -74,6 +74,13 @@ c = s.add_parser("ab"); c.add_argument("metrics"); c.set_defaults(f=cmd_ab)
 c = s.add_parser("train-personas"); c.add_argument("-k", type=int, default=5); c.set_defaults(f=cmd_train)
 c = s.add_parser("demo"); c.add_argument("video"); c.add_argument("--out", default="runs/demo"); c.add_argument("-n", type=int, default=8)
 c.add_argument("--whisper", default="tiny"); c.set_defaults(f=cmd_demo)
+
+def cmd_demo_setup(_a):
+    from clipcut.demo_setup import main
+    raise SystemExit(main())
+
+c = s.add_parser("demo-setup", help="download missing demo videos and write simulated metrics")
+c.set_defaults(f=cmd_demo_setup)
 c = s.add_parser("cut2", help="v2 recipe cutter -> 10+ variants -> scorer -> results.json"); c.add_argument("video"); c.add_argument("--out", default="runs/v2_latest")
 c.add_argument("-n", type=int, default=12); c.add_argument("--seed", type=int, default=0); c.add_argument("--whisper", default="base")
 c.add_argument("--srt", default=None); c.add_argument("--srt-offset", type=float, default=0.0); c.add_argument("--no-score", action="store_true"); c.set_defaults(f=cmd_cut2)

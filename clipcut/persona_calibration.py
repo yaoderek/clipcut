@@ -233,6 +233,7 @@ def _compare(run, *, runs_root):
         "ab_draws": 20000,
         "thompson": [_plain_row(row) for row in report["table"]],
         "variants": variants,
+        "by_channel": _by_channel(variants, ab_rows),
         "outcome": _outcome_note(),
     }
     if calibrated is not None:
@@ -246,6 +247,38 @@ def _compare(run, *, runs_root):
         }
     else:
         out["calibration"] = None
+    return out
+
+
+def _by_channel(variants, ab_rows):
+    """Per-channel predicted/actual plus a Thompson winner on that channel's rows only.
+
+    Keys are the stored ``channel`` lowercased (``tiktok``, ``shorts``, ``reels``, ``x``,
+    ``linkedin``, …). Rows with no channel stay on the top-level ``variants`` list only.
+    ``analyze`` uses seed 0, same as the run-level Thompson winner.
+    """
+    groups = {}
+    for row in variants:
+        channel = row.get("channel")
+        if not isinstance(channel, str) or not channel.strip():
+            continue
+        groups.setdefault(channel.strip().lower(), []).append(row)
+    out = {}
+    for key in sorted(groups):
+        rows = sorted(groups[key], key=lambda item: item["id"])
+        subset = {item["id"]: ab_rows[item["id"]] for item in rows if item["id"] in ab_rows}
+        if not subset:
+            continue
+        report = analyze(subset, seed=0)
+        out[key] = {
+            "n": len(rows),
+            "thompson_winner": report["winner"],
+            "thompson_confident": bool(report["confident"]),
+            "ab_seed": 0,
+            "ab_draws": 20000,
+            "variants": rows,
+            "thompson": [_plain_row(item) for item in report["table"]],
+        }
     return out
 
 

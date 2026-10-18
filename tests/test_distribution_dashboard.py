@@ -59,16 +59,22 @@ def test_grouped_by_channel_from_compare_rows(run):
     cmp = persona_api.compare_run("r1", runs_root=run)
     assert out["metrics_available"] and out["simulated"] is True and out["disclaimer"] == cmp["disclaimer"]
     assert out["overall"]["thompson_winner"] == cmp["thompson_winner"]
-    assert out["by_channel_source"] == "grouped"
+    assert out["by_channel_source"] == "compare"
+    assert set(cmp["by_channel"]) == {"tiktok", "shorts"}
+    tik_rows = cmp["by_channel"]["tiktok"]["variants"]
+    assert [row["id"] for row in tik_rows] == ["v01", "v02"]
+    assert set(tik_rows[0]) >= {"id", "predicted", "actual", "views", "avg_watch_pct", "shares", "channel"}
+    assert cmp["by_channel"]["tiktok"]["thompson_winner"] in {"v01", "v02"}
+    assert cmp["by_channel"]["shorts"]["thompson_winner"] == "v03"
     ch = {c["channel"]: c for c in out["channels"]}
     assert ch["tiktok"]["variants"] == ["v01", "v02"] and ch["tiktok"]["winner_actual"]["id"] == "v02"
-    assert ch["tiktok"]["thompson_winner"] is None
-    assert ch["shorts"]["winner_actual"]["id"] == "v03"
-    assert ch["unassigned"]["variants"] == ["v04"]  # metric row without channel
-    assert list(ch)[-1] == "unassigned"
+    assert ch["tiktok"]["thompson_winner"] == cmp["by_channel"]["tiktok"]["thompson_winner"]
+    assert ch["shorts"]["winner_actual"]["id"] == "v03" and ch["shorts"]["thompson_winner"] == "v03"
+    assert all(row["id"] != "v04" for block in cmp["by_channel"].values() for row in block["variants"])
     assert ch["reels"]["n"] == 0 and ch["reels"]["export"] is not None
     pva = {r["id"]: r for r in out["predicted_vs_actual"]}
     assert pva["v01"]["predicted"] is not None and pva["v01"]["channel"] == "tiktok"
+    assert pva["v04"]["channel"] == "unassigned"
 
 
 def test_uses_compare_by_channel_when_present(run, monkeypatch):

@@ -7,6 +7,8 @@ runs/**
 !runs/*/
 !runs/**/*.json
 *.mp4
+*.part
+samples/.cache/
 *.log
 .env
 .secrets

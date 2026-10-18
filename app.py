@@ -12,6 +12,7 @@ SRT = {"talking_head_niosh.mp4": ("niosh_liz.en.srt", 28.0), "demo_talk.mp4": ("
 TIE = 0.005
 app = FastAPI(title="ClipCut"); app.mount("/runs", StaticFiles(directory=str(RUNS)), name="runs")
 app.mount("/static", StaticFiles(directory=str(STATIC)), name="static")
+app.mount("/samples", StaticFiles(directory=str(SAMPLES)), name="samples")
 from clipcut.distribution.router import router as distribution_router; app.include_router(distribution_router)  # docs/DISTRIBUTION_API.md
 JOBS = {}  # run -> {proc, n, log}
 
@@ -456,6 +457,43 @@ def api_persona_compare(run: str):
         return compare_run(run, runs_root=RUNS)
     except PersonaScoreError as exc:
         return JSONResponse({"error": str(exc)}, status_code=exc.status)
+
+def _demo_auto_fetch_enabled():
+    """CLIPCUT_AUTO_FETCH_DEMO=1 forces a background fetch. =0 skips it.
+
+    Unset: on only for a local process (not Fly) when the sample or preload
+    variant mp4s are missing. Never runs under pytest. Does not block startup.
+    """
+    import os, sys
+    flag = os.environ.get("CLIPCUT_AUTO_FETCH_DEMO")
+    if flag is not None and flag.strip() != "":
+        return flag.strip().lower() in {"1", "true", "yes", "on"}
+    if os.environ.get("FLY_APP_NAME") or os.environ.get("FLY_MACHINE_ID"):
+        return False
+    if "pytest" in sys.modules:
+        return False
+    try:
+        from clipcut.demo_setup import media_missing
+        return media_missing(ROOT)
+    except Exception:
+        return False
+
+
+def _start_demo_auto_fetch():
+    if not _demo_auto_fetch_enabled():
+        return
+    def _run():
+        try:
+            from clipcut.demo_setup import setup
+            summary = setup(root=ROOT)
+            failed = len(summary.get("failed") or [])
+            print(f"[demo] auto-fetch done; downloaded {len(summary.get('downloaded') or [])}, skipped {failed}", flush=True)
+        except Exception as exc:
+            print(f"[demo] auto-fetch skipped: {exc}", flush=True)
+    threading.Thread(target=_run, name="clipcut-demo-fetch", daemon=True).start()
+
+
+_start_demo_auto_fetch()
 
 if __name__ == "__main__":  # container / `python app.py`: bind all interfaces, port from $PORT (default 8000)
     import os, uvicorn

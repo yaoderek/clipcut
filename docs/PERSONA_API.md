@@ -770,6 +770,28 @@ compare_run("v2_niosh_multi")
 | `thompson_confident` | True when that winner's `p_best` is at least 0.95. |
 | `thompson` | The `analyze` table, `p_best` descending. Floats rounded to 6 decimals. |
 | `variants` | Metric rows, sorted by id. |
+| `by_channel` | Object keyed by channel id. `{}` when every row lacks a channel. Rows with no `channel` are omitted here and stay on `variants`. |
+
+`by_channel` shape (what `GET /api/distribution/dashboard/{run}` reads):
+
+```json
+{"tiktok": {"variants": ["…same objects as top-level variants…"], "thompson_winner": "v07"}}
+```
+
+`thompson_winner` is a variant id, or `null` when that channel has no analyzable rows (those channels are omitted). Other fields on the block are optional.
+
+| Field | Meaning |
+| --- | --- |
+| `variants` | That channel's rows. Same objects as the top-level `variants` list (`id`, `predicted`, `actual`, `views`, `avg_watch_pct`, `shares`, `likes`, `channel`, `share_rate`, `watch_frac`, `predicted_calibrated`), sorted by id. |
+| `thompson_winner` | `clipcut.ab.analyze` winner on this channel's rows only (seed 0, 20,000 draws), or `null`. Not the run-level `thompson_winner` unless the subsets match. |
+| `n` | How many variants are in this block. |
+| `thompson_confident` | True when that channel winner's `p_best` is at least 0.95. |
+| `thompson` | That channel's `analyze` table, `p_best` descending. |
+| `ab_seed` / `ab_draws` | `0` and `20000`. |
+
+Channel ids are `CHANNEL_SPECS` names lowercased. For the five campaign channels that is exactly **`tiktok`**, **`shorts`**, **`reels`**, **`x`**, **`linkedin`** — the same strings `clipcut.distribution` and the canvas use. There is no `yt_shorts` or `ig_reels` id in this repo; `Shorts` / `Reels` lowercases to `shorts` / `reels` and is not renamed. Other `CHANNEL_SPECS` ids (`youtube`, `ig_feed`, `ig_stories`, `fb_reels`, `fb_feed`) are passed through lowercased if a metric row uses them. Demo metrics for `v2_niosh_multi` use only the five campaign ids: 9:16 variants are `tiktok` / `shorts` / `reels`, v13–v14 are `x`, v15–v16 are `linkedin`.
+
+The top-level `thompson_winner`, `variants`, `spearman`, and `calibration` fields are unchanged. `by_channel` is extra.
 
 Simulated disclaimer (exact):
 
