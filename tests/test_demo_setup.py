@@ -1,5 +1,7 @@
 """Demo fetch + simulated metrics. No network."""
 import json
+import threading
+import time
 import urllib.error
 from pathlib import Path
 
@@ -137,7 +139,7 @@ def test_sample_fallback_covers_extra_clips(tmp_path, monkeypatch):
 
     monkeypatch.setattr("clipcut.demo_setup._read_url", boom)
     monkeypatch.setattr("clipcut.demo_setup._fetch_trimmed", trimmed)
-    summary = setup(root=tmp_path, runs=(), origin="http://127.0.0.1:9", timeout=1)
+    summary = setup(root=tmp_path, runs=(), origin="http://127.0.0.1:9", timeout=1, render=False)
     assert calls == [
         "talking_head_niosh.mp4",
         "talking_head_kendra.mp4",
@@ -186,3 +188,152 @@ def test_setup_does_not_clone_or_hardlink_niosh(tmp_path, monkeypatch):
     assert not (tmp_path / "runs" / "demo_pd_kendra").exists()
     assert not (tmp_path / "runs" / "demo_pd_calvin").exists()
     assert list(primary.glob("*.mp4")) == [primary / "v01.mp4"]
+
+
+def _fake_proc():
+    class Proc:
+        returncode = 0
+
+        def poll(self):
+            return 0
+
+        def wait(self, timeout=None):
+            return 0
+
+        def kill(self):
+            self.returncode = -9
+
+    return Proc()
+
+
+def _write_rendered_run(dest, source):
+    dest.mkdir(parents=True, exist_ok=True)
+    variants = [
+        ("v01", "9:16", "TikTok"),
+        ("v02", "1:1", "X"),
+        ("v03", "4:5", "LinkedIn"),
+    ]
+    for vid, aspect, channel in variants:
+        (dest / f"{vid}.json").write_text(json.dumps({
+            "variant_id": vid, "aspect": aspect, "channel": channel,
+            "recipe": {"channel": channel, "aspect": aspect},
+        }))
+        (dest / f"{vid}.mp4").write_bytes(b"v" * 100_000)
+    (dest / "manifest.json").write_text(json.dumps({"source": source, "variants": []}))
+    (dest / "results.json").write_text(json.dumps({"winner": "v02", "results": []}))
+
+
+def test_render_skips_a_finished_run_and_publishes_it(tmp_path):
+    dest = tmp_path / "runs" / "demo_pd_calvin"
+    _write_rendered_run(dest, "samples/talking_head_nasa_calvin.mp4")
+    summary = {"present": [], "rendered": [], "failed": []}
+
+    def slot(*_args):
+        raise AssertionError("cutter should not start")
+
+    from clipcut.demo_setup import render_extra_runs
+    render_extra_runs(tmp_path, summary, start_cut=slot)
+    assert "demo_pd_calvin render" in summary["present"]
+    assert summary["rendered"] == []
+    assert (dest / ".rendered").is_file()
+    assert run_is_visible(dest) is True
+    stored = json.loads((dest / "metrics.json").read_text())
+    assert stored["_meta"]["demo"] is True and stored["v01"]["channel"] == "tiktok"
+    assert stored["v02"]["channel"] == "x" and stored["v03"]["channel"] == "linkedin"
+    # Kendra's sample is absent, so that one is recorded and not invented.
+    assert any(item.startswith("demo_pd_kendra") for item in summary["failed"])
+
+
+def test_render_cuts_then_seeds_real_manifests(tmp_path):
+    sample = tmp_path / "samples" / "talking_head_nasa_calvin.mp4"
+    sample.parent.mkdir()
+    sample.write_bytes(b"x" * 100_000)
+    (tmp_path / "samples" / "talking_head_kendra.mp4").write_bytes(b"x" * 100_000)
+    calls = []
+
+    def slot(run, cmd, n):
+        calls.append((run, n, cmd))
+        out = Path(cmd[cmd.index("--out") + 1])
+        _write_rendered_run(out, cmd[cmd.index("cut2") + 1])
+        return _fake_proc()
+
+    summary = {"present": [], "rendered": [], "failed": []}
+    from clipcut.demo_setup import render_extra_runs
+    render_extra_runs(tmp_path, summary, start_cut=slot, variants=8)
+    assert [item[0] for item in calls] == ["demo_pd_kendra", "demo_pd_calvin"]
+    assert all(item[1] == 8 and "-n" in item[2] and "cut2" in item[2] for item in calls)
+    assert summary["rendered"] == ["demo_pd_kendra", "demo_pd_calvin"]
+    assert summary["failed"] == []
+    for run in ("demo_pd_kendra", "demo_pd_calvin"):
+        dest = tmp_path / "runs" / run
+        assert run_is_visible(dest) is True
+        assert "reused_from" not in json.loads((dest / "manifest.json").read_text())
+        assert json.loads((dest / "metrics.json").read_text())["_meta"]["simulated"] is True
+    render_extra_runs(tmp_path, {"present": [], "rendered": [], "failed": []}, start_cut=slot)
+    assert len(calls) == 2
+
+
+def test_render_drops_a_niosh_clone_and_honors_a_busy_lock(tmp_path):
+    dest = tmp_path / "runs" / "demo_pd_calvin"
+    dest.mkdir(parents=True)
+    (dest / "manifest.json").write_text(json.dumps({"reused_from": "v2_niosh_multi", "source": "samples/x.mp4"}))
+    (dest / "v01.json").write_text(json.dumps({"variant_id": "v01"}))
+    (dest / "results.json").write_text("{}\n")
+    sample = tmp_path / "samples" / "talking_head_nasa_calvin.mp4"
+    sample.parent.mkdir(parents=True)
+    sample.write_bytes(b"x" * 100_000)
+    (tmp_path / "samples" / "talking_head_kendra.mp4").write_bytes(b"x" * 100_000)
+    seen = {}
+
+    def slot(run, cmd, n):
+        out = Path(cmd[cmd.index("--out") + 1])
+        seen[run] = (out / "manifest.json").exists()
+        if run == "demo_pd_calvin":
+            return None
+        _write_rendered_run(out, "samples/talking_head_kendra.mp4")
+        return _fake_proc()
+
+    summary = {"present": [], "rendered": [], "failed": []}
+    from clipcut.demo_setup import render_extra_runs
+    render_extra_runs(tmp_path, summary, start_cut=slot)
+    assert seen["demo_pd_calvin"] is False
+    assert "demo_pd_calvin: cutter busy" in summary["failed"]
+    assert not (dest / ".rendered").exists()
+    assert run_is_visible(dest) is False
+    assert "demo_pd_kendra" in summary["rendered"]
+
+
+def test_demo_slot_waits_for_the_user_job(monkeypatch):
+    import app
+
+    class Alive:
+        def poll(self):
+            return None
+
+    class Finished:
+        def poll(self):
+            return 0
+
+    app.JOBS["ui_user"] = {"proc": Alive(), "n": 4}
+    started = []
+
+    def fake_popen(cmd, cwd, stdout, stderr):
+        started.append(cmd)
+        stdout.close()
+        return _fake_proc()
+
+    monkeypatch.setattr(app.subprocess, "Popen", fake_popen)
+
+    def release():
+        time.sleep(0.3)
+        app.JOBS["ui_user"]["proc"] = Finished()
+
+    threading.Thread(target=release).start()
+    try:
+        proc = app._demo_job_slot("demo_pd_calvin", ["cut"], 8)
+        assert proc is not None
+        assert started and started[0] == ["cut"]
+        assert app.busy_job() in (None, "demo_pd_calvin")
+    finally:
+        app.JOBS.pop("ui_user", None)
+        app.JOBS.pop("demo_pd_calvin", None)

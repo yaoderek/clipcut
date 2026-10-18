@@ -15,6 +15,7 @@ app.mount("/static", StaticFiles(directory=str(STATIC)), name="static")
 app.mount("/samples", StaticFiles(directory=str(SAMPLES)), name="samples")
 from clipcut.distribution.router import router as distribution_router; app.include_router(distribution_router)  # docs/DISTRIBUTION_API.md
 JOBS = {}  # run -> {proc, n, log}
+_JOB_LOCK = threading.Lock()
 
 def pick_winner(res):
     """Top overall.score; among variants within TIE of the top, prefer captioned ones."""
@@ -68,6 +69,17 @@ MAX_UPLOAD_MB = 95  # Cloudflare quick tunnels cap request bodies at 100 MB
 def busy_job():
     return next((r for r, j in JOBS.items() if j["proc"].poll() is None), None)
 
+def _claim_cut(run, cmd, n, log_path):
+    """Start ``cmd`` only when no cut is running. None if another job holds the lock."""
+    with _JOB_LOCK:
+        if busy_job():
+            return None
+        log_path = Path(log_path)
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+        proc = subprocess.Popen(cmd, cwd=ROOT, stdout=open(log_path, "w"), stderr=subprocess.STDOUT)
+        JOBS[run] = dict(proc=proc, n=n)
+        return proc
+
 @app.get("/api/status")
 def status():
     b = busy_job(); return dict(busy=bool(b), run=b, max_upload_mb=MAX_UPLOAD_MB)
@@ -88,7 +100,11 @@ def start_cut(video: UploadFile | None = File(None), sample: str = Form(""), n: 
         if src.name in SRT: cmd += ["--srt", str(SAMPLES / SRT[src.name][0]), "--srt-offset", str(SRT[src.name][1])]
     else: raise HTTPException(400, "upload a video or pick a sample")
     cmd += [str(src), "--out", str(d), "-n", str(max(2, min(n, 20)))]
-    JOBS[rid] = dict(proc=subprocess.Popen(cmd, cwd=ROOT, stdout=open(d / "job.log", "w"), stderr=subprocess.STDOUT), n=n)
+    proc = _claim_cut(rid, cmd, n, d / "job.log")
+    if proc is None:
+        shutil.rmtree(d, ignore_errors=True)
+        b = busy_job()
+        raise HTTPException(409, f"Busy: run {b} is still rendering. One job at a time; try again when it finishes (poll /api/run/{b}).")
     return {"run": rid}
 
 @app.get("/api/channels/{run}")
@@ -239,11 +255,14 @@ def _branch_worker():
             item["status"] = "running"
         jobfile = Path(item["outdir"]) / "job.json"
         log = Path(item["outdir"]) / "job.log"
-        logf = open(log, "w")
-        proc = subprocess.Popen([sys.executable, "-m", "clipcut.branch_render", str(jobfile)], cwd=ROOT, stdout=logf, stderr=subprocess.STDOUT)
-        JOBS[item["run"]] = dict(proc=proc, n=1)
+        proc = _claim_cut(item["run"], [sys.executable, "-m", "clipcut.branch_render", str(jobfile)], 1, log)
+        if proc is None:
+            with _QLOCK:
+                item["status"] = "queued"
+                _QUEUE.insert(0, item)
+            time.sleep(0.4)
+            continue
         code = proc.wait()
-        logf.close()
         status_path = Path(item["outdir"]) / "status.json"
         phase = {}
         if status_path.is_file():
@@ -500,15 +519,28 @@ def _demo_auto_fetch_enabled():
         return False
 
 
+def _demo_job_slot(run, cmd, n):
+    """Wait until the one-job lock is free, then start this cutter process."""
+    announced = False
+    while True:
+        proc = _claim_cut(run, cmd, n, RUNS / run / "job.log")
+        if proc is not None:
+            return proc
+        if not announced:
+            print(f"[demo] waiting for {busy_job()} to finish before rendering {run}", flush=True)
+            announced = True
+        time.sleep(0.5)
+
+
 def _start_demo_auto_fetch():
     if not _demo_auto_fetch_enabled():
         return
     def _run():
         try:
             from clipcut.demo_setup import setup
-            summary = setup(root=ROOT)
+            summary = setup(root=ROOT, start_cut=_demo_job_slot)
             failed = len(summary.get("failed") or [])
-            print(f"[demo] auto-fetch done; downloaded {len(summary.get('downloaded') or [])}, skipped {failed}", flush=True)
+            print(f"[demo] auto-fetch done; downloaded {len(summary.get('downloaded') or [])}, rendered {summary.get('rendered')}, skipped {failed}", flush=True)
         except Exception as exc:
             print(f"[demo] auto-fetch skipped: {exc}", flush=True)
     threading.Thread(target=_run, name="clipcut-demo-fetch", daemon=True).start()

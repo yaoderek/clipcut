@@ -2,7 +2,7 @@
 DubHacks 2026 · SideShift "Best Startup Idea" prototype (creator/UGC marketing).
 
 ## Run locally with demo
-`python cli.py demo-setup` or `make demo` fetches the public-domain samples and `runs/v2_niosh_multi` variant videos if they are missing, and writes simulated metrics.
+`python cli.py demo-setup` or `make demo` fetches the public-domain samples and `runs/v2_niosh_multi` variant videos if they are missing, writes simulated metrics, and renders `demo_pd_kendra` and `demo_pd_calvin` with cutter v2 (8 variants, skipped when those renders already exist).
 `python app.py` serves http://localhost:8000. With the env var unset, a laptop also fetches those files in the background when they are absent (`CLIPCUT_AUTO_FETCH_DEMO=1` forces it, `=0` skips it).
 Metrics and `demo.json` carry `demo: true` and `simulated: true`. They are not platform results. mp4 files are downloaded, not committed.
 

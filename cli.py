@@ -79,7 +79,7 @@ def cmd_demo_setup(_a):
     from clipcut.demo_setup import main
     raise SystemExit(main())
 
-c = s.add_parser("demo-setup", help="download missing demo videos and write simulated metrics")
+c = s.add_parser("demo-setup", help="download missing demo videos, render extra clips, write simulated metrics")
 c.set_defaults(f=cmd_demo_setup)
 c = s.add_parser("cut2", help="v2 recipe cutter -> 10+ variants -> scorer -> results.json"); c.add_argument("video"); c.add_argument("--out", default="runs/v2_latest")
 c.add_argument("-n", type=int, default=12); c.add_argument("--seed", type=int, default=0); c.add_argument("--whisper", default="base")
