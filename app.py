@@ -325,6 +325,25 @@ def api_branch_status(batch: str = ""):
                         manifest_url=item.get("manifest_url"), video=item.get("video")))
     return {"batch": batch, "busy": bool(busy_job()), "pending": pending, "items": out}
 
+# ---- drag-and-drop edit chips. Own pool of 3; does not take the one-job cut lock. ----
+@app.post("/api/branch")
+def api_branch_chip(body: dict = Body(...)):
+    from clipcut.chip_branch import ChipError, create_branch
+    if not isinstance(body, dict):
+        raise HTTPException(400, "expected an object")
+    try:
+        return create_branch(body, runs_root=RUNS, root=ROOT)
+    except ChipError as exc:
+        raise HTTPException(exc.status, str(exc))
+
+@app.get("/api/branch/{branch_id}")
+def api_branch_chip_get(branch_id: str):
+    from clipcut.chip_branch import ChipError, get_branch
+    try:
+        return get_branch(branch_id, runs_root=RUNS)
+    except ChipError as exc:
+        raise HTTPException(exc.status, str(exc))
+
 # ---- legacy v1 UI (unchanged behaviour) ----
 @app.get("/v1", response_class=HTMLResponse)
 def index_v1():
