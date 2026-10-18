@@ -61,3 +61,26 @@ def distribution_bundle(run: str, export_id: str, request: Request, channel: str
     except DistributionError as exc:
         return _err(exc)
     return FileResponse(path, media_type="application/zip", filename=path.name)
+
+
+@router.post("/publish")
+async def distribution_publish(request: Request):
+    from .publish import publish_run
+    body = await _body(request)
+    if body is None:
+        return JSONResponse({"error": "JSON object required"}, status_code=400)
+    try:
+        return publish_run(body.get("run"), export_id=body.get("export_id"), variant_id=body.get("variant_id"),
+                           channels=body.get("channels"), schedule_at=body.get("schedule_at"), root=_root(request),
+                           background=getattr(request.app.state, "publish_background", True))
+    except DistributionError as exc:
+        return _err(exc)
+
+
+@router.get("/publish/{run}")
+def distribution_publish_status(run: str, request: Request):
+    from .publish import publish_status
+    try:
+        return publish_status(run, root=_root(request))
+    except DistributionError as exc:
+        return _err(exc)

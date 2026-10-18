@@ -123,3 +123,56 @@ Replace the current `publish` executor (`POST /api/deploy/<run>`) with:
    (`export` | `publish`). `action: "publish"` additionally calls `POST /api/distribution/publish` (section below) with the returned `export_id`.
 
 The node tip should say: exports are files; nothing is posted unless publish reports `uploaded (private)`.
+
+## `POST /api/distribution/publish`
+
+Turns an export into per-channel publish states, stored in `runs/<run>/publish.json` (gitignored runtime state).
+
+### Request
+
+| Field | Type | Required | Meaning |
+| --- | --- | --- | --- |
+| `run` | string | yes | Run directory. |
+| `export_id` | string | no | Default: the latest export. If the run has no export yet, one is made first (using `variant_id` / `channels`). |
+| `variant_id` | string | no | Only used when an export has to be made first. |
+| `channels` | array of ids | no | Default: every channel in the export. A channel missing from the export → 404. |
+| `schedule_at` | ISO 8601 string | no | Marks non-uploading channels `scheduled (demo)`. Nothing is posted later. |
+
+### Response `200`
+
+```json
+{
+  "run": "v2_niosh_multi",
+  "export_id": "ex_20261017_201500_ab12",
+  "youtube_configured": false,
+  "disclaimer": "Only a status of \"uploaded (private)\" means a file reached a platform ...",
+  "entries": [
+    {"channel": "shorts", "label": "Shorts", "export_id": "ex_...", "variant_id": "v09",
+     "status": "exported", "state": "exported", "demo": false, "error": null,
+     "note": "Bundle ready to upload by hand. Set YT_CLIENT_ID, YT_CLIENT_SECRET and YT_REFRESH_TOKEN for a real private upload.",
+     "bundle_url": "/api/distribution/bundle/v2_niosh_multi/ex_....zip?channel=shorts", "video_url": "/runs/...mp4",
+     "title": "...", "caption": "...", "at": "2026-10-17T20:30:00-0700"}
+  ]
+}
+```
+
+`status` (display string) / `state` (machine value):
+
+| `status` | `state` | Meaning |
+| --- | --- | --- |
+| `uploaded (private)` | `uploaded` | Shorts only, with credentials. Real YouTube upload, **private** visibility. Adds `video_id`, `url` (`https://www.youtube.com/shorts/<id>`), `privacy: "private"`. |
+| `uploading` | `uploading` | Upload running in a background thread; poll the GET below. |
+| `failed` | `failed` | Upload error (`error` has the API message, never the token) or no video in the bundle. |
+| `scheduled (demo)` | `scheduled` | `schedule_at` was set. `demo: true`, `scheduled_for`. Demo only. |
+| `exported` | `exported` | Bundle ready to upload by hand. |
+
+YouTube upload: enabled only when `YT_CLIENT_ID`, `YT_CLIENT_SECRET` and `YT_REFRESH_TOKEN` are all set (OAuth client
+with the `https://www.googleapis.com/auth/youtube.upload` scope and a refresh token for the target channel). Stdlib
+`urllib`: refresh token → access token, then a YouTube Data API v3 resumable upload (`videos.insert`, `part=snippet,status`,
+`privacyStatus: private`, category 22). Title = Shorts copy title (≤100 chars), description = Shorts caption (has `#Shorts`).
+No other platform uploads; those stay `exported` / `scheduled (demo)`. Credentials are never written to disk or responses.
+
+## `GET /api/distribution/publish/{run}`
+
+`{"run", "updated_at", "youtube_configured", "disclaimer", "entries": {channel: latest entry}, "channels": [latest entries in channel order], "history": [last 100 entries]}`.
+`entries` is `{}` and `channels` `[]` before the first publish.
