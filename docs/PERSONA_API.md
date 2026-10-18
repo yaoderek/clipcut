@@ -120,7 +120,9 @@ Numbers above are illustrative. Implementations return JSON numbers rounded to 4
 
 For each persona, each feature has a quality in \[-1, 1\] and a hand-set weight. Contributions are `weight * quality` (signed). A persona-specific base sits near the middle of the scale:
 
-`score = clamp(base + sum(contributions), 0, 1)`
+Contributions are rounded to 4 decimal places and then added to the base. That sum is rounded to 4 decimal places and clamped:
+
+`score = clamp(round(base + sum(rounded contributions), 4), 0, 1)`
 
 Bases (hand-set, not learned): fast_swiper 0.40, casual_browser 0.46, completionist 0.52, sharer_engager 0.48.
 
@@ -169,7 +171,7 @@ fit = clamp(audience_score * format_mult * duration_mult, 0, 1)
 ```
 
 - `audience_score` — persona scores mixed with that channel's `audience` weights (equal weights when `audience` is a list).
-- `format_mult` — `1` when aspect is missing or listed on the channel, else `0.6`.
+- `format_mult` — `1` when aspect is missing or listed on the channel, else `0.6`. Aspect is read from `aspect`, then `recipe.aspect`, then the nearest of `9:16`, `4:5`, `1:1`, `16:9` to `resolution` `[w, h]`. No ffprobe and no video decode.
 - `duration_mult` — `1` inside `ideal_s` (or duration unknown), `0.85` otherwise but within `max_s`, `0.3` over `max_s`. Same buckets as `channels.fit_for_channel`.
 
 `fit` is a heuristic channel match, not a predicted view count.

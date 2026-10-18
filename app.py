@@ -2,7 +2,7 @@
 New UI at /  (v2: cut2 -> scorer -> results.json). Legacy v1 form kept at /v1 (POST /process)."""
 import json, shutil, uuid, subprocess, sys, re, time
 from pathlib import Path
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -146,6 +146,24 @@ def api_score(manifest: dict = Body(...)):
     """POST a variant manifest JSON (or {"video_path": ...}); returns per-persona swipe/watch/share predictions."""
     from clipcut.scorer import score
     return score(manifest)
+
+@app.post("/api/persona/score")
+async def api_persona_score(request: Request):
+    """Explainable persona scores for the canvas. See docs/PERSONA_API.md. Does not replace POST /api/score."""
+    from clipcut.persona_api import PersonaScoreError, score_variants
+    try:
+        body = await request.json()
+    except Exception:
+        return JSONResponse({"error": "JSON object required"}, status_code=400)
+    if not isinstance(body, dict):
+        return JSONResponse({"error": "JSON object required"}, status_code=400)
+    mode = body.get("mode", "auto")
+    if mode is None:
+        mode = "auto"
+    try:
+        return score_variants(run=body.get("run"), variant_ids=body.get("variant_ids"), manifests=body.get("manifests"), mode=mode)
+    except PersonaScoreError as exc:
+        return JSONResponse({"error": str(exc)}, status_code=exc.status)
 
 if __name__ == "__main__":  # container / `python app.py`: bind all interfaces, port from $PORT (default 8000)
     import os, uvicorn

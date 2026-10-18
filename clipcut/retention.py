@@ -1,7 +1,11 @@
-"""Public scoring API (owner: retention agent).
+"""Legacy public scoring API used by POST /api/score and rank_v2.py (owner: retention agent).
+
 score(manifest_path_or_dict) -> dict. Default = score_dummy(): a HEURISTIC, NOT TRAINED, rule-based persona scorer that
 reads manifest fields only (no video decoding, <1 ms). The old KuaiRand/MicroLens model: set env CLIPCUT_SCORER=model.
-All numbers are hand-set from common short-form best practice; they are NOT predictions learned from data."""
+All numbers are hand-set from common short-form best practice; they are NOT predictions learned from data.
+
+The canvas-facing contract is clipcut.persona_api.score_variants (docs/PERSONA_API.md). This payload stays
+so existing callers keep overall / p_swipe3s / watch_pct / p_share."""
 import json, os, math
 from pathlib import Path
 
