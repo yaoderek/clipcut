@@ -1,0 +1,420 @@
+{
+ "variant_id": "v07",
+ "recipe": {
+  "hook": "best",
+  "length": 45,
+  "pacing": "tight",
+  "captions": "word_pop",
+  "hook_title": false,
+  "ending": "loop"
+ },
+ "duration_s": 47.82,
+ "video_path": "/workspace/clipcut/runs/v2_niosh12/v07.mp4",
+ "segments": [
+  {
+   "src_start": 57.826,
+   "src_end": 59.167,
+   "out_start": 0.0,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 59.087,
+   "src_end": 65.845,
+   "out_start": 1.341,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 65.765,
+   "src_end": 67.674,
+   "out_start": 8.099,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 68.0,
+   "src_end": 69.288,
+   "out_start": 10.008,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 69.208,
+   "src_end": 74.006,
+   "out_start": 11.296,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 74.381,
+   "src_end": 76.313,
+   "out_start": 16.094,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 76.233,
+   "src_end": 76.693,
+   "out_start": 18.026,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 81.47,
+   "src_end": 88.35,
+   "out_start": 18.486,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 88.27,
+   "src_end": 90.465,
+   "out_start": 25.366,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 90.385,
+   "src_end": 96.095,
+   "out_start": 27.561,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 96.289,
+   "src_end": 97.919,
+   "out_start": 33.271,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 97.839,
+   "src_end": 98.098,
+   "out_start": 34.901,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 98.325,
+   "src_end": 99.355,
+   "out_start": 35.16,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 99.275,
+   "src_end": 102.08,
+   "out_start": 36.19,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 102.0,
+   "src_end": 105.197,
+   "out_start": 38.995,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 105.117,
+   "src_end": 108.628,
+   "out_start": 42.192,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 108.548,
+   "src_end": 110.138,
+   "out_start": 45.703,
+   "punch_in": 1.0
+  }
+ ],
+ "captions": [
+  {
+   "start": 0.08,
+   "end": 1.31,
+   "text": "IN EPIDEMIOLOGY."
+  },
+  {
+   "start": 1.26,
+   "end": 3.37,
+   "text": "I STARTED OUT"
+  },
+  {
+   "start": 3.32,
+   "end": 3.96,
+   "text": "WANTING TO BE"
+  },
+  {
+   "start": 3.91,
+   "end": 4.35,
+   "text": "A TEACHER,"
+  },
+  {
+   "start": 4.3,
+   "end": 4.94,
+   "text": "AND THEN I"
+  },
+  {
+   "start": 4.89,
+   "end": 5.53,
+   "text": "COULDN'T AFFORD TO"
+  },
+  {
+   "start": 5.48,
+   "end": 6.11,
+   "text": "GO TO SCHOOL,"
+  },
+  {
+   "start": 6.06,
+   "end": 6.73,
+   "text": "AND THEN WHEN"
+  },
+  {
+   "start": 6.68,
+   "end": 7.4,
+   "text": "I COULD AFFORD"
+  },
+  {
+   "start": 7.35,
+   "end": 8.07,
+   "text": "TO GO TO"
+  },
+  {
+   "start": 8.02,
+   "end": 8.37,
+   "text": "SCHOOL,"
+  },
+  {
+   "start": 8.32,
+   "end": 8.82,
+   "text": "I THOUGHT,"
+  },
+  {
+   "start": 8.77,
+   "end": 9.49,
+   "text": "I'M GOING TO"
+  },
+  {
+   "start": 9.44,
+   "end": 10.3,
+   "text": "BE A SO"
+  },
+  {
+   "start": 10.25,
+   "end": 11.02,
+   "text": "I WENT INTO"
+  },
+  {
+   "start": 10.97,
+   "end": 11.27,
+   "text": "PSYCHOLOGY."
+  },
+  {
+   "start": 11.22,
+   "end": 12.07,
+   "text": "ONE OF THE"
+  },
+  {
+   "start": 12.02,
+   "end": 12.8,
+   "text": "REASONS I WENT"
+  },
+  {
+   "start": 12.75,
+   "end": 13.52,
+   "text": "INTO PSYCHOLOGY WAS"
+  },
+  {
+   "start": 13.47,
+   "end": 14.25,
+   "text": "THERE WAS NO"
+  },
+  {
+   "start": 14.2,
+   "end": 15.78,
+   "text": "MATH OR SCIENCE,"
+  },
+  {
+   "start": 16.65,
+   "end": 18.0,
+   "text": "I THOUGHT."
+  },
+  {
+   "start": 18.49,
+   "end": 19.61,
+   "text": "THE TEACHING ASSISTANT"
+  },
+  {
+   "start": 19.56,
+   "end": 20.69,
+   "text": "FOR THAT COURSE"
+  },
+  {
+   "start": 20.64,
+   "end": 21.77,
+   "text": "REALLY HAD A"
+  },
+  {
+   "start": 21.72,
+   "end": 22.85,
+   "text": "HUGE INFLUENCE ON"
+  },
+  {
+   "start": 22.8,
+   "end": 23.93,
+   "text": "MY TRAJECTORY INTO"
+  },
+  {
+   "start": 23.88,
+   "end": 24.98,
+   "text": "THE FIELD OF"
+  },
+  {
+   "start": 24.93,
+   "end": 25.34,
+   "text": "SCIENCE."
+  },
+  {
+   "start": 25.29,
+   "end": 26.47,
+   "text": "SHE GOT ME"
+  },
+  {
+   "start": 26.42,
+   "end": 27.53,
+   "text": "THROUGH THAT COURSE."
+  },
+  {
+   "start": 27.48,
+   "end": 28.67,
+   "text": "SHE REALLY HELPED"
+  },
+  {
+   "start": 28.62,
+   "end": 29.73,
+   "text": "ME WITH STATISTICS,"
+  },
+  {
+   "start": 29.68,
+   "end": 30.48,
+   "text": "BUT MORE THAN"
+  },
+  {
+   "start": 30.43,
+   "end": 30.73,
+   "text": "THAT,"
+  },
+  {
+   "start": 30.68,
+   "end": 31.23,
+   "text": "SHE SAID,"
+  },
+  {
+   "start": 31.18,
+   "end": 31.99,
+   "text": "LOOK YOU NEED"
+  },
+  {
+   "start": 31.94,
+   "end": 32.74,
+   "text": "TO BE A"
+  },
+  {
+   "start": 32.69,
+   "end": 33.24,
+   "text": "RESEARCH ASSISTANT."
+  },
+  {
+   "start": 33.5,
+   "end": 34.26,
+   "text": "TO GET INTO"
+  },
+  {
+   "start": 34.21,
+   "end": 34.87,
+   "text": "THE HONORS PROGRAM."
+  },
+  {
+   "start": 34.82,
+   "end": 35.75,
+   "text": "YOU BE A"
+  },
+  {
+   "start": 35.7,
+   "end": 36.16,
+   "text": "TEACHING ASSISTANT."
+  },
+  {
+   "start": 36.11,
+   "end": 36.85,
+   "text": "HERE ARE THE"
+  },
+  {
+   "start": 36.8,
+   "end": 37.55,
+   "text": "THINGS YOU NEED"
+  },
+  {
+   "start": 37.5,
+   "end": 38.4,
+   "text": "TO DO TO"
+  },
+  {
+   "start": 38.35,
+   "end": 38.96,
+   "text": "GO FORWARD."
+  },
+  {
+   "start": 38.91,
+   "end": 39.89,
+   "text": "AND WITHOUT HER,"
+  },
+  {
+   "start": 39.84,
+   "end": 40.74,
+   "text": "I DON'T THINK"
+  },
+  {
+   "start": 40.69,
+   "end": 41.59,
+   "text": "I WOULD HAVE"
+  },
+  {
+   "start": 41.54,
+   "end": 42.16,
+   "text": "DONE WELL."
+  },
+  {
+   "start": 42.11,
+   "end": 43.31,
+   "text": "I DON'T THINK"
+  },
+  {
+   "start": 43.26,
+   "end": 44.49,
+   "text": "I WOULD HAVE"
+  },
+  {
+   "start": 44.44,
+   "end": 45.67,
+   "text": "STAYED IN SCIENCE."
+  },
+  {
+   "start": 45.62,
+   "end": 46.93,
+   "text": "SHE REALLY HAD"
+  },
+  {
+   "start": 46.88,
+   "end": 47.28,
+   "text": "A"
+  }
+ ],
+ "hook_end_s": 4.14,
+ "cut_times_s": [
+  1.341,
+  8.099,
+  10.008,
+  11.296,
+  16.094,
+  18.026,
+  18.486,
+  25.366,
+  27.561,
+  33.271,
+  34.901,
+  35.16,
+  36.19,
+  38.995,
+  42.192,
+  45.703
+ ],
+ "silence_removed_s": 1.12,
+ "loop_end": true
+}

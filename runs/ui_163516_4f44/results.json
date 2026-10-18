@@ -1,0 +1,2862 @@
+{
+ "winner": "v05",
+ "batch_source": "score_batch",
+ "results": [
+  {
+   "variant_id": "v05",
+   "overall": {
+    "p_swipe3s": 0.1753,
+    "watch_pct": 72.3,
+    "p_share": 0.01255,
+    "score": 0.8774
+   },
+   "audience_score": 0.7447,
+   "target_channel": "X",
+   "target_channel_fit": 1.0,
+   "personas": {
+    "fast_swiper": {
+     "p_swipe3s": 0.1533,
+     "watch_pct": 60.1,
+     "p_share": 0.00634,
+     "score": 0.6425,
+     "channel": "TikTok",
+     "fit": 0.3225
+    },
+    "casual_browser": {
+     "p_swipe3s": 0.2059,
+     "watch_pct": 71.9,
+     "p_share": 0.00926,
+     "score": 0.6977,
+     "channel": "Reels",
+     "fit": 0.2877
+    },
+    "completionist": {
+     "p_swipe3s": 0.1735,
+     "watch_pct": 81.3,
+     "p_share": 0.00924,
+     "score": 0.748,
+     "channel": "LinkedIn",
+     "fit": 0.168
+    },
+    "sharer_engager": {
+     "p_swipe3s": 0.1548,
+     "watch_pct": 83.4,
+     "p_share": 0.05102,
+     "score": 0.8716,
+     "channel": "X",
+     "fit": 0.2516
+    }
+   },
+   "model_version": "dummy-heuristic-v0",
+   "confidence": "none - untrained heuristic",
+   "label": "heuristic, not trained",
+   "best_persona": "fast_swiper",
+   "best_channel": "IG_Feed",
+   "channels": [
+    {
+     "channel": "IG_Feed",
+     "score": 0.9315,
+     "audience_fit": 0.2877,
+     "format_fit": 1.0,
+     "personas": {
+      "casual_browser": 1.0
+     },
+     "reason": "aspect 1:1 ok; duration ideal (ideal 15-60s); lean-back browsing; captions matter (often muted); 20-45 s",
+     "predicted": {
+      "views_range": [
+       5078,
+       12695
+      ],
+      "watch_pct": 71.9,
+      "p_swipe3s": 0.2059,
+      "shares_range": [
+       47,
+       118
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "X",
+     "score": 0.8774,
+     "audience_fit": 0.2516,
+     "format_fit": 1.0,
+     "personas": {
+      "sharer_engager": 1.0
+     },
+     "reason": "aspect 1:1 ok; duration ideal (ideal 15-45s); shares/quote-posts strong claims; loopable, captioned clips travel",
+     "predicted": {
+      "views_range": [
+       6139,
+       15347
+      ],
+      "watch_pct": 83.4,
+      "p_swipe3s": 0.1548,
+      "shares_range": [
+       313,
+       784
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "FB_Feed",
+     "score": 0.6925,
+     "audience_fit": 0.2098,
+     "format_fit": 0.85,
+     "personas": {
+      "completionist": 0.5,
+      "sharer_engager": 0.5
+     },
+     "reason": "aspect 1:1 ok; duration ok (ideal 30-90s); tolerates 45-90 s substantive clips; professional audience finishes informative content; shares/quote-posts strong claims; loopable, captioned clips travel",
+     "predicted": {
+      "views_range": [
+       5041,
+       12602
+      ],
+      "watch_pct": 70.0,
+      "p_swipe3s": 0.1931,
+      "shares_range": [
+       129,
+       323
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "LinkedIn",
+     "score": 0.6392,
+     "audience_fit": 0.168,
+     "format_fit": 0.85,
+     "personas": {
+      "completionist": 1.0
+     },
+     "reason": "aspect 1:1 ok; duration ok (ideal 30-90s); tolerates 45-90 s substantive clips; professional audience finishes informative content",
+     "predicted": {
+      "views_range": [
+       4921,
+       12302
+      ],
+      "watch_pct": 69.1,
+      "p_swipe3s": 0.2041,
+      "shares_range": [
+       38,
+       97
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "TikTok",
+     "score": 0.5902,
+     "audience_fit": 0.3225,
+     "format_fit": 0.6,
+     "personas": {
+      "fast_swiper": 1.0
+     },
+     "reason": "aspect 1:1 not in ['9:16'] (x0.6); duration ideal (ideal 15-34s); short attention, swipe feed; rewards a hook in <=3 s and 15-30 s length",
+     "predicted": {
+      "views_range": [
+       2942,
+       7355
+      ],
+      "watch_pct": 36.1,
+      "p_swipe3s": 0.2555,
+      "shares_range": [
+       11,
+       28
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "Shorts",
+     "score": 0.5746,
+     "audience_fit": 0.3051,
+     "format_fit": 0.6,
+     "personas": {
+      "fast_swiper": 0.5,
+      "casual_browser": 0.5
+     },
+     "reason": "aspect 1:1 not in ['9:16'] (x0.6); duration ideal (ideal 20-50s); short attention, swipe feed; rewards a hook in <=3 s and 15-30 s length; lean-back browsing; captions matter (often muted); 20-45 s",
+     "predicted": {
+      "views_range": [
+       2905,
+       7262
+      ],
+      "watch_pct": 39.6,
+      "p_swipe3s": 0.2993,
+      "shares_range": [
+       13,
+       34
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "Reels",
+     "score": 0.5589,
+     "audience_fit": 0.2877,
+     "format_fit": 0.6,
+     "personas": {
+      "casual_browser": 1.0
+     },
+     "reason": "aspect 1:1 not in ['9:16'] (x0.6); duration ideal (ideal 15-45s); lean-back browsing; captions matter (often muted); 20-45 s",
+     "predicted": {
+      "views_range": [
+       2868,
+       7170
+      ],
+      "watch_pct": 43.1,
+      "p_swipe3s": 0.3432,
+      "shares_range": [
+       15,
+       40
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "FB_Reels",
+     "score": 0.5318,
+     "audience_fit": 0.2576,
+     "format_fit": 0.6,
+     "personas": {
+      "casual_browser": 0.6,
+      "completionist": 0.4
+     },
+     "reason": "aspect 1:1 not in ['9:16'] (x0.6); duration ideal (ideal 20-60s); lean-back browsing; captions matter (often muted); 20-45 s; tolerates 45-90 s substantive clips; professional audience finishes informative content",
+     "predicted": {
+      "views_range": [
+       1838,
+       4596
+      ],
+      "watch_pct": 45.4,
+      "p_swipe3s": 0.3216,
+      "shares_range": [
+       15,
+       39
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "IG_Stories",
+     "score": 0.5017,
+     "audience_fit": 0.3225,
+     "format_fit": 0.51,
+     "personas": {
+      "fast_swiper": 1.0
+     },
+     "reason": "aspect 1:1 not in ['9:16'] (x0.6); duration ok (ideal 5-15s); short attention, swipe feed; rewards a hook in <=3 s and 15-30 s length",
+     "predicted": {
+      "views_range": [
+       2523,
+       6307
+      ],
+      "watch_pct": 30.7,
+      "p_swipe3s": 0.3006,
+      "shares_range": [
+       8,
+       21
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "YouTube",
+     "score": 0.3835,
+     "audience_fit": 0.168,
+     "format_fit": 0.51,
+     "personas": {
+      "completionist": 1.0
+     },
+     "reason": "aspect 1:1 not in ['16:9'] (x0.6); duration ok (ideal 60-600s); tolerates 45-90 s substantive clips; professional audience finishes informative content",
+     "predicted": {
+      "views_range": [
+       2808,
+       7020
+      ],
+      "watch_pct": 41.5,
+      "p_swipe3s": 0.3402,
+      "shares_range": [
+       13,
+       34
+      ],
+      "simulated": true
+     }
+    }
+   ],
+   "reasons": [
+    {
+     "persona": "fast_swiper",
+     "length": "28s in sweet spot 15-30s",
+     "top": [
+      "hook lands by 1.53s, cut at punct",
+      "2.6s dead air removed",
+      "loop-friendly ending"
+     ]
+    },
+    {
+     "persona": "casual_browser",
+     "length": "28s in sweet spot 20-45s",
+     "top": [
+      "hook lands by 1.53s, cut at punct",
+      "2.6s dead air removed",
+      "captions: sentence"
+     ]
+    },
+    {
+     "persona": "completionist",
+     "length": "28s shorter than sweet spot 30-60s",
+     "top": [
+      "hook lands by 1.53s, cut at punct",
+      "2.6s dead air removed",
+      "loop-friendly ending"
+     ]
+    },
+    {
+     "persona": "sharer_engager",
+     "length": "28s in sweet spot 20-45s",
+     "top": [
+      "loop-friendly ending",
+      "hook lands by 1.53s, cut at punct",
+      "captions: sentence"
+     ]
+    }
+   ],
+   "rule_inputs": {
+    "duration_s": 28.15,
+    "n_cuts": 13,
+    "max_gap_s": 3.0599999999999996,
+    "gap_cv": 0.42596390896866065,
+    "frac_gaps_2_4s": 0.5714285714285714,
+    "median_gap_s": 2.434,
+    "captions": true,
+    "caption_style": "sentence",
+    "hook_end_s": 1.53,
+    "hook_boundary": "punct",
+    "hook_strength": 0.3,
+    "hook_text": "And that was sort of my first introduction.",
+    "silence_removed_s": 2.59,
+    "loop_end": true,
+    "hook_title": true,
+    "aspect": "1:1",
+    "channel": "X"
+   },
+   "batch_score": 100.0,
+   "batch_rank": 1,
+   "recipe": {
+    "hook": "m1",
+    "length": 30,
+    "pacing": "tight_punch",
+    "captions": "sentence",
+    "hook_title": true,
+    "ending": "loop",
+    "channel": "X",
+    "aspect": "1:1"
+   },
+   "duration_s": 28.15,
+   "rank": 1
+  },
+  {
+   "variant_id": "v01",
+   "overall": {
+    "p_swipe3s": 0.1818,
+    "watch_pct": 68.4,
+    "p_share": 0.01096,
+    "score": 0.8108
+   },
+   "audience_score": 0.7104,
+   "target_channel": "IG_Stories",
+   "target_channel_fit": 0.85,
+   "personas": {
+    "fast_swiper": {
+     "p_swipe3s": 0.1595,
+     "watch_pct": 56.9,
+     "p_share": 0.00586,
+     "score": 0.6226,
+     "channel": "TikTok",
+     "fit": 0.3026
+    },
+    "casual_browser": {
+     "p_swipe3s": 0.2171,
+     "watch_pct": 65.6,
+     "p_share": 0.00776,
+     "score": 0.6531,
+     "channel": "Reels",
+     "fit": 0.2431
+    },
+    "completionist": {
+     "p_swipe3s": 0.1757,
+     "watch_pct": 79.0,
+     "p_share": 0.00849,
+     "score": 0.7307,
+     "channel": "LinkedIn",
+     "fit": 0.1507
+    },
+    "sharer_engager": {
+     "p_swipe3s": 0.1613,
+     "watch_pct": 79.2,
+     "p_share": 0.04329,
+     "score": 0.8524,
+     "channel": "X",
+     "fit": 0.2324
+    }
+   },
+   "model_version": "dummy-heuristic-v0",
+   "confidence": "none - untrained heuristic",
+   "label": "heuristic, not trained",
+   "best_persona": "fast_swiper",
+   "best_channel": "TikTok",
+   "channels": [
+    {
+     "channel": "TikTok",
+     "score": 0.9539,
+     "audience_fit": 0.3026,
+     "format_fit": 1.0,
+     "personas": {
+      "fast_swiper": 1.0
+     },
+     "reason": "aspect 9:16 ok; duration ideal (ideal 15-34s); short attention, swipe feed; rewards a hook in <=3 s and 15-30 s length",
+     "predicted": {
+      "views_range": [
+       4473,
+       11182
+      ],
+      "watch_pct": 56.9,
+      "p_swipe3s": 0.1595,
+      "shares_range": [
+       26,
+       66
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "Reels",
+     "score": 0.8647,
+     "audience_fit": 0.2431,
+     "format_fit": 1.0,
+     "personas": {
+      "casual_browser": 1.0
+     },
+     "reason": "aspect 9:16 ok; duration ideal (ideal 15-45s); lean-back browsing; captions matter (often muted); 20-45 s",
+     "predicted": {
+      "views_range": [
+       4640,
+       11600
+      ],
+      "watch_pct": 65.6,
+      "p_swipe3s": 0.2171,
+      "shares_range": [
+       36,
+       91
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "IG_Stories",
+     "score": 0.8108,
+     "audience_fit": 0.3026,
+     "format_fit": 0.85,
+     "personas": {
+      "fast_swiper": 1.0
+     },
+     "reason": "aspect 9:16 ok; duration ok (ideal 5-15s); short attention, swipe feed; rewards a hook in <=3 s and 15-30 s length",
+     "predicted": {
+      "views_range": [
+       3859,
+       9647
+      ],
+      "watch_pct": 48.4,
+      "p_swipe3s": 0.1876,
+      "shares_range": [
+       19,
+       49
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "Shorts",
+     "score": 0.7729,
+     "audience_fit": 0.2728,
+     "format_fit": 0.85,
+     "personas": {
+      "fast_swiper": 0.5,
+      "casual_browser": 0.5
+     },
+     "reason": "aspect 9:16 ok; duration ok (ideal 20-50s); short attention, swipe feed; rewards a hook in <=3 s and 15-30 s length; lean-back browsing; captions matter (often muted); 20-45 s",
+     "predicted": {
+      "views_range": [
+       3875,
+       9687
+      ],
+      "watch_pct": 52.1,
+      "p_swipe3s": 0.2215,
+      "shares_range": [
+       22,
+       57
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "FB_Reels",
+     "score": 0.7057,
+     "audience_fit": 0.2201,
+     "format_fit": 0.85,
+     "personas": {
+      "casual_browser": 0.6,
+      "completionist": 0.4
+     },
+     "reason": "aspect 9:16 ok; duration ok (ideal 20-60s); lean-back browsing; captions matter (often muted); 20-45 s; tolerates 45-90 s substantive clips; professional audience finishes informative content",
+     "predicted": {
+      "views_range": [
+       2542,
+       6357
+      ],
+      "watch_pct": 60.3,
+      "p_swipe3s": 0.2359,
+      "shares_range": [
+       26,
+       66
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "IG_Feed",
+     "score": 0.5188,
+     "audience_fit": 0.2431,
+     "format_fit": 0.6,
+     "personas": {
+      "casual_browser": 1.0
+     },
+     "reason": "aspect 9:16 not in ['4:5', '1:1'] (x0.6); duration ideal (ideal 15-60s); lean-back browsing; captions matter (often muted); 20-45 s",
+     "predicted": {
+      "views_range": [
+       2629,
+       6572
+      ],
+      "watch_pct": 39.4,
+      "p_swipe3s": 0.3618,
+      "shares_range": [
+       12,
+       31
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "X",
+     "score": 0.5092,
+     "audience_fit": 0.2324,
+     "format_fit": 0.6,
+     "personas": {
+      "sharer_engager": 1.0
+     },
+     "reason": "aspect 9:16 not in ['16:9', '1:1'] (x0.6); duration ideal (ideal 15-45s); shares/quote-posts strong claims; loopable, captioned clips travel",
+     "predicted": {
+      "views_range": [
+       3410,
+       8525
+      ],
+      "watch_pct": 47.5,
+      "p_swipe3s": 0.2688,
+      "shares_range": [
+       88,
+       222
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "FB_Feed",
+     "score": 0.4015,
+     "audience_fit": 0.1915,
+     "format_fit": 0.51,
+     "personas": {
+      "completionist": 0.5,
+      "sharer_engager": 0.5
+     },
+     "reason": "aspect 9:16 not in ['1:1', '4:5'] (x0.6); duration ok (ideal 30-90s); tolerates 45-90 s substantive clips; professional audience finishes informative content; shares/quote-posts strong claims; loopable, captioned clips travel",
+     "predicted": {
+      "views_range": [
+       2802,
+       7005
+      ],
+      "watch_pct": 40.3,
+      "p_swipe3s": 0.3304,
+      "shares_range": [
+       36,
+       93
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "LinkedIn",
+     "score": 0.3703,
+     "audience_fit": 0.1507,
+     "format_fit": 0.51,
+     "personas": {
+      "completionist": 1.0
+     },
+     "reason": "aspect 9:16 not in ['1:1', '4:5'] (x0.6); duration ok (ideal 30-90s); tolerates 45-90 s substantive clips; professional audience finishes informative content",
+     "predicted": {
+      "views_range": [
+       2740,
+       6850
+      ],
+      "watch_pct": 40.3,
+      "p_swipe3s": 0.3445,
+      "shares_range": [
+       11,
+       30
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "YouTube",
+     "score": 0.3703,
+     "audience_fit": 0.1507,
+     "format_fit": 0.51,
+     "personas": {
+      "completionist": 1.0
+     },
+     "reason": "aspect 9:16 not in ['16:9'] (x0.6); duration ok (ideal 60-600s); tolerates 45-90 s substantive clips; professional audience finishes informative content",
+     "predicted": {
+      "views_range": [
+       2740,
+       6850
+      ],
+      "watch_pct": 40.3,
+      "p_swipe3s": 0.3445,
+      "shares_range": [
+       11,
+       30
+      ],
+      "simulated": true
+     }
+    }
+   ],
+   "reasons": [
+    {
+     "persona": "fast_swiper",
+     "length": "17s in sweet spot 15-30s",
+     "top": [
+      "hook lands by 1.53s, cut at punct",
+      "captions: word_pop",
+      "loop-friendly ending"
+     ]
+    },
+    {
+     "persona": "casual_browser",
+     "length": "17s shorter than sweet spot 20-45s",
+     "top": [
+      "captions: word_pop",
+      "hook lands by 1.53s, cut at punct",
+      "loop-friendly ending"
+     ]
+    },
+    {
+     "persona": "completionist",
+     "length": "17s shorter than sweet spot 30-60s",
+     "top": [
+      "captions: word_pop",
+      "hook lands by 1.53s, cut at punct",
+      "loop-friendly ending"
+     ]
+    },
+    {
+     "persona": "sharer_engager",
+     "length": "17s shorter than sweet spot 20-45s",
+     "top": [
+      "loop-friendly ending",
+      "captions: word_pop",
+      "hook lands by 1.53s, cut at punct"
+     ]
+    }
+   ],
+   "rule_inputs": {
+    "duration_s": 16.89,
+    "n_cuts": 8,
+    "max_gap_s": 3.0599999999999996,
+    "gap_cv": 0.4490188046426295,
+    "frac_gaps_2_4s": 0.4444444444444444,
+    "median_gap_s": 1.59,
+    "captions": true,
+    "caption_style": "word_pop",
+    "hook_end_s": 1.53,
+    "hook_boundary": "punct",
+    "hook_strength": 0.3,
+    "hook_text": "And that was sort of my first introduction.",
+    "silence_removed_s": 0.84,
+    "loop_end": true,
+    "hook_title": true,
+    "aspect": "9:16",
+    "channel": "IG_Stories"
+   },
+   "batch_score": 79.2,
+   "batch_rank": 2,
+   "recipe": {
+    "hook": "m1",
+    "length": 15,
+    "pacing": "tight_punch",
+    "captions": "word_pop",
+    "hook_title": true,
+    "ending": "loop",
+    "channel": "IG_Stories",
+    "aspect": "9:16"
+   },
+   "duration_s": 16.89,
+   "rank": 2
+  },
+  {
+   "variant_id": "v06",
+   "overall": {
+    "p_swipe3s": 0.308,
+    "watch_pct": 61.6,
+    "p_share": 0.0095,
+    "score": 0.7877
+   },
+   "audience_score": 0.618,
+   "target_channel": "X",
+   "target_channel_fit": 1.0,
+   "personas": {
+    "fast_swiper": {
+     "p_swipe3s": 0.3809,
+     "watch_pct": 43.9,
+     "p_share": 0.00428,
+     "score": 0.4659,
+     "channel": "TikTok",
+     "fit": 0.1459
+    },
+    "casual_browser": {
+     "p_swipe3s": 0.3447,
+     "watch_pct": 61.1,
+     "p_share": 0.00691,
+     "score": 0.5757,
+     "channel": "Reels",
+     "fit": 0.1657
+    },
+    "completionist": {
+     "p_swipe3s": 0.2223,
+     "watch_pct": 74.7,
+     "p_share": 0.00734,
+     "score": 0.6834,
+     "channel": "LinkedIn",
+     "fit": 0.1034
+    },
+    "sharer_engager": {
+     "p_swipe3s": 0.2358,
+     "watch_pct": 76.5,
+     "p_share": 0.03938,
+     "score": 0.8118,
+     "channel": "X",
+     "fit": 0.1918
+    }
+   },
+   "model_version": "dummy-heuristic-v0",
+   "confidence": "none - untrained heuristic",
+   "label": "heuristic, not trained",
+   "best_persona": "sharer_engager",
+   "best_channel": "X",
+   "channels": [
+    {
+     "channel": "X",
+     "score": 0.7877,
+     "audience_fit": 0.1918,
+     "format_fit": 1.0,
+     "personas": {
+      "sharer_engager": 1.0
+     },
+     "reason": "aspect 1:1 ok; duration ideal (ideal 15-45s); shares/quote-posts strong claims; loopable, captioned clips travel",
+     "predicted": {
+      "views_range": [
+       5176,
+       12940
+      ],
+      "watch_pct": 76.5,
+      "p_swipe3s": 0.2358,
+      "shares_range": [
+       203,
+       510
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "IG_Feed",
+     "score": 0.7486,
+     "audience_fit": 0.1657,
+     "format_fit": 1.0,
+     "personas": {
+      "casual_browser": 1.0
+     },
+     "reason": "aspect 1:1 ok; duration ideal (ideal 15-60s); lean-back browsing; captions matter (often muted); 20-45 s",
+     "predicted": {
+      "views_range": [
+       3707,
+       9267
+      ],
+      "watch_pct": 61.1,
+      "p_swipe3s": 0.3447,
+      "shares_range": [
+       25,
+       65
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "FB_Feed",
+     "score": 0.6132,
+     "audience_fit": 0.1476,
+     "format_fit": 0.85,
+     "personas": {
+      "completionist": 0.5,
+      "sharer_engager": 0.5
+     },
+     "reason": "aspect 1:1 ok; duration ok (ideal 30-90s); tolerates 45-90 s substantive clips; professional audience finishes informative content; shares/quote-posts strong claims; loopable, captioned clips travel",
+     "predicted": {
+      "views_range": [
+       4270,
+       10675
+      ],
+      "watch_pct": 64.3,
+      "p_swipe3s": 0.2695,
+      "shares_range": [
+       84,
+       212
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "LinkedIn",
+     "score": 0.5568,
+     "audience_fit": 0.1034,
+     "format_fit": 0.85,
+     "personas": {
+      "completionist": 1.0
+     },
+     "reason": "aspect 1:1 ok; duration ok (ideal 30-90s); tolerates 45-90 s substantive clips; professional audience finishes informative content",
+     "predicted": {
+      "views_range": [
+       4272,
+       10680
+      ],
+      "watch_pct": 63.5,
+      "p_swipe3s": 0.2615,
+      "shares_range": [
+       26,
+       67
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "Reels",
+     "score": 0.4491,
+     "audience_fit": 0.1657,
+     "format_fit": 0.6,
+     "personas": {
+      "casual_browser": 1.0
+     },
+     "reason": "aspect 1:1 not in ['9:16'] (x0.6); duration ideal (ideal 15-45s); lean-back browsing; captions matter (often muted); 20-45 s",
+     "predicted": {
+      "views_range": [
+       1754,
+       4385
+      ],
+      "watch_pct": 36.7,
+      "p_swipe3s": 0.5745,
+      "shares_range": [
+       7,
+       19
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "Shorts",
+     "score": 0.4402,
+     "audience_fit": 0.1558,
+     "format_fit": 0.6,
+     "personas": {
+      "fast_swiper": 0.5,
+      "casual_browser": 0.5
+     },
+     "reason": "aspect 1:1 not in ['9:16'] (x0.6); duration ideal (ideal 20-50s); short attention, swipe feed; rewards a hook in <=3 s and 15-30 s length; lean-back browsing; captions matter (often muted); 20-45 s",
+     "predicted": {
+      "views_range": [
+       1509,
+       3772
+      ],
+      "watch_pct": 31.5,
+      "p_swipe3s": 0.6047,
+      "shares_range": [
+       5,
+       13
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "FB_Reels",
+     "score": 0.4367,
+     "audience_fit": 0.1519,
+     "format_fit": 0.6,
+     "personas": {
+      "casual_browser": 0.6,
+      "completionist": 0.4
+     },
+     "reason": "aspect 1:1 not in ['9:16'] (x0.6); duration ideal (ideal 20-60s); lean-back browsing; captions matter (often muted); 20-45 s; tolerates 45-90 s substantive clips; professional audience finishes informative content",
+     "predicted": {
+      "views_range": [
+       1285,
+       3213
+      ],
+      "watch_pct": 39.9,
+      "p_swipe3s": 0.4929,
+      "shares_range": [
+       8,
+       21
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "TikTok",
+     "score": 0.4313,
+     "audience_fit": 0.1459,
+     "format_fit": 0.6,
+     "personas": {
+      "fast_swiper": 1.0
+     },
+     "reason": "aspect 1:1 not in ['9:16'] (x0.6); duration ideal (ideal 15-34s); short attention, swipe feed; rewards a hook in <=3 s and 15-30 s length",
+     "predicted": {
+      "views_range": [
+       1290,
+       3225
+      ],
+      "watch_pct": 26.3,
+      "p_swipe3s": 0.6348,
+      "shares_range": [
+       3,
+       9
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "IG_Stories",
+     "score": 0.3666,
+     "audience_fit": 0.1459,
+     "format_fit": 0.51,
+     "personas": {
+      "fast_swiper": 1.0
+     },
+     "reason": "aspect 1:1 not in ['9:16'] (x0.6); duration ok (ideal 5-15s); short attention, swipe feed; rewards a hook in <=3 s and 15-30 s length",
+     "predicted": {
+      "views_range": [
+       955,
+       2387
+      ],
+      "watch_pct": 22.4,
+      "p_swipe3s": 0.7469,
+      "shares_range": [
+       2,
+       6
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "YouTube",
+     "score": 0.3341,
+     "audience_fit": 0.1034,
+     "format_fit": 0.51,
+     "personas": {
+      "completionist": 1.0
+     },
+     "reason": "aspect 1:1 not in ['16:9'] (x0.6); duration ok (ideal 60-600s); tolerates 45-90 s substantive clips; professional audience finishes informative content",
+     "predicted": {
+      "views_range": [
+       2286,
+       5715
+      ],
+      "watch_pct": 38.1,
+      "p_swipe3s": 0.4359,
+      "shares_range": [
+       8,
+       22
+      ],
+      "simulated": true
+     }
+    }
+   ],
+   "reasons": [
+    {
+     "persona": "fast_swiper",
+     "length": "28s in sweet spot 15-30s",
+     "top": [
+      "hook line strength 0.10 (question/number/claim/'you')",
+      "3.5s dead air removed",
+      "loop-friendly ending"
+     ]
+    },
+    {
+     "persona": "casual_browser",
+     "length": "28s in sweet spot 20-45s",
+     "top": [
+      "3.5s dead air removed",
+      "captions: sentence",
+      "loop-friendly ending"
+     ]
+    },
+    {
+     "persona": "completionist",
+     "length": "28s shorter than sweet spot 30-60s",
+     "top": [
+      "3.5s dead air removed",
+      "loop-friendly ending",
+      "captions: sentence"
+     ]
+    },
+    {
+     "persona": "sharer_engager",
+     "length": "28s in sweet spot 20-45s",
+     "top": [
+      "loop-friendly ending",
+      "captions: sentence",
+      "hook line strength 0.10 (question/number/claim/'you')"
+     ]
+    }
+   ],
+   "rule_inputs": {
+    "duration_s": 28.22,
+    "n_cuts": 14,
+    "max_gap_s": 3.0600000000000023,
+    "gap_cv": 0.432617037896058,
+    "frac_gaps_2_4s": 0.4,
+    "median_gap_s": 1.5899999999999999,
+    "captions": true,
+    "caption_style": "sentence",
+    "hook_end_s": 2.48,
+    "hook_boundary": "word",
+    "hook_strength": 0.1,
+    "hook_text": "My mother works at NIOSH and has been there since I was a young child.",
+    "silence_removed_s": 3.5,
+    "loop_end": true,
+    "hook_title": true,
+    "aspect": "1:1",
+    "channel": "X"
+   },
+   "batch_score": 72.0,
+   "batch_rank": 3,
+   "recipe": {
+    "hook": "m2",
+    "length": 30,
+    "pacing": "tight_punch",
+    "captions": "sentence",
+    "hook_title": true,
+    "ending": "loop",
+    "channel": "X",
+    "aspect": "1:1"
+   },
+   "duration_s": 28.22,
+   "rank": 3
+  },
+  {
+   "variant_id": "v04",
+   "overall": {
+    "p_swipe3s": 0.3137,
+    "watch_pct": 59.2,
+    "p_share": 0.0089,
+    "score": 0.7006
+   },
+   "audience_score": 0.6006,
+   "target_channel": "FB_Reels",
+   "target_channel_fit": 1.0,
+   "personas": {
+    "fast_swiper": {
+     "p_swipe3s": 0.3899,
+     "watch_pct": 42.0,
+     "p_share": 0.00408,
+     "score": 0.4527,
+     "channel": "TikTok",
+     "fit": 0.1327
+    },
+    "casual_browser": {
+     "p_swipe3s": 0.3506,
+     "watch_pct": 58.8,
+     "p_share": 0.00653,
+     "score": 0.5604,
+     "channel": "Reels",
+     "fit": 0.1504
+    },
+    "completionist": {
+     "p_swipe3s": 0.2253,
+     "watch_pct": 71.8,
+     "p_share": 0.00672,
+     "score": 0.6643,
+     "channel": "LinkedIn",
+     "fit": 0.0843
+    },
+    "sharer_engager": {
+     "p_swipe3s": 0.2394,
+     "watch_pct": 74.7,
+     "p_share": 0.03706,
+     "score": 0.8028,
+     "channel": "X",
+     "fit": 0.1828
+    }
+   },
+   "model_version": "dummy-heuristic-v0",
+   "confidence": "none - untrained heuristic",
+   "label": "heuristic, not trained",
+   "best_persona": "sharer_engager",
+   "best_channel": "Reels",
+   "channels": [
+    {
+     "channel": "Reels",
+     "score": 0.7256,
+     "audience_fit": 0.1504,
+     "format_fit": 1.0,
+     "personas": {
+      "casual_browser": 1.0
+     },
+     "reason": "aspect 9:16 ok; duration ideal (ideal 15-45s); lean-back browsing; captions matter (often muted); 20-45 s",
+     "predicted": {
+      "views_range": [
+       3562,
+       8905
+      ],
+      "watch_pct": 58.8,
+      "p_swipe3s": 0.3506,
+      "shares_range": [
+       23,
+       59
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "Shorts",
+     "score": 0.7123,
+     "audience_fit": 0.1416,
+     "format_fit": 1.0,
+     "personas": {
+      "fast_swiper": 0.5,
+      "casual_browser": 0.5
+     },
+     "reason": "aspect 9:16 ok; duration ideal (ideal 20-50s); short attention, swipe feed; rewards a hook in <=3 s and 15-30 s length; lean-back browsing; captions matter (often muted); 20-45 s",
+     "predicted": {
+      "views_range": [
+       3070,
+       7675
+      ],
+      "watch_pct": 50.4,
+      "p_swipe3s": 0.3703,
+      "shares_range": [
+       16,
+       41
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "FB_Reels",
+     "score": 0.7006,
+     "audience_fit": 0.1337,
+     "format_fit": 1.0,
+     "personas": {
+      "casual_browser": 0.6,
+      "completionist": 0.4
+     },
+     "reason": "aspect 9:16 ok; duration ideal (ideal 20-60s); lean-back browsing; captions matter (often muted); 20-45 s; tolerates 45-90 s substantive clips; professional audience finishes informative content",
+     "predicted": {
+      "views_range": [
+       2452,
+       6132
+      ],
+      "watch_pct": 64.0,
+      "p_swipe3s": 0.3005,
+      "shares_range": [
+       24,
+       61
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "TikTok",
+     "score": 0.699,
+     "audience_fit": 0.1327,
+     "format_fit": 1.0,
+     "personas": {
+      "fast_swiper": 1.0
+     },
+     "reason": "aspect 9:16 ok; duration ideal (ideal 15-34s); short attention, swipe feed; rewards a hook in <=3 s and 15-30 s length",
+     "predicted": {
+      "views_range": [
+       2622,
+       6555
+      ],
+      "watch_pct": 42.0,
+      "p_swipe3s": 0.3899,
+      "shares_range": [
+       10,
+       27
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "IG_Stories",
+     "score": 0.5942,
+     "audience_fit": 0.1327,
+     "format_fit": 0.85,
+     "personas": {
+      "fast_swiper": 1.0
+     },
+     "reason": "aspect 9:16 ok; duration ok (ideal 5-15s); short attention, swipe feed; rewards a hook in <=3 s and 15-30 s length",
+     "predicted": {
+      "views_range": [
+       2113,
+       5282
+      ],
+      "watch_pct": 35.7,
+      "p_swipe3s": 0.4587,
+      "shares_range": [
+       7,
+       19
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "X",
+     "score": 0.4645,
+     "audience_fit": 0.1828,
+     "format_fit": 0.6,
+     "personas": {
+      "sharer_engager": 1.0
+     },
+     "reason": "aspect 9:16 not in ['16:9', '1:1'] (x0.6); duration ideal (ideal 15-45s); shares/quote-posts strong claims; loopable, captioned clips travel",
+     "predicted": {
+      "views_range": [
+       2701,
+       6752
+      ],
+      "watch_pct": 44.8,
+      "p_swipe3s": 0.399,
+      "shares_range": [
+       60,
+       151
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "IG_Feed",
+     "score": 0.4354,
+     "audience_fit": 0.1504,
+     "format_fit": 0.6,
+     "personas": {
+      "casual_browser": 1.0
+     },
+     "reason": "aspect 9:16 not in ['4:5', '1:1'] (x0.6); duration ideal (ideal 15-60s); lean-back browsing; captions matter (often muted); 20-45 s",
+     "predicted": {
+      "views_range": [
+       1681,
+       4202
+      ],
+      "watch_pct": 35.3,
+      "p_swipe3s": 0.5843,
+      "shares_range": [
+       6,
+       17
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "FB_Feed",
+     "score": 0.3572,
+     "audience_fit": 0.1336,
+     "format_fit": 0.51,
+     "personas": {
+      "completionist": 0.5,
+      "sharer_engager": 0.5
+     },
+     "reason": "aspect 9:16 not in ['1:1', '4:5'] (x0.6); duration ok (ideal 30-90s); tolerates 45-90 s substantive clips; professional audience finishes informative content; shares/quote-posts strong claims; loopable, captioned clips travel",
+     "predicted": {
+      "views_range": [
+       2185,
+       5462
+      ],
+      "watch_pct": 37.4,
+      "p_swipe3s": 0.4556,
+      "shares_range": [
+       24,
+       61
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "LinkedIn",
+     "score": 0.3195,
+     "audience_fit": 0.0843,
+     "format_fit": 0.51,
+     "personas": {
+      "completionist": 1.0
+     },
+     "reason": "aspect 9:16 not in ['1:1', '4:5'] (x0.6); duration ok (ideal 30-90s); tolerates 45-90 s substantive clips; professional audience finishes informative content",
+     "predicted": {
+      "views_range": [
+       2209,
+       5522
+      ],
+      "watch_pct": 36.6,
+      "p_swipe3s": 0.4418,
+      "shares_range": [
+       7,
+       19
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "YouTube",
+     "score": 0.3195,
+     "audience_fit": 0.0843,
+     "format_fit": 0.51,
+     "personas": {
+      "completionist": 1.0
+     },
+     "reason": "aspect 9:16 not in ['16:9'] (x0.6); duration ok (ideal 60-600s); tolerates 45-90 s substantive clips; professional audience finishes informative content",
+     "predicted": {
+      "views_range": [
+       2209,
+       5522
+      ],
+      "watch_pct": 36.6,
+      "p_swipe3s": 0.4418,
+      "shares_range": [
+       7,
+       19
+      ],
+      "simulated": true
+     }
+    }
+   ],
+   "reasons": [
+    {
+     "persona": "fast_swiper",
+     "length": "28s in sweet spot 15-30s",
+     "top": [
+      "hook line strength 0.10 (question/number/claim/'you')",
+      "3.5s dead air removed",
+      "loop-friendly ending"
+     ]
+    },
+    {
+     "persona": "casual_browser",
+     "length": "28s in sweet spot 20-45s",
+     "top": [
+      "3.5s dead air removed",
+      "captions: sentence",
+      "loop-friendly ending"
+     ]
+    },
+    {
+     "persona": "completionist",
+     "length": "28s shorter than sweet spot 30-60s",
+     "top": [
+      "3.5s dead air removed",
+      "loop-friendly ending",
+      "captions: sentence"
+     ]
+    },
+    {
+     "persona": "sharer_engager",
+     "length": "28s in sweet spot 20-45s",
+     "top": [
+      "loop-friendly ending",
+      "captions: sentence",
+      "hook line strength 0.10 (question/number/claim/'you')"
+     ]
+    }
+   ],
+   "rule_inputs": {
+    "duration_s": 28.22,
+    "n_cuts": 14,
+    "max_gap_s": 3.0600000000000023,
+    "gap_cv": 0.432617037896058,
+    "frac_gaps_2_4s": 0.4,
+    "median_gap_s": 1.5899999999999999,
+    "captions": true,
+    "caption_style": "sentence",
+    "hook_end_s": 2.48,
+    "hook_boundary": "word",
+    "hook_strength": 0.1,
+    "hook_text": "My mother works at NIOSH and has been there since I was a young child.",
+    "silence_removed_s": 3.5,
+    "loop_end": true,
+    "hook_title": false,
+    "aspect": "9:16",
+    "channel": "FB_Reels"
+   },
+   "batch_score": 44.9,
+   "batch_rank": 4,
+   "recipe": {
+    "hook": "m2",
+    "length": 45,
+    "pacing": "tight_punch",
+    "captions": "sentence",
+    "hook_title": false,
+    "ending": "loop",
+    "channel": "FB_Reels",
+    "aspect": "9:16"
+   },
+   "duration_s": 28.22,
+   "rank": 4
+  },
+  {
+   "variant_id": "v02",
+   "overall": {
+    "p_swipe3s": 0.3456,
+    "watch_pct": 61.4,
+    "p_share": 0.00983,
+    "score": 0.6795
+   },
+   "audience_score": 0.6059,
+   "target_channel": "Shorts",
+   "target_channel_fit": 1.0,
+   "personas": {
+    "fast_swiper": {
+     "p_swipe3s": 0.4694,
+     "watch_pct": 38.1,
+     "p_share": 0.0037,
+     "score": 0.4015,
+     "channel": "TikTok",
+     "fit": 0.0815
+    },
+    "casual_browser": {
+     "p_swipe3s": 0.3726,
+     "watch_pct": 61.7,
+     "p_share": 0.00701,
+     "score": 0.5678,
+     "channel": "Reels",
+     "fit": 0.1578
+    },
+    "completionist": {
+     "p_swipe3s": 0.2264,
+     "watch_pct": 79.2,
+     "p_share": 0.00855,
+     "score": 0.7119,
+     "channel": "LinkedIn",
+     "fit": 0.1319
+    },
+    "sharer_engager": {
+     "p_swipe3s": 0.2506,
+     "watch_pct": 77.4,
+     "p_share": 0.04057,
+     "score": 0.8093,
+     "channel": "X",
+     "fit": 0.1893
+    }
+   },
+   "model_version": "dummy-heuristic-v0",
+   "confidence": "none - untrained heuristic",
+   "label": "heuristic, not trained",
+   "best_persona": "sharer_engager",
+   "best_channel": "FB_Reels",
+   "channels": [
+    {
+     "channel": "FB_Reels",
+     "score": 0.74,
+     "audience_fit": 0.16,
+     "format_fit": 1.0,
+     "personas": {
+      "casual_browser": 0.6,
+      "completionist": 0.4
+     },
+     "reason": "aspect 9:16 ok; duration ideal (ideal 20-60s); lean-back browsing; captions matter (often muted); 20-45 s; tolerates 45-90 s substantive clips; professional audience finishes informative content",
+     "predicted": {
+      "views_range": [
+       2561,
+       6403
+      ],
+      "watch_pct": 68.7,
+      "p_swipe3s": 0.3141,
+      "shares_range": [
+       29,
+       74
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "Reels",
+     "score": 0.7367,
+     "audience_fit": 0.1578,
+     "format_fit": 1.0,
+     "personas": {
+      "casual_browser": 1.0
+     },
+     "reason": "aspect 9:16 ok; duration ideal (ideal 15-45s); lean-back browsing; captions matter (often muted); 20-45 s",
+     "predicted": {
+      "views_range": [
+       3597,
+       8992
+      ],
+      "watch_pct": 61.7,
+      "p_swipe3s": 0.3726,
+      "shares_range": [
+       25,
+       64
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "Shorts",
+     "score": 0.6795,
+     "audience_fit": 0.1197,
+     "format_fit": 1.0,
+     "personas": {
+      "fast_swiper": 0.5,
+      "casual_browser": 0.5
+     },
+     "reason": "aspect 9:16 ok; duration ideal (ideal 20-50s); short attention, swipe feed; rewards a hook in <=3 s and 15-30 s length; lean-back browsing; captions matter (often muted); 20-45 s",
+     "predicted": {
+      "views_range": [
+       2824,
+       7060
+      ],
+      "watch_pct": 49.9,
+      "p_swipe3s": 0.421,
+      "shares_range": [
+       15,
+       38
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "TikTok",
+     "score": 0.6222,
+     "audience_fit": 0.0815,
+     "format_fit": 1.0,
+     "personas": {
+      "fast_swiper": 1.0
+     },
+     "reason": "aspect 9:16 ok; duration ideal (ideal 15-34s); short attention, swipe feed; rewards a hook in <=3 s and 15-30 s length",
+     "predicted": {
+      "views_range": [
+       2162,
+       5405
+      ],
+      "watch_pct": 38.1,
+      "p_swipe3s": 0.4694,
+      "shares_range": [
+       7,
+       20
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "IG_Stories",
+     "score": 0.5289,
+     "audience_fit": 0.0815,
+     "format_fit": 0.85,
+     "personas": {
+      "fast_swiper": 1.0
+     },
+     "reason": "aspect 9:16 ok; duration ok (ideal 5-15s); short attention, swipe feed; rewards a hook in <=3 s and 15-30 s length",
+     "predicted": {
+      "views_range": [
+       1690,
+       4225
+      ],
+      "watch_pct": 32.4,
+      "p_swipe3s": 0.5522,
+      "shares_range": [
+       5,
+       14
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "X",
+     "score": 0.4704,
+     "audience_fit": 0.1893,
+     "format_fit": 0.6,
+     "personas": {
+      "sharer_engager": 1.0
+     },
+     "reason": "aspect 9:16 not in ['16:9', '1:1'] (x0.6); duration ideal (ideal 15-45s); shares/quote-posts strong claims; loopable, captioned clips travel",
+     "predicted": {
+      "views_range": [
+       2691,
+       6727
+      ],
+      "watch_pct": 46.4,
+      "p_swipe3s": 0.4177,
+      "shares_range": [
+       65,
+       164
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "FB_Feed",
+     "score": 0.4445,
+     "audience_fit": 0.1606,
+     "format_fit": 0.6,
+     "personas": {
+      "completionist": 0.5,
+      "sharer_engager": 0.5
+     },
+     "reason": "aspect 9:16 not in ['1:1', '4:5'] (x0.6); duration ideal (ideal 30-90s); tolerates 45-90 s substantive clips; professional audience finishes informative content; shares/quote-posts strong claims; loopable, captioned clips travel",
+     "predicted": {
+      "views_range": [
+       2799,
+       6997
+      ],
+      "watch_pct": 47.0,
+      "p_swipe3s": 0.3975,
+      "shares_range": [
+       41,
+       104
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "IG_Feed",
+     "score": 0.442,
+     "audience_fit": 0.1578,
+     "format_fit": 0.6,
+     "personas": {
+      "casual_browser": 1.0
+     },
+     "reason": "aspect 9:16 not in ['4:5', '1:1'] (x0.6); duration ideal (ideal 15-60s); lean-back browsing; captions matter (often muted); 20-45 s",
+     "predicted": {
+      "views_range": [
+       1622,
+       4055
+      ],
+      "watch_pct": 37.0,
+      "p_swipe3s": 0.621,
+      "shares_range": [
+       6,
+       18
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "LinkedIn",
+     "score": 0.4187,
+     "audience_fit": 0.1319,
+     "format_fit": 0.6,
+     "personas": {
+      "completionist": 1.0
+     },
+     "reason": "aspect 9:16 not in ['1:1', '4:5'] (x0.6); duration ideal (ideal 30-90s); tolerates 45-90 s substantive clips; professional audience finishes informative content",
+     "predicted": {
+      "views_range": [
+       2910,
+       7275
+      ],
+      "watch_pct": 47.5,
+      "p_swipe3s": 0.3773,
+      "shares_range": [
+       14,
+       38
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "YouTube",
+     "score": 0.3559,
+     "audience_fit": 0.1319,
+     "format_fit": 0.51,
+     "personas": {
+      "completionist": 1.0
+     },
+     "reason": "aspect 9:16 not in ['16:9'] (x0.6); duration ok (ideal 60-600s); tolerates 45-90 s substantive clips; professional audience finishes informative content",
+     "predicted": {
+      "views_range": [
+       2343,
+       5857
+      ],
+      "watch_pct": 40.4,
+      "p_swipe3s": 0.4439,
+      "shares_range": [
+       10,
+       26
+      ],
+      "simulated": true
+     }
+    }
+   ],
+   "reasons": [
+    {
+     "persona": "fast_swiper",
+     "length": "32s a bit long (sweet 15-30s)",
+     "top": [
+      "hook line strength 0.10 (question/number/claim/'you')",
+      "loop-friendly ending",
+      "71% shots 2-4 s, longest 3.0s, CV 0.40"
+     ]
+    },
+    {
+     "persona": "casual_browser",
+     "length": "32s in sweet spot 20-45s",
+     "top": [
+      "captions: sentence",
+      "loop-friendly ending",
+      "hook line strength 0.10 (question/number/claim/'you')"
+     ]
+    },
+    {
+     "persona": "completionist",
+     "length": "32s in sweet spot 30-60s",
+     "top": [
+      "loop-friendly ending",
+      "captions: sentence",
+      "hook line strength 0.10 (question/number/claim/'you')"
+     ]
+    },
+    {
+     "persona": "sharer_engager",
+     "length": "32s in sweet spot 20-45s",
+     "top": [
+      "loop-friendly ending",
+      "captions: sentence",
+      "hook line strength 0.10 (question/number/claim/'you')"
+     ]
+    }
+   ],
+   "rule_inputs": {
+    "duration_s": 31.92,
+    "n_cuts": 13,
+    "max_gap_s": 3.0000000000000004,
+    "gap_cv": 0.40086101435465354,
+    "frac_gaps_2_4s": 0.7142857142857143,
+    "median_gap_s": 2.889999999999997,
+    "captions": true,
+    "caption_style": "sentence",
+    "hook_end_s": 2.86,
+    "hook_boundary": "word",
+    "hook_strength": 0.1,
+    "hook_text": "My mother works at NIOSH and has been there since I was a young child.",
+    "silence_removed_s": 1.04,
+    "loop_end": true,
+    "hook_title": true,
+    "aspect": "9:16",
+    "channel": "Shorts"
+   },
+   "batch_score": 38.3,
+   "batch_rank": 5,
+   "recipe": {
+    "hook": "m2",
+    "length": 30,
+    "pacing": "raw_punch",
+    "captions": "sentence",
+    "hook_title": true,
+    "ending": "loop",
+    "channel": "Shorts",
+    "aspect": "9:16"
+   },
+   "duration_s": 31.92,
+   "rank": 5
+  },
+  {
+   "variant_id": "v07",
+   "overall": {
+    "p_swipe3s": 0.1753,
+    "watch_pct": 72.3,
+    "p_share": 0.01255,
+    "score": 0.6392
+   },
+   "audience_score": 0.7447,
+   "target_channel": "LinkedIn",
+   "target_channel_fit": 0.85,
+   "personas": {
+    "fast_swiper": {
+     "p_swipe3s": 0.1533,
+     "watch_pct": 60.1,
+     "p_share": 0.00634,
+     "score": 0.6425,
+     "channel": "TikTok",
+     "fit": 0.3225
+    },
+    "casual_browser": {
+     "p_swipe3s": 0.2059,
+     "watch_pct": 71.9,
+     "p_share": 0.00926,
+     "score": 0.6977,
+     "channel": "Reels",
+     "fit": 0.2877
+    },
+    "completionist": {
+     "p_swipe3s": 0.1735,
+     "watch_pct": 81.3,
+     "p_share": 0.00924,
+     "score": 0.748,
+     "channel": "LinkedIn",
+     "fit": 0.168
+    },
+    "sharer_engager": {
+     "p_swipe3s": 0.1548,
+     "watch_pct": 83.4,
+     "p_share": 0.05102,
+     "score": 0.8716,
+     "channel": "X",
+     "fit": 0.2516
+    }
+   },
+   "model_version": "dummy-heuristic-v0",
+   "confidence": "none - untrained heuristic",
+   "label": "heuristic, not trained",
+   "best_persona": "fast_swiper",
+   "best_channel": "IG_Feed",
+   "channels": [
+    {
+     "channel": "IG_Feed",
+     "score": 0.9315,
+     "audience_fit": 0.2877,
+     "format_fit": 1.0,
+     "personas": {
+      "casual_browser": 1.0
+     },
+     "reason": "aspect 4:5 ok; duration ideal (ideal 15-60s); lean-back browsing; captions matter (often muted); 20-45 s",
+     "predicted": {
+      "views_range": [
+       5078,
+       12695
+      ],
+      "watch_pct": 71.9,
+      "p_swipe3s": 0.2059,
+      "shares_range": [
+       47,
+       118
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "FB_Feed",
+     "score": 0.6925,
+     "audience_fit": 0.2098,
+     "format_fit": 0.85,
+     "personas": {
+      "completionist": 0.5,
+      "sharer_engager": 0.5
+     },
+     "reason": "aspect 4:5 ok; duration ok (ideal 30-90s); tolerates 45-90 s substantive clips; professional audience finishes informative content; shares/quote-posts strong claims; loopable, captioned clips travel",
+     "predicted": {
+      "views_range": [
+       5041,
+       12602
+      ],
+      "watch_pct": 70.0,
+      "p_swipe3s": 0.1931,
+      "shares_range": [
+       129,
+       323
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "LinkedIn",
+     "score": 0.6392,
+     "audience_fit": 0.168,
+     "format_fit": 0.85,
+     "personas": {
+      "completionist": 1.0
+     },
+     "reason": "aspect 4:5 ok; duration ok (ideal 30-90s); tolerates 45-90 s substantive clips; professional audience finishes informative content",
+     "predicted": {
+      "views_range": [
+       4921,
+       12302
+      ],
+      "watch_pct": 69.1,
+      "p_swipe3s": 0.2041,
+      "shares_range": [
+       38,
+       97
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "TikTok",
+     "score": 0.5902,
+     "audience_fit": 0.3225,
+     "format_fit": 0.6,
+     "personas": {
+      "fast_swiper": 1.0
+     },
+     "reason": "aspect 4:5 not in ['9:16'] (x0.6); duration ideal (ideal 15-34s); short attention, swipe feed; rewards a hook in <=3 s and 15-30 s length",
+     "predicted": {
+      "views_range": [
+       2942,
+       7355
+      ],
+      "watch_pct": 36.1,
+      "p_swipe3s": 0.2555,
+      "shares_range": [
+       11,
+       28
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "Shorts",
+     "score": 0.5746,
+     "audience_fit": 0.3051,
+     "format_fit": 0.6,
+     "personas": {
+      "fast_swiper": 0.5,
+      "casual_browser": 0.5
+     },
+     "reason": "aspect 4:5 not in ['9:16'] (x0.6); duration ideal (ideal 20-50s); short attention, swipe feed; rewards a hook in <=3 s and 15-30 s length; lean-back browsing; captions matter (often muted); 20-45 s",
+     "predicted": {
+      "views_range": [
+       2905,
+       7262
+      ],
+      "watch_pct": 39.6,
+      "p_swipe3s": 0.2993,
+      "shares_range": [
+       13,
+       34
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "Reels",
+     "score": 0.5589,
+     "audience_fit": 0.2877,
+     "format_fit": 0.6,
+     "personas": {
+      "casual_browser": 1.0
+     },
+     "reason": "aspect 4:5 not in ['9:16'] (x0.6); duration ideal (ideal 15-45s); lean-back browsing; captions matter (often muted); 20-45 s",
+     "predicted": {
+      "views_range": [
+       2868,
+       7170
+      ],
+      "watch_pct": 43.1,
+      "p_swipe3s": 0.3432,
+      "shares_range": [
+       15,
+       40
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "FB_Reels",
+     "score": 0.5318,
+     "audience_fit": 0.2576,
+     "format_fit": 0.6,
+     "personas": {
+      "casual_browser": 0.6,
+      "completionist": 0.4
+     },
+     "reason": "aspect 4:5 not in ['9:16'] (x0.6); duration ideal (ideal 20-60s); lean-back browsing; captions matter (often muted); 20-45 s; tolerates 45-90 s substantive clips; professional audience finishes informative content",
+     "predicted": {
+      "views_range": [
+       1838,
+       4596
+      ],
+      "watch_pct": 45.4,
+      "p_swipe3s": 0.3216,
+      "shares_range": [
+       15,
+       39
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "X",
+     "score": 0.5264,
+     "audience_fit": 0.2516,
+     "format_fit": 0.6,
+     "personas": {
+      "sharer_engager": 1.0
+     },
+     "reason": "aspect 4:5 not in ['16:9', '1:1'] (x0.6); duration ideal (ideal 15-45s); shares/quote-posts strong claims; loopable, captioned clips travel",
+     "predicted": {
+      "views_range": [
+       3587,
+       8967
+      ],
+      "watch_pct": 50.0,
+      "p_swipe3s": 0.258,
+      "shares_range": [
+       109,
+       275
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "IG_Stories",
+     "score": 0.5017,
+     "audience_fit": 0.3225,
+     "format_fit": 0.51,
+     "personas": {
+      "fast_swiper": 1.0
+     },
+     "reason": "aspect 4:5 not in ['9:16'] (x0.6); duration ok (ideal 5-15s); short attention, swipe feed; rewards a hook in <=3 s and 15-30 s length",
+     "predicted": {
+      "views_range": [
+       2523,
+       6307
+      ],
+      "watch_pct": 30.7,
+      "p_swipe3s": 0.3006,
+      "shares_range": [
+       8,
+       21
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "YouTube",
+     "score": 0.3835,
+     "audience_fit": 0.168,
+     "format_fit": 0.51,
+     "personas": {
+      "completionist": 1.0
+     },
+     "reason": "aspect 4:5 not in ['16:9'] (x0.6); duration ok (ideal 60-600s); tolerates 45-90 s substantive clips; professional audience finishes informative content",
+     "predicted": {
+      "views_range": [
+       2808,
+       7020
+      ],
+      "watch_pct": 41.5,
+      "p_swipe3s": 0.3402,
+      "shares_range": [
+       13,
+       34
+      ],
+      "simulated": true
+     }
+    }
+   ],
+   "reasons": [
+    {
+     "persona": "fast_swiper",
+     "length": "28s in sweet spot 15-30s",
+     "top": [
+      "hook lands by 1.53s, cut at punct",
+      "2.6s dead air removed",
+      "loop-friendly ending"
+     ]
+    },
+    {
+     "persona": "casual_browser",
+     "length": "28s in sweet spot 20-45s",
+     "top": [
+      "hook lands by 1.53s, cut at punct",
+      "2.6s dead air removed",
+      "captions: sentence"
+     ]
+    },
+    {
+     "persona": "completionist",
+     "length": "28s shorter than sweet spot 30-60s",
+     "top": [
+      "hook lands by 1.53s, cut at punct",
+      "2.6s dead air removed",
+      "loop-friendly ending"
+     ]
+    },
+    {
+     "persona": "sharer_engager",
+     "length": "28s in sweet spot 20-45s",
+     "top": [
+      "loop-friendly ending",
+      "hook lands by 1.53s, cut at punct",
+      "captions: sentence"
+     ]
+    }
+   ],
+   "rule_inputs": {
+    "duration_s": 28.15,
+    "n_cuts": 13,
+    "max_gap_s": 3.0599999999999996,
+    "gap_cv": 0.42596390896866065,
+    "frac_gaps_2_4s": 0.5714285714285714,
+    "median_gap_s": 2.434,
+    "captions": true,
+    "caption_style": "sentence",
+    "hook_end_s": 1.53,
+    "hook_boundary": "punct",
+    "hook_strength": 0.3,
+    "hook_text": "And that was sort of my first introduction.",
+    "silence_removed_s": 2.59,
+    "loop_end": true,
+    "hook_title": true,
+    "aspect": "4:5",
+    "channel": "LinkedIn"
+   },
+   "batch_score": 25.7,
+   "batch_rank": 6,
+   "recipe": {
+    "hook": "m1",
+    "length": 45,
+    "pacing": "tight_punch",
+    "captions": "sentence",
+    "hook_title": true,
+    "ending": "loop",
+    "channel": "LinkedIn",
+    "aspect": "4:5"
+   },
+   "duration_s": 28.15,
+   "rank": 6
+  },
+  {
+   "variant_id": "v03",
+   "overall": {
+    "p_swipe3s": 0.2035,
+    "watch_pct": 55.1,
+    "p_share": 0.00787,
+    "score": 0.6201
+   },
+   "audience_score": 0.6177,
+   "target_channel": "Reels",
+   "target_channel_fit": 0.85,
+   "personas": {
+    "fast_swiper": {
+     "p_swipe3s": 0.1942,
+     "watch_pct": 40.7,
+     "p_share": 0.00396,
+     "score": 0.5247,
+     "channel": "TikTok",
+     "fit": 0.2047
+    },
+    "casual_browser": {
+     "p_swipe3s": 0.2415,
+     "watch_pct": 51.3,
+     "p_share": 0.00544,
+     "score": 0.563,
+     "channel": "Reels",
+     "fit": 0.153
+    },
+    "completionist": {
+     "p_swipe3s": 0.1847,
+     "watch_pct": 68.3,
+     "p_share": 0.00608,
+     "score": 0.6602,
+     "channel": "LinkedIn",
+     "fit": 0.0802
+    },
+    "sharer_engager": {
+     "p_swipe3s": 0.1735,
+     "watch_pct": 70.1,
+     "p_share": 0.03228,
+     "score": 0.8108,
+     "channel": "X",
+     "fit": 0.1908
+    }
+   },
+   "model_version": "dummy-heuristic-v0",
+   "confidence": "none - untrained heuristic",
+   "label": "heuristic, not trained",
+   "best_persona": "fast_swiper",
+   "best_channel": "IG_Stories",
+   "channels": [
+    {
+     "channel": "IG_Stories",
+     "score": 0.8071,
+     "audience_fit": 0.2047,
+     "format_fit": 1.0,
+     "personas": {
+      "fast_swiper": 1.0
+     },
+     "reason": "aspect 9:16 ok; duration ideal (ideal 5-15s); short attention, swipe feed; rewards a hook in <=3 s and 15-30 s length",
+     "predicted": {
+      "views_range": [
+       3441,
+       8602
+      ],
+      "watch_pct": 40.7,
+      "p_swipe3s": 0.1942,
+      "shares_range": [
+       13,
+       35
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "TikTok",
+     "score": 0.686,
+     "audience_fit": 0.2047,
+     "format_fit": 0.85,
+     "personas": {
+      "fast_swiper": 1.0
+     },
+     "reason": "aspect 9:16 ok; duration ok (ideal 15-34s); short attention, swipe feed; rewards a hook in <=3 s and 15-30 s length",
+     "predicted": {
+      "views_range": [
+       2997,
+       7492
+      ],
+      "watch_pct": 34.6,
+      "p_swipe3s": 0.2285,
+      "shares_range": [
+       10,
+       26
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "Shorts",
+     "score": 0.653,
+     "audience_fit": 0.1789,
+     "format_fit": 0.85,
+     "personas": {
+      "fast_swiper": 0.5,
+      "casual_browser": 0.5
+     },
+     "reason": "aspect 9:16 ok; duration ok (ideal 20-50s); short attention, swipe feed; rewards a hook in <=3 s and 15-30 s length; lean-back browsing; captions matter (often muted); 20-45 s",
+     "predicted": {
+      "views_range": [
+       3075,
+       7687
+      ],
+      "watch_pct": 39.1,
+      "p_swipe3s": 0.2563,
+      "shares_range": [
+       12,
+       31
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "Reels",
+     "score": 0.6201,
+     "audience_fit": 0.153,
+     "format_fit": 0.85,
+     "personas": {
+      "casual_browser": 1.0
+     },
+     "reason": "aspect 9:16 ok; duration ok (ideal 15-45s); lean-back browsing; captions matter (often muted); 20-45 s",
+     "predicted": {
+      "views_range": [
+       3153,
+       7882
+      ],
+      "watch_pct": 43.6,
+      "p_swipe3s": 0.2841,
+      "shares_range": [
+       14,
+       37
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "FB_Reels",
+     "score": 0.5918,
+     "audience_fit": 0.1308,
+     "format_fit": 0.85,
+     "personas": {
+      "casual_browser": 0.6,
+      "completionist": 0.4
+     },
+     "reason": "aspect 9:16 ok; duration ok (ideal 20-60s); lean-back browsing; captions matter (often muted); 20-45 s; tolerates 45-90 s substantive clips; professional audience finishes informative content",
+     "predicted": {
+      "views_range": [
+       2134,
+       5335
+      ],
+      "watch_pct": 49.4,
+      "p_swipe3s": 0.2574,
+      "shares_range": [
+       15,
+       39
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "X",
+     "score": 0.401,
+     "audience_fit": 0.1908,
+     "format_fit": 0.51,
+     "personas": {
+      "sharer_engager": 1.0
+     },
+     "reason": "aspect 9:16 not in ['16:9', '1:1'] (x0.6); duration ok (ideal 15-45s); shares/quote-posts strong claims; loopable, captioned clips travel",
+     "predicted": {
+      "views_range": [
+       2569,
+       6422
+      ],
+      "watch_pct": 35.8,
+      "p_swipe3s": 0.3402,
+      "shares_range": [
+       42,
+       106
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "IG_Feed",
+     "score": 0.372,
+     "audience_fit": 0.153,
+     "format_fit": 0.51,
+     "personas": {
+      "casual_browser": 1.0
+     },
+     "reason": "aspect 9:16 not in ['4:5', '1:1'] (x0.6); duration ok (ideal 15-60s); lean-back browsing; captions matter (often muted); 20-45 s",
+     "predicted": {
+      "views_range": [
+       1742,
+       4355
+      ],
+      "watch_pct": 26.2,
+      "p_swipe3s": 0.4735,
+      "shares_range": [
+       4,
+       13
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "FB_Feed",
+     "score": 0.3587,
+     "audience_fit": 0.1355,
+     "format_fit": 0.51,
+     "personas": {
+      "completionist": 0.5,
+      "sharer_engager": 0.5
+     },
+     "reason": "aspect 9:16 not in ['1:1', '4:5'] (x0.6); duration ok (ideal 30-90s); tolerates 45-90 s substantive clips; professional audience finishes informative content; shares/quote-posts strong claims; loopable, captioned clips travel",
+     "predicted": {
+      "views_range": [
+       2506,
+       6265
+      ],
+      "watch_pct": 35.3,
+      "p_swipe3s": 0.3512,
+      "shares_range": [
+       24,
+       62
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "LinkedIn",
+     "score": 0.3164,
+     "audience_fit": 0.0802,
+     "format_fit": 0.51,
+     "personas": {
+      "completionist": 1.0
+     },
+     "reason": "aspect 9:16 not in ['1:1', '4:5'] (x0.6); duration ok (ideal 30-90s); tolerates 45-90 s substantive clips; professional audience finishes informative content",
+     "predicted": {
+      "views_range": [
+       2445,
+       6112
+      ],
+      "watch_pct": 34.8,
+      "p_swipe3s": 0.3622,
+      "shares_range": [
+       7,
+       19
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "YouTube",
+     "score": 0.3164,
+     "audience_fit": 0.0802,
+     "format_fit": 0.51,
+     "personas": {
+      "completionist": 1.0
+     },
+     "reason": "aspect 9:16 not in ['16:9'] (x0.6); duration ok (ideal 60-600s); tolerates 45-90 s substantive clips; professional audience finishes informative content",
+     "predicted": {
+      "views_range": [
+       2445,
+       6112
+      ],
+      "watch_pct": 34.8,
+      "p_swipe3s": 0.3622,
+      "shares_range": [
+       7,
+       19
+      ],
+      "simulated": true
+     }
+    }
+   ],
+   "reasons": [
+    {
+     "persona": "fast_swiper",
+     "length": "13s shorter than sweet spot 15-30s",
+     "top": [
+      "hook lands by 1.68s, cut at punct",
+      "loop-friendly ending",
+      "43% shots 2-4 s, longest 3.0s, CV 0.60"
+     ]
+    },
+    {
+     "persona": "casual_browser",
+     "length": "13s shorter than sweet spot 20-45s",
+     "top": [
+      "hook lands by 1.68s, cut at punct",
+      "captions: sentence",
+      "loop-friendly ending"
+     ]
+    },
+    {
+     "persona": "completionist",
+     "length": "13s shorter than sweet spot 30-60s",
+     "top": [
+      "hook lands by 1.68s, cut at punct",
+      "loop-friendly ending",
+      "captions: sentence"
+     ]
+    },
+    {
+     "persona": "sharer_engager",
+     "length": "13s shorter than sweet spot 20-45s",
+     "top": [
+      "loop-friendly ending",
+      "hook lands by 1.68s, cut at punct",
+      "captions: sentence"
+     ]
+    }
+   ],
+   "rule_inputs": {
+    "duration_s": 12.79,
+    "n_cuts": 6,
+    "max_gap_s": 3.0,
+    "gap_cv": 0.6015615063472447,
+    "frac_gaps_2_4s": 0.42857142857142855,
+    "median_gap_s": 1.68,
+    "captions": true,
+    "caption_style": "sentence",
+    "hook_end_s": 1.68,
+    "hook_boundary": "punct",
+    "hook_strength": 0.3,
+    "hook_text": "And that was sort of my first introduction.",
+    "silence_removed_s": 0.0,
+    "loop_end": true,
+    "hook_title": false,
+    "aspect": "9:16",
+    "channel": "Reels"
+   },
+   "batch_score": 19.7,
+   "batch_rank": 7,
+   "recipe": {
+    "hook": "m1",
+    "length": 15,
+    "pacing": "raw_punch",
+    "captions": "sentence",
+    "hook_title": false,
+    "ending": "loop",
+    "channel": "Reels",
+    "aspect": "9:16"
+   },
+   "duration_s": 12.79,
+   "rank": 7
+  },
+  {
+   "variant_id": "v08",
+   "overall": {
+    "p_swipe3s": 0.308,
+    "watch_pct": 61.6,
+    "p_share": 0.0095,
+    "score": 0.5568
+   },
+   "audience_score": 0.618,
+   "target_channel": "LinkedIn",
+   "target_channel_fit": 0.85,
+   "personas": {
+    "fast_swiper": {
+     "p_swipe3s": 0.3809,
+     "watch_pct": 43.9,
+     "p_share": 0.00428,
+     "score": 0.4659,
+     "channel": "TikTok",
+     "fit": 0.1459
+    },
+    "casual_browser": {
+     "p_swipe3s": 0.3447,
+     "watch_pct": 61.1,
+     "p_share": 0.00691,
+     "score": 0.5757,
+     "channel": "Reels",
+     "fit": 0.1657
+    },
+    "completionist": {
+     "p_swipe3s": 0.2223,
+     "watch_pct": 74.7,
+     "p_share": 0.00734,
+     "score": 0.6834,
+     "channel": "LinkedIn",
+     "fit": 0.1034
+    },
+    "sharer_engager": {
+     "p_swipe3s": 0.2358,
+     "watch_pct": 76.5,
+     "p_share": 0.03938,
+     "score": 0.8118,
+     "channel": "X",
+     "fit": 0.1918
+    }
+   },
+   "model_version": "dummy-heuristic-v0",
+   "confidence": "none - untrained heuristic",
+   "label": "heuristic, not trained",
+   "best_persona": "sharer_engager",
+   "best_channel": "IG_Feed",
+   "channels": [
+    {
+     "channel": "IG_Feed",
+     "score": 0.7486,
+     "audience_fit": 0.1657,
+     "format_fit": 1.0,
+     "personas": {
+      "casual_browser": 1.0
+     },
+     "reason": "aspect 4:5 ok; duration ideal (ideal 15-60s); lean-back browsing; captions matter (often muted); 20-45 s",
+     "predicted": {
+      "views_range": [
+       3707,
+       9267
+      ],
+      "watch_pct": 61.1,
+      "p_swipe3s": 0.3447,
+      "shares_range": [
+       25,
+       65
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "FB_Feed",
+     "score": 0.6132,
+     "audience_fit": 0.1476,
+     "format_fit": 0.85,
+     "personas": {
+      "completionist": 0.5,
+      "sharer_engager": 0.5
+     },
+     "reason": "aspect 4:5 ok; duration ok (ideal 30-90s); tolerates 45-90 s substantive clips; professional audience finishes informative content; shares/quote-posts strong claims; loopable, captioned clips travel",
+     "predicted": {
+      "views_range": [
+       4270,
+       10675
+      ],
+      "watch_pct": 64.3,
+      "p_swipe3s": 0.2695,
+      "shares_range": [
+       84,
+       212
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "LinkedIn",
+     "score": 0.5568,
+     "audience_fit": 0.1034,
+     "format_fit": 0.85,
+     "personas": {
+      "completionist": 1.0
+     },
+     "reason": "aspect 4:5 ok; duration ok (ideal 30-90s); tolerates 45-90 s substantive clips; professional audience finishes informative content",
+     "predicted": {
+      "views_range": [
+       4272,
+       10680
+      ],
+      "watch_pct": 63.5,
+      "p_swipe3s": 0.2615,
+      "shares_range": [
+       26,
+       67
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "X",
+     "score": 0.4726,
+     "audience_fit": 0.1918,
+     "format_fit": 0.6,
+     "personas": {
+      "sharer_engager": 1.0
+     },
+     "reason": "aspect 4:5 not in ['16:9', '1:1'] (x0.6); duration ideal (ideal 15-45s); shares/quote-posts strong claims; loopable, captioned clips travel",
+     "predicted": {
+      "views_range": [
+       2772,
+       6930
+      ],
+      "watch_pct": 45.9,
+      "p_swipe3s": 0.393,
+      "shares_range": [
+       65,
+       164
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "Reels",
+     "score": 0.4491,
+     "audience_fit": 0.1657,
+     "format_fit": 0.6,
+     "personas": {
+      "casual_browser": 1.0
+     },
+     "reason": "aspect 4:5 not in ['9:16'] (x0.6); duration ideal (ideal 15-45s); lean-back browsing; captions matter (often muted); 20-45 s",
+     "predicted": {
+      "views_range": [
+       1754,
+       4385
+      ],
+      "watch_pct": 36.7,
+      "p_swipe3s": 0.5745,
+      "shares_range": [
+       7,
+       19
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "Shorts",
+     "score": 0.4402,
+     "audience_fit": 0.1558,
+     "format_fit": 0.6,
+     "personas": {
+      "fast_swiper": 0.5,
+      "casual_browser": 0.5
+     },
+     "reason": "aspect 4:5 not in ['9:16'] (x0.6); duration ideal (ideal 20-50s); short attention, swipe feed; rewards a hook in <=3 s and 15-30 s length; lean-back browsing; captions matter (often muted); 20-45 s",
+     "predicted": {
+      "views_range": [
+       1509,
+       3772
+      ],
+      "watch_pct": 31.5,
+      "p_swipe3s": 0.6047,
+      "shares_range": [
+       5,
+       13
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "FB_Reels",
+     "score": 0.4367,
+     "audience_fit": 0.1519,
+     "format_fit": 0.6,
+     "personas": {
+      "casual_browser": 0.6,
+      "completionist": 0.4
+     },
+     "reason": "aspect 4:5 not in ['9:16'] (x0.6); duration ideal (ideal 20-60s); lean-back browsing; captions matter (often muted); 20-45 s; tolerates 45-90 s substantive clips; professional audience finishes informative content",
+     "predicted": {
+      "views_range": [
+       1285,
+       3213
+      ],
+      "watch_pct": 39.9,
+      "p_swipe3s": 0.4929,
+      "shares_range": [
+       8,
+       21
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "TikTok",
+     "score": 0.4313,
+     "audience_fit": 0.1459,
+     "format_fit": 0.6,
+     "personas": {
+      "fast_swiper": 1.0
+     },
+     "reason": "aspect 4:5 not in ['9:16'] (x0.6); duration ideal (ideal 15-34s); short attention, swipe feed; rewards a hook in <=3 s and 15-30 s length",
+     "predicted": {
+      "views_range": [
+       1290,
+       3225
+      ],
+      "watch_pct": 26.3,
+      "p_swipe3s": 0.6348,
+      "shares_range": [
+       3,
+       9
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "IG_Stories",
+     "score": 0.3666,
+     "audience_fit": 0.1459,
+     "format_fit": 0.51,
+     "personas": {
+      "fast_swiper": 1.0
+     },
+     "reason": "aspect 4:5 not in ['9:16'] (x0.6); duration ok (ideal 5-15s); short attention, swipe feed; rewards a hook in <=3 s and 15-30 s length",
+     "predicted": {
+      "views_range": [
+       955,
+       2387
+      ],
+      "watch_pct": 22.4,
+      "p_swipe3s": 0.7469,
+      "shares_range": [
+       2,
+       6
+      ],
+      "simulated": true
+     }
+    },
+    {
+     "channel": "YouTube",
+     "score": 0.3341,
+     "audience_fit": 0.1034,
+     "format_fit": 0.51,
+     "personas": {
+      "completionist": 1.0
+     },
+     "reason": "aspect 4:5 not in ['16:9'] (x0.6); duration ok (ideal 60-600s); tolerates 45-90 s substantive clips; professional audience finishes informative content",
+     "predicted": {
+      "views_range": [
+       2286,
+       5715
+      ],
+      "watch_pct": 38.1,
+      "p_swipe3s": 0.4359,
+      "shares_range": [
+       8,
+       22
+      ],
+      "simulated": true
+     }
+    }
+   ],
+   "reasons": [
+    {
+     "persona": "fast_swiper",
+     "length": "28s in sweet spot 15-30s",
+     "top": [
+      "hook line strength 0.10 (question/number/claim/'you')",
+      "3.5s dead air removed",
+      "loop-friendly ending"
+     ]
+    },
+    {
+     "persona": "casual_browser",
+     "length": "28s in sweet spot 20-45s",
+     "top": [
+      "3.5s dead air removed",
+      "captions: sentence",
+      "loop-friendly ending"
+     ]
+    },
+    {
+     "persona": "completionist",
+     "length": "28s shorter than sweet spot 30-60s",
+     "top": [
+      "3.5s dead air removed",
+      "loop-friendly ending",
+      "captions: sentence"
+     ]
+    },
+    {
+     "persona": "sharer_engager",
+     "length": "28s in sweet spot 20-45s",
+     "top": [
+      "loop-friendly ending",
+      "captions: sentence",
+      "hook line strength 0.10 (question/number/claim/'you')"
+     ]
+    }
+   ],
+   "rule_inputs": {
+    "duration_s": 28.22,
+    "n_cuts": 14,
+    "max_gap_s": 3.0600000000000023,
+    "gap_cv": 0.432617037896058,
+    "frac_gaps_2_4s": 0.4,
+    "median_gap_s": 1.5899999999999999,
+    "captions": true,
+    "caption_style": "sentence",
+    "hook_end_s": 2.48,
+    "hook_boundary": "word",
+    "hook_strength": 0.1,
+    "hook_text": "My mother works at NIOSH and has been there since I was a young child.",
+    "silence_removed_s": 3.5,
+    "loop_end": true,
+    "hook_title": true,
+    "aspect": "4:5",
+    "channel": "LinkedIn"
+   },
+   "batch_score": 0.0,
+   "batch_rank": 8,
+   "recipe": {
+    "hook": "m2",
+    "length": 45,
+    "pacing": "tight_punch",
+    "captions": "sentence",
+    "hook_title": true,
+    "ending": "loop",
+    "channel": "LinkedIn",
+    "aspect": "4:5"
+   },
+   "duration_s": 28.22,
+   "rank": 8
+  }
+ ]
+}

@@ -1,0 +1,143 @@
+{
+ "variant_id": "v02",
+ "recipe": {
+  "hook": "best",
+  "length": 15,
+  "pacing": "tight_punch",
+  "captions": "word_pop",
+  "hook_title": true,
+  "ending": "loop"
+ },
+ "duration_s": 11.42,
+ "video_path": "/workspace/clipcut/runs/ui_141225_6ab3/v02.mp4",
+ "segments": [
+  {
+   "src_start": 57.826,
+   "src_end": 59.167,
+   "out_start": 0.0,
+   "punch_in": 1.08
+  },
+  {
+   "src_start": 59.087,
+   "src_end": 62.087,
+   "out_start": 1.341,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 62.087,
+   "src_end": 65.087,
+   "out_start": 4.341,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 65.087,
+   "src_end": 65.845,
+   "out_start": 7.341,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 65.765,
+   "src_end": 67.674,
+   "out_start": 8.099,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 68.0,
+   "src_end": 69.288,
+   "out_start": 10.008,
+   "punch_in": 1.2
+  }
+ ],
+ "captions": [
+  {
+   "start": 0.08,
+   "end": 1.31,
+   "text": "IN EPIDEMIOLOGY."
+  },
+  {
+   "start": 1.26,
+   "end": 3.37,
+   "text": "I STARTED OUT"
+  },
+  {
+   "start": 3.32,
+   "end": 3.96,
+   "text": "WANTING TO BE"
+  },
+  {
+   "start": 3.91,
+   "end": 4.35,
+   "text": "A TEACHER,"
+  },
+  {
+   "start": 4.3,
+   "end": 4.94,
+   "text": "AND THEN I"
+  },
+  {
+   "start": 4.89,
+   "end": 5.53,
+   "text": "COULDN'T AFFORD TO"
+  },
+  {
+   "start": 5.48,
+   "end": 6.11,
+   "text": "GO TO SCHOOL,"
+  },
+  {
+   "start": 6.06,
+   "end": 6.73,
+   "text": "AND THEN WHEN"
+  },
+  {
+   "start": 6.68,
+   "end": 7.4,
+   "text": "I COULD AFFORD"
+  },
+  {
+   "start": 7.35,
+   "end": 8.07,
+   "text": "TO GO TO"
+  },
+  {
+   "start": 8.02,
+   "end": 8.37,
+   "text": "SCHOOL,"
+  },
+  {
+   "start": 8.32,
+   "end": 8.82,
+   "text": "I THOUGHT,"
+  },
+  {
+   "start": 8.77,
+   "end": 9.49,
+   "text": "I'M GOING TO"
+  },
+  {
+   "start": 9.44,
+   "end": 10.3,
+   "text": "BE A SO"
+  },
+  {
+   "start": 10.25,
+   "end": 11.02,
+   "text": "I WENT INTO"
+  },
+  {
+   "start": 10.97,
+   "end": 11.27,
+   "text": "PSYCHOLOGY."
+  }
+ ],
+ "hook_end_s": 4.14,
+ "cut_times_s": [
+  1.341,
+  4.341,
+  7.341,
+  8.099,
+  10.008
+ ],
+ "silence_removed_s": 0.33,
+ "loop_end": true
+}

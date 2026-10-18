@@ -1,0 +1,76 @@
+{
+ "variant_id": "v01",
+ "recipe": {
+  "hook": "chrono",
+  "length": 45,
+  "pacing": "raw",
+  "captions": "none",
+  "hook_title": false,
+  "ending": "fade"
+ },
+ "duration_s": 40.92,
+ "video_path": "/workspace/clipcut/runs/v2_niosh12/v01.mp4",
+ "segments": [
+  {
+   "src_start": 0.55,
+   "src_end": 6.236,
+   "out_start": 0.0,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 5.886,
+   "src_end": 13.76,
+   "out_start": 5.686,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 13.41,
+   "src_end": 17.954,
+   "out_start": 13.56,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 17.604,
+   "src_end": 20.051,
+   "out_start": 18.104,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 19.701,
+   "src_end": 23.413,
+   "out_start": 20.551,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 23.063,
+   "src_end": 25.632,
+   "out_start": 24.263,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 25.282,
+   "src_end": 29.551,
+   "out_start": 26.832,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 29.201,
+   "src_end": 38.751,
+   "out_start": 31.101,
+   "punch_in": 1.0
+  }
+ ],
+ "captions": [],
+ "hook_end_s": 5.34,
+ "cut_times_s": [
+  5.686,
+  13.56,
+  18.104,
+  20.551,
+  24.263,
+  26.832,
+  31.101
+ ],
+ "silence_removed_s": 0,
+ "loop_end": false
+}

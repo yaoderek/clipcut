@@ -1,0 +1,569 @@
+{
+ "winner": "v05",
+ "results": [
+  {
+   "variant_id": "v05",
+   "overall": {
+    "p_swipe3s": 0.4591,
+    "watch_pct": 41.44,
+    "p_share": 0.05979,
+    "score": 1.0457
+   },
+   "personas": {
+    "v2_P0: +text_blobs, -cuts_per_10s, +mean_shot_len, -motion_mean": {
+     "p_swipe3s": 0.4591,
+     "watch_pct": 41.44,
+     "p_share": 0.05979,
+     "score": 1.5999
+    },
+    "v2_P1: -log_duration, +beat_regularity, -speech_frac, +music_score": {
+     "p_swipe3s": 0.4591,
+     "watch_pct": 41.44,
+     "p_share": 0.05979,
+     "score": 0.3939
+    },
+    "v2_P2: +spectral_flatness, +dead_air_frac, +loudness_std, -loudness_db": {
+     "p_swipe3s": 0.4591,
+     "watch_pct": 41.44,
+     "p_share": 0.05979,
+     "score": 0.6259
+    },
+    "v2_P3: -mean_shot_len, +cuts_per_10s, +motion_std, -text_edge_lower": {
+     "p_swipe3s": 0.4591,
+     "watch_pct": 41.44,
+     "p_share": 0.05979,
+     "score": 1.0574
+    }
+   },
+   "model_version": "stub:personas_v2+personas_v1",
+   "confidence": "low (v2 within-persona Spearman~0.22 held-out; swipe/watch are length-only)",
+   "recipe": {
+    "hook": "second",
+    "length": 30,
+    "pacing": "tight_punch",
+    "captions": "none",
+    "hook_title": true,
+    "ending": "fade"
+   },
+   "duration_s": 32.95,
+   "rank": 1
+  },
+  {
+   "variant_id": "v04",
+   "overall": {
+    "p_swipe3s": 0.41,
+    "watch_pct": 44.18,
+    "p_share": 0.04177,
+    "score": 1.0446
+   },
+   "personas": {
+    "v2_P0: +text_blobs, -cuts_per_10s, +mean_shot_len, -motion_mean": {
+     "p_swipe3s": 0.41,
+     "watch_pct": 44.18,
+     "p_share": 0.04177,
+     "score": 1.8888
+    },
+    "v2_P1: -log_duration, +beat_regularity, -speech_frac, +music_score": {
+     "p_swipe3s": 0.41,
+     "watch_pct": 44.18,
+     "p_share": 0.04177,
+     "score": 0.27
+    },
+    "v2_P2: +spectral_flatness, +dead_air_frac, +loudness_std, -loudness_db": {
+     "p_swipe3s": 0.41,
+     "watch_pct": 44.18,
+     "p_share": 0.04177,
+     "score": 0.5657
+    },
+    "v2_P3: -mean_shot_len, +cuts_per_10s, +motion_std, -text_edge_lower": {
+     "p_swipe3s": 0.41,
+     "watch_pct": 44.18,
+     "p_share": 0.04177,
+     "score": 0.846
+    }
+   },
+   "model_version": "stub:personas_v2+personas_v1",
+   "confidence": "low (v2 within-persona Spearman~0.22 held-out; swipe/watch are length-only)",
+   "recipe": {
+    "hook": "second",
+    "length": 45,
+    "pacing": "tight_punch",
+    "captions": "sentence",
+    "hook_title": false,
+    "ending": "loop"
+   },
+   "duration_s": 41.55,
+   "rank": 2
+  },
+  {
+   "variant_id": "v11",
+   "overall": {
+    "p_swipe3s": 0.4553,
+    "watch_pct": 41.22,
+    "p_share": 0.06563,
+    "score": 1.0286
+   },
+   "personas": {
+    "v2_P0: +text_blobs, -cuts_per_10s, +mean_shot_len, -motion_mean": {
+     "p_swipe3s": 0.4553,
+     "watch_pct": 41.22,
+     "p_share": 0.06563,
+     "score": 1.2755
+    },
+    "v2_P1: -log_duration, +beat_regularity, -speech_frac, +music_score": {
+     "p_swipe3s": 0.4553,
+     "watch_pct": 41.22,
+     "p_share": 0.06563,
+     "score": 0.3685
+    },
+    "v2_P2: +spectral_flatness, +dead_air_frac, +loudness_std, -loudness_db": {
+     "p_swipe3s": 0.4553,
+     "watch_pct": 41.22,
+     "p_share": 0.06563,
+     "score": 3.0216
+    },
+    "v2_P3: -mean_shot_len, +cuts_per_10s, +motion_std, -text_edge_lower": {
+     "p_swipe3s": 0.4553,
+     "watch_pct": 41.22,
+     "p_share": 0.06563,
+     "score": 0.6442
+    }
+   },
+   "model_version": "stub:personas_v2+personas_v1",
+   "confidence": "low (v2 within-persona Spearman~0.22 held-out; swipe/watch are length-only)",
+   "recipe": {
+    "hook": "second",
+    "length": 30,
+    "pacing": "raw",
+    "captions": "word_pop",
+    "hook_title": false,
+    "ending": "loop"
+   },
+   "duration_s": 31.59,
+   "rank": 3
+  },
+  {
+   "variant_id": "v08",
+   "overall": {
+    "p_swipe3s": 0.4254,
+    "watch_pct": 39.67,
+    "p_share": 0.06648,
+    "score": 1.0038
+   },
+   "personas": {
+    "v2_P0: +text_blobs, -cuts_per_10s, +mean_shot_len, -motion_mean": {
+     "p_swipe3s": 0.4254,
+     "watch_pct": 39.67,
+     "p_share": 0.06648,
+     "score": 1.2428
+    },
+    "v2_P1: -log_duration, +beat_regularity, -speech_frac, +music_score": {
+     "p_swipe3s": 0.4254,
+     "watch_pct": 39.67,
+     "p_share": 0.06648,
+     "score": 0.3441
+    },
+    "v2_P2: +spectral_flatness, +dead_air_frac, +loudness_std, -loudness_db": {
+     "p_swipe3s": 0.4254,
+     "watch_pct": 39.67,
+     "p_share": 0.06648,
+     "score": 3.0208
+    },
+    "v2_P3: -mean_shot_len, +cuts_per_10s, +motion_std, -text_edge_lower": {
+     "p_swipe3s": 0.4254,
+     "watch_pct": 39.67,
+     "p_share": 0.06648,
+     "score": 0.6206
+    }
+   },
+   "model_version": "stub:personas_v2+personas_v1",
+   "confidence": "low (v2 within-persona Spearman~0.22 held-out; swipe/watch are length-only)",
+   "recipe": {
+    "hook": "second",
+    "length": 45,
+    "pacing": "raw",
+    "captions": "word_pop",
+    "hook_title": true,
+    "ending": "fade"
+   },
+   "duration_s": 47.29,
+   "rank": 4
+  },
+  {
+   "variant_id": "v06",
+   "overall": {
+    "p_swipe3s": 0.4553,
+    "watch_pct": 45.15,
+    "p_share": 0.04603,
+    "score": 0.9803
+   },
+   "personas": {
+    "v2_P0: +text_blobs, -cuts_per_10s, +mean_shot_len, -motion_mean": {
+     "p_swipe3s": 0.4553,
+     "watch_pct": 45.15,
+     "p_share": 0.04603,
+     "score": 1.8518
+    },
+    "v2_P1: -log_duration, +beat_regularity, -speech_frac, +music_score": {
+     "p_swipe3s": 0.4553,
+     "watch_pct": 45.15,
+     "p_share": 0.04603,
+     "score": 0.2863
+    },
+    "v2_P2: +spectral_flatness, +dead_air_frac, +loudness_std, -loudness_db": {
+     "p_swipe3s": 0.4553,
+     "watch_pct": 45.15,
+     "p_share": 0.04603,
+     "score": 0.5834
+    },
+    "v2_P3: -mean_shot_len, +cuts_per_10s, +motion_std, -text_edge_lower": {
+     "p_swipe3s": 0.4553,
+     "watch_pct": 45.15,
+     "p_share": 0.04603,
+     "score": 0.6644
+    }
+   },
+   "model_version": "stub:personas_v2+personas_v1",
+   "confidence": "low (v2 within-persona Spearman~0.22 held-out; swipe/watch are length-only)",
+   "recipe": {
+    "hook": "chrono",
+    "length": 30,
+    "pacing": "tight",
+    "captions": "sentence",
+    "hook_title": true,
+    "ending": "loop"
+   },
+   "duration_s": 31.92,
+   "rank": 5
+  },
+  {
+   "variant_id": "v07",
+   "overall": {
+    "p_swipe3s": 0.4219,
+    "watch_pct": 46.02,
+    "p_share": 0.04162,
+    "score": 0.9768
+   },
+   "personas": {
+    "v2_P0: +text_blobs, -cuts_per_10s, +mean_shot_len, -motion_mean": {
+     "p_swipe3s": 0.4219,
+     "watch_pct": 46.02,
+     "p_share": 0.04162,
+     "score": 1.8995
+    },
+    "v2_P1: -log_duration, +beat_regularity, -speech_frac, +music_score": {
+     "p_swipe3s": 0.4219,
+     "watch_pct": 46.02,
+     "p_share": 0.04162,
+     "score": 0.2745
+    },
+    "v2_P2: +spectral_flatness, +dead_air_frac, +loudness_std, -loudness_db": {
+     "p_swipe3s": 0.4219,
+     "watch_pct": 46.02,
+     "p_share": 0.04162,
+     "score": 0.5427
+    },
+    "v2_P3: -mean_shot_len, +cuts_per_10s, +motion_std, -text_edge_lower": {
+     "p_swipe3s": 0.4219,
+     "watch_pct": 46.02,
+     "p_share": 0.04162,
+     "score": 0.6217
+    }
+   },
+   "model_version": "stub:personas_v2+personas_v1",
+   "confidence": "low (v2 within-persona Spearman~0.22 held-out; swipe/watch are length-only)",
+   "recipe": {
+    "hook": "best",
+    "length": 45,
+    "pacing": "tight",
+    "captions": "word_pop",
+    "hook_title": false,
+    "ending": "loop"
+   },
+   "duration_s": 47.82,
+   "rank": 6
+  },
+  {
+   "variant_id": "v01",
+   "overall": {
+    "p_swipe3s": 0.4829,
+    "watch_pct": 39.38,
+    "p_share": 0.04456,
+    "score": 0.9647
+   },
+   "personas": {
+    "v2_P0: +text_blobs, -cuts_per_10s, +mean_shot_len, -motion_mean": {
+     "p_swipe3s": 0.4829,
+     "watch_pct": 39.38,
+     "p_share": 0.04456,
+     "score": 1.8649
+    },
+    "v2_P1: -log_duration, +beat_regularity, -speech_frac, +music_score": {
+     "p_swipe3s": 0.4829,
+     "watch_pct": 39.38,
+     "p_share": 0.04456,
+     "score": 0.2987
+    },
+    "v2_P2: +spectral_flatness, +dead_air_frac, +loudness_std, -loudness_db": {
+     "p_swipe3s": 0.4829,
+     "watch_pct": 39.38,
+     "p_share": 0.04456,
+     "score": 0.5615
+    },
+    "v2_P3: -mean_shot_len, +cuts_per_10s, +motion_std, -text_edge_lower": {
+     "p_swipe3s": 0.4829,
+     "watch_pct": 39.38,
+     "p_share": 0.04456,
+     "score": 0.5976
+    }
+   },
+   "model_version": "stub:personas_v2+personas_v1",
+   "confidence": "low (v2 within-persona Spearman~0.22 held-out; swipe/watch are length-only)",
+   "recipe": {
+    "hook": "chrono",
+    "length": 45,
+    "pacing": "raw",
+    "captions": "none",
+    "hook_title": false,
+    "ending": "fade"
+   },
+   "duration_s": 40.92,
+   "rank": 7
+  },
+  {
+   "variant_id": "v03",
+   "overall": {
+    "p_swipe3s": 0.448,
+    "watch_pct": 57.63,
+    "p_share": 0.05973,
+    "score": 0.962
+   },
+   "personas": {
+    "v2_P0: +text_blobs, -cuts_per_10s, +mean_shot_len, -motion_mean": {
+     "p_swipe3s": 0.448,
+     "watch_pct": 57.63,
+     "p_share": 0.05973,
+     "score": 1.5954
+    },
+    "v2_P1: -log_duration, +beat_regularity, -speech_frac, +music_score": {
+     "p_swipe3s": 0.448,
+     "watch_pct": 57.63,
+     "p_share": 0.05973,
+     "score": 0.5412
+    },
+    "v2_P2: +spectral_flatness, +dead_air_frac, +loudness_std, -loudness_db": {
+     "p_swipe3s": 0.448,
+     "watch_pct": 57.63,
+     "p_share": 0.05973,
+     "score": 0.7608
+    },
+    "v2_P3: -mean_shot_len, +cuts_per_10s, +motion_std, -text_edge_lower": {
+     "p_swipe3s": 0.448,
+     "watch_pct": 57.63,
+     "p_share": 0.05973,
+     "score": 0.6417
+    }
+   },
+   "model_version": "stub:personas_v2+personas_v1",
+   "confidence": "low (v2 within-persona Spearman~0.22 held-out; swipe/watch are length-only)",
+   "recipe": {
+    "hook": "second",
+    "length": 15,
+    "pacing": "tight",
+    "captions": "word_pop",
+    "hook_title": false,
+    "ending": "fade"
+   },
+   "duration_s": 16.42,
+   "rank": 8
+  },
+  {
+   "variant_id": "v09",
+   "overall": {
+    "p_swipe3s": 0.4131,
+    "watch_pct": 45.72,
+    "p_share": 0.04788,
+    "score": 0.9243
+   },
+   "personas": {
+    "v2_P0: +text_blobs, -cuts_per_10s, +mean_shot_len, -motion_mean": {
+     "p_swipe3s": 0.4131,
+     "watch_pct": 45.72,
+     "p_share": 0.04788,
+     "score": 1.6587
+    },
+    "v2_P1: -log_duration, +beat_regularity, -speech_frac, +music_score": {
+     "p_swipe3s": 0.4131,
+     "watch_pct": 45.72,
+     "p_share": 0.04788,
+     "score": 0.3218
+    },
+    "v2_P2: +spectral_flatness, +dead_air_frac, +loudness_std, -loudness_db": {
+     "p_swipe3s": 0.4131,
+     "watch_pct": 45.72,
+     "p_share": 0.04788,
+     "score": 0.5439
+    },
+    "v2_P3: -mean_shot_len, +cuts_per_10s, +motion_std, -text_edge_lower": {
+     "p_swipe3s": 0.4131,
+     "watch_pct": 45.72,
+     "p_share": 0.04788,
+     "score": 0.6858
+    }
+   },
+   "model_version": "stub:personas_v2+personas_v1",
+   "confidence": "low (v2 within-persona Spearman~0.22 held-out; swipe/watch are length-only)",
+   "recipe": {
+    "hook": "chrono",
+    "length": 30,
+    "pacing": "tight_punch",
+    "captions": "word_pop",
+    "hook_title": false,
+    "ending": "fade"
+   },
+   "duration_s": 31.99,
+   "rank": 9
+  },
+  {
+   "variant_id": "v10",
+   "overall": {
+    "p_swipe3s": 0.4219,
+    "watch_pct": 44.84,
+    "p_share": 0.04808,
+    "score": 0.8928
+   },
+   "personas": {
+    "v2_P0: +text_blobs, -cuts_per_10s, +mean_shot_len, -motion_mean": {
+     "p_swipe3s": 0.4219,
+     "watch_pct": 44.84,
+     "p_share": 0.04808,
+     "score": 1.6686
+    },
+    "v2_P1: -log_duration, +beat_regularity, -speech_frac, +music_score": {
+     "p_swipe3s": 0.4219,
+     "watch_pct": 44.84,
+     "p_share": 0.04808,
+     "score": 0.2644
+    },
+    "v2_P2: +spectral_flatness, +dead_air_frac, +loudness_std, -loudness_db": {
+     "p_swipe3s": 0.4219,
+     "watch_pct": 44.84,
+     "p_share": 0.04808,
+     "score": 0.4968
+    },
+    "v2_P3: -mean_shot_len, +cuts_per_10s, +motion_std, -text_edge_lower": {
+     "p_swipe3s": 0.4219,
+     "watch_pct": 44.84,
+     "p_share": 0.04808,
+     "score": 0.6327
+    }
+   },
+   "model_version": "stub:personas_v2+personas_v1",
+   "confidence": "low (v2 within-persona Spearman~0.22 held-out; swipe/watch are length-only)",
+   "recipe": {
+    "hook": "chrono",
+    "length": 45,
+    "pacing": "tight_punch",
+    "captions": "none",
+    "hook_title": true,
+    "ending": "loop"
+   },
+   "duration_s": 48.25,
+   "rank": 10
+  },
+  {
+   "variant_id": "v02",
+   "overall": {
+    "p_swipe3s": 0.4739,
+    "watch_pct": 49.56,
+    "p_share": 0.04725,
+    "score": 0.7754
+   },
+   "personas": {
+    "v2_P0: +text_blobs, -cuts_per_10s, +mean_shot_len, -motion_mean": {
+     "p_swipe3s": 0.4739,
+     "watch_pct": 49.56,
+     "p_share": 0.04725,
+     "score": 1.2
+    },
+    "v2_P1: -log_duration, +beat_regularity, -speech_frac, +music_score": {
+     "p_swipe3s": 0.4739,
+     "watch_pct": 49.56,
+     "p_share": 0.04725,
+     "score": 0.493
+    },
+    "v2_P2: +spectral_flatness, +dead_air_frac, +loudness_std, -loudness_db": {
+     "p_swipe3s": 0.4739,
+     "watch_pct": 49.56,
+     "p_share": 0.04725,
+     "score": 0.6653
+    },
+    "v2_P3: -mean_shot_len, +cuts_per_10s, +motion_std, -text_edge_lower": {
+     "p_swipe3s": 0.4739,
+     "watch_pct": 49.56,
+     "p_share": 0.04725,
+     "score": 0.5532
+    }
+   },
+   "model_version": "stub:personas_v2+personas_v1",
+   "confidence": "low (v2 within-persona Spearman~0.22 held-out; swipe/watch are length-only)",
+   "recipe": {
+    "hook": "best",
+    "length": 15,
+    "pacing": "tight_punch",
+    "captions": "word_pop",
+    "hook_title": true,
+    "ending": "loop"
+   },
+   "duration_s": 11.42,
+   "rank": 11
+  },
+  {
+   "variant_id": "v12",
+   "overall": {
+    "p_swipe3s": 0.4686,
+    "watch_pct": 58.72,
+    "p_share": 0.05718,
+    "score": 0.7439
+   },
+   "personas": {
+    "v2_P0: +text_blobs, -cuts_per_10s, +mean_shot_len, -motion_mean": {
+     "p_swipe3s": 0.4686,
+     "watch_pct": 58.72,
+     "p_share": 0.05718,
+     "score": 1.3614
+    },
+    "v2_P1: -log_duration, +beat_regularity, -speech_frac, +music_score": {
+     "p_swipe3s": 0.4686,
+     "watch_pct": 58.72,
+     "p_share": 0.05718,
+     "score": 0.3517
+    },
+    "v2_P2: +spectral_flatness, +dead_air_frac, +loudness_std, -loudness_db": {
+     "p_swipe3s": 0.4686,
+     "watch_pct": 58.72,
+     "p_share": 0.05718,
+     "score": 0.5626
+    },
+    "v2_P3: -mean_shot_len, +cuts_per_10s, +motion_std, -text_edge_lower": {
+     "p_swipe3s": 0.4686,
+     "watch_pct": 58.72,
+     "p_share": 0.05718,
+     "score": 0.4132
+    }
+   },
+   "model_version": "stub:personas_v2+personas_v1",
+   "confidence": "low (v2 within-persona Spearman~0.22 held-out; swipe/watch are length-only)",
+   "recipe": {
+    "hook": "chrono",
+    "length": 15,
+    "pacing": "tight",
+    "captions": "none",
+    "hook_title": true,
+    "ending": "fade"
+   },
+   "duration_s": 16.15,
+   "rank": 12
+  }
+ ]
+}

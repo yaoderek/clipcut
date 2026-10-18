@@ -1,0 +1,272 @@
+{
+ "variant_id": "v09",
+ "recipe": {
+  "hook": "chrono",
+  "length": 30,
+  "pacing": "tight_punch",
+  "captions": "word_pop",
+  "hook_title": false,
+  "ending": "fade"
+ },
+ "duration_s": 31.99,
+ "video_path": "/workspace/clipcut/runs/v2_niosh12/v09.mp4",
+ "segments": [
+  {
+   "src_start": 0.55,
+   "src_end": 3.55,
+   "out_start": 0.0,
+   "punch_in": 1.08
+  },
+  {
+   "src_start": 3.55,
+   "src_end": 4.129,
+   "out_start": 3.0,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 4.371,
+   "src_end": 5.966,
+   "out_start": 3.579,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 5.886,
+   "src_end": 7.259,
+   "out_start": 5.174,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 7.745,
+   "src_end": 10.745,
+   "out_start": 6.547,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 10.745,
+   "src_end": 10.995,
+   "out_start": 9.547,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 11.172,
+   "src_end": 13.49,
+   "out_start": 9.797,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 13.41,
+   "src_end": 16.551,
+   "out_start": 12.115,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 17.09,
+   "src_end": 17.684,
+   "out_start": 15.256,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 17.604,
+   "src_end": 19.781,
+   "out_start": 15.85,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 19.701,
+   "src_end": 21.781,
+   "out_start": 18.027,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 22.07,
+   "src_end": 23.143,
+   "out_start": 20.107,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 23.063,
+   "src_end": 25.362,
+   "out_start": 21.18,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 25.282,
+   "src_end": 27.583,
+   "out_start": 23.479,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 32.058,
+   "src_end": 33.032,
+   "out_start": 25.78,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 33.302,
+   "src_end": 35.901,
+   "out_start": 26.754,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 36.101,
+   "src_end": 37.024,
+   "out_start": 29.353,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 37.216,
+   "src_end": 38.267,
+   "out_start": 30.276,
+   "punch_in": 1.2
+  }
+ ],
+ "captions": [
+  {
+   "start": 0.0,
+   "end": 1.05,
+   "text": "ONE OF MY"
+  },
+  {
+   "start": 1.0,
+   "end": 2.05,
+   "text": "FAVORITE THINGS ABOUT"
+  },
+  {
+   "start": 2.0,
+   "end": 3.05,
+   "text": "BEING AN EPIDEMIOLOGIST"
+  },
+  {
+   "start": 3.0,
+   "end": 4.48,
+   "text": "IS VARIETY TO"
+  },
+  {
+   "start": 4.43,
+   "end": 5.14,
+   "text": "THE JOB."
+  },
+  {
+   "start": 5.09,
+   "end": 6.46,
+   "text": "THERE'S NEVER A"
+  },
+  {
+   "start": 6.82,
+   "end": 8.22,
+   "text": "AND REALLY BEING"
+  },
+  {
+   "start": 8.17,
+   "end": 9.57,
+   "text": "ABLE TO GO"
+  },
+  {
+   "start": 10.24,
+   "end": 11.64,
+   "text": "ANSWERS TO RESEARCH"
+  },
+  {
+   "start": 11.59,
+   "end": 12.08,
+   "text": "QUESTIONS."
+  },
+  {
+   "start": 12.03,
+   "end": 13.21,
+   "text": "THAT I MYSELF"
+  },
+  {
+   "start": 13.16,
+   "end": 14.26,
+   "text": "CAN GO OUT"
+  },
+  {
+   "start": 14.21,
+   "end": 15.82,
+   "text": "AND TRY ANSWERS."
+  },
+  {
+   "start": 15.77,
+   "end": 16.95,
+   "text": "AND I ABSOLUTELY"
+  },
+  {
+   "start": 16.9,
+   "end": 18.0,
+   "text": "LOVE MY JOB."
+  },
+  {
+   "start": 17.95,
+   "end": 19.22,
+   "text": "I FEEL LIKE"
+  },
+  {
+   "start": 19.17,
+   "end": 20.26,
+   "text": "I'M DOING A"
+  },
+  {
+   "start": 20.21,
+   "end": 21.15,
+   "text": "GOOD THING."
+  },
+  {
+   "start": 21.1,
+   "end": 22.12,
+   "text": "I'M IMPACTING,"
+  },
+  {
+   "start": 22.07,
+   "end": 22.56,
+   "text": "POTENTIALLY,"
+  },
+  {
+   "start": 22.51,
+   "end": 23.45,
+   "text": "WORKERS' LIVES."
+  },
+  {
+   "start": 23.4,
+   "end": 24.85,
+   "text": "THERE'S JUST NO"
+  },
+  {
+   "start": 24.8,
+   "end": 26.44,
+   "text": "PRICE YOU BEEN"
+  },
+  {
+   "start": 29.73,
+   "end": 30.74,
+   "text": "I WAS A"
+  },
+  {
+   "start": 30.69,
+   "end": 31.08,
+   "text": "YOUNG"
+  }
+ ],
+ "hook_end_s": 5.34,
+ "cut_times_s": [
+  3.0,
+  3.579,
+  5.174,
+  6.547,
+  9.547,
+  9.797,
+  12.115,
+  15.256,
+  15.85,
+  18.027,
+  20.107,
+  21.18,
+  23.479,
+  25.78,
+  26.754,
+  29.353,
+  30.276
+ ],
+ "silence_removed_s": 2.4,
+ "loop_end": false
+}

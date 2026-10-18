@@ -1,0 +1,13 @@
+.venv
+data
+**/__pycache__
+*.pyc
+.git
+# legacy v1 persona model + retention-v1 model not needed by the default (dummy heuristic) scorer
+models
+# runs: ship only the preload demo
+runs/*
+!runs/v2_niosh_multi
+runs/v2_niosh_multi/frames
+runs/*.log
+samples/raw_test.mp4

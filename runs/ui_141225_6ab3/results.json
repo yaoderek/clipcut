@@ -1,0 +1,99 @@
+{
+ "winner": "v01",
+ "results": [
+  {
+   "variant_id": "v01",
+   "overall": {
+    "p_swipe3s": 0.4829,
+    "watch_pct": 39.38,
+    "p_share": 0.04456,
+    "score": 0.9647
+   },
+   "personas": {
+    "v2_P0: +text_blobs, -cuts_per_10s, +mean_shot_len, -motion_mean": {
+     "p_swipe3s": 0.4829,
+     "watch_pct": 39.38,
+     "p_share": 0.04456,
+     "score": 1.8649
+    },
+    "v2_P1: -log_duration, +beat_regularity, -speech_frac, +music_score": {
+     "p_swipe3s": 0.4829,
+     "watch_pct": 39.38,
+     "p_share": 0.04456,
+     "score": 0.2987
+    },
+    "v2_P2: +spectral_flatness, +dead_air_frac, +loudness_std, -loudness_db": {
+     "p_swipe3s": 0.4829,
+     "watch_pct": 39.38,
+     "p_share": 0.04456,
+     "score": 0.5615
+    },
+    "v2_P3: -mean_shot_len, +cuts_per_10s, +motion_std, -text_edge_lower": {
+     "p_swipe3s": 0.4829,
+     "watch_pct": 39.38,
+     "p_share": 0.04456,
+     "score": 0.5976
+    }
+   },
+   "model_version": "stub:personas_v2+personas_v1",
+   "confidence": "low (v2 within-persona Spearman~0.22 held-out; swipe/watch are length-only)",
+   "recipe": {
+    "hook": "chrono",
+    "length": 45,
+    "pacing": "raw",
+    "captions": "none",
+    "hook_title": false,
+    "ending": "fade"
+   },
+   "duration_s": 40.92,
+   "rank": 1
+  },
+  {
+   "variant_id": "v02",
+   "overall": {
+    "p_swipe3s": 0.4739,
+    "watch_pct": 49.56,
+    "p_share": 0.04725,
+    "score": 0.7754
+   },
+   "personas": {
+    "v2_P0: +text_blobs, -cuts_per_10s, +mean_shot_len, -motion_mean": {
+     "p_swipe3s": 0.4739,
+     "watch_pct": 49.56,
+     "p_share": 0.04725,
+     "score": 1.2
+    },
+    "v2_P1: -log_duration, +beat_regularity, -speech_frac, +music_score": {
+     "p_swipe3s": 0.4739,
+     "watch_pct": 49.56,
+     "p_share": 0.04725,
+     "score": 0.493
+    },
+    "v2_P2: +spectral_flatness, +dead_air_frac, +loudness_std, -loudness_db": {
+     "p_swipe3s": 0.4739,
+     "watch_pct": 49.56,
+     "p_share": 0.04725,
+     "score": 0.6653
+    },
+    "v2_P3: -mean_shot_len, +cuts_per_10s, +motion_std, -text_edge_lower": {
+     "p_swipe3s": 0.4739,
+     "watch_pct": 49.56,
+     "p_share": 0.04725,
+     "score": 0.5532
+    }
+   },
+   "model_version": "stub:personas_v2+personas_v1",
+   "confidence": "low (v2 within-persona Spearman~0.22 held-out; swipe/watch are length-only)",
+   "recipe": {
+    "hook": "best",
+    "length": 15,
+    "pacing": "tight_punch",
+    "captions": "word_pop",
+    "hook_title": true,
+    "ending": "loop"
+   },
+   "duration_s": 11.42,
+   "rank": 2
+  }
+ ]
+}

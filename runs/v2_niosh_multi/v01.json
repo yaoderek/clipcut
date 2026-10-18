@@ -1,0 +1,189 @@
+{
+ "variant_id": "v01",
+ "recipe": {
+  "hook": "m1",
+  "length": 15,
+  "pacing": "tight_punch",
+  "captions": "word_pop",
+  "hook_title": true,
+  "ending": "loop",
+  "channel": "TikTok",
+  "aspect": "9:16"
+ },
+ "hook_text": "She really helped me with statistics, but more than that, she said, look you need to be a research assistant.",
+ "hook_phrase": "She really helped me with statistics,",
+ "hook_boundary": "punct",
+ "aspect": "9:16",
+ "resolution": [
+  1080,
+  1920
+ ],
+ "hook_src_start": 90.385,
+ "channel": "TikTok",
+ "duration_s": 14.79,
+ "video_path": "/workspace/clipcut/runs/v2_niosh_multi/v01.mp4",
+ "segments": [
+  {
+   "src_start": 90.385,
+   "src_end": 92.52,
+   "out_start": 0.0,
+   "punch_in": 1.08
+  },
+  {
+   "src_start": 92.52,
+   "src_end": 95.52,
+   "out_start": 2.135,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 95.52,
+   "src_end": 96.095,
+   "out_start": 5.135,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 96.289,
+   "src_end": 97.919,
+   "out_start": 5.71,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 97.839,
+   "src_end": 98.098,
+   "out_start": 7.34,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 98.325,
+   "src_end": 99.355,
+   "out_start": 7.599,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 99.275,
+   "src_end": 102.08,
+   "out_start": 8.629,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 102.0,
+   "src_end": 105.197,
+   "out_start": 11.434,
+   "punch_in": 1.2
+  }
+ ],
+ "captions": [
+  {
+   "start": 0.0,
+   "end": 1.11,
+   "text": "SHE REALLY HELPED"
+  },
+  {
+   "start": 1.06,
+   "end": 2.16,
+   "text": "ME WITH STATISTICS,"
+  },
+  {
+   "start": 2.11,
+   "end": 2.92,
+   "text": "BUT MORE THAN"
+  },
+  {
+   "start": 2.87,
+   "end": 3.17,
+   "text": "THAT,"
+  },
+  {
+   "start": 3.12,
+   "end": 3.67,
+   "text": "SHE SAID,"
+  },
+  {
+   "start": 3.62,
+   "end": 4.42,
+   "text": "LOOK YOU NEED"
+  },
+  {
+   "start": 4.37,
+   "end": 5.18,
+   "text": "TO BE A"
+  },
+  {
+   "start": 5.13,
+   "end": 5.68,
+   "text": "RESEARCH ASSISTANT."
+  },
+  {
+   "start": 5.94,
+   "end": 6.7,
+   "text": "TO GET INTO"
+  },
+  {
+   "start": 6.65,
+   "end": 7.31,
+   "text": "THE HONORS PROGRAM."
+  },
+  {
+   "start": 7.26,
+   "end": 8.19,
+   "text": "YOU BE A"
+  },
+  {
+   "start": 8.14,
+   "end": 8.6,
+   "text": "TEACHING ASSISTANT."
+  },
+  {
+   "start": 8.55,
+   "end": 9.29,
+   "text": "HERE ARE THE"
+  },
+  {
+   "start": 9.24,
+   "end": 9.99,
+   "text": "THINGS YOU NEED"
+  },
+  {
+   "start": 9.94,
+   "end": 10.84,
+   "text": "TO DO TO"
+  },
+  {
+   "start": 10.79,
+   "end": 11.4,
+   "text": "GO FORWARD."
+  },
+  {
+   "start": 11.35,
+   "end": 12.33,
+   "text": "AND WITHOUT HER,"
+  },
+  {
+   "start": 12.28,
+   "end": 13.18,
+   "text": "I DON'T THINK"
+  },
+  {
+   "start": 13.13,
+   "end": 14.03,
+   "text": "I WOULD HAVE"
+  },
+  {
+   "start": 13.98,
+   "end": 14.6,
+   "text": "DONE WELL."
+  }
+ ],
+ "hook_end_s": 2.13,
+ "cut_times_s": [
+  2.135,
+  5.135,
+  5.71,
+  7.34,
+  7.599,
+  8.629,
+  11.434
+ ],
+ "silence_removed_s": 0.42,
+ "loop_end": true
+}

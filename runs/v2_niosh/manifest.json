@@ -1,0 +1,428 @@
+{
+ "source": "samples/talking_head_niosh.mp4",
+ "source_duration_s": 120.0529,
+ "transcriber": "human-srt(interpolated words)",
+ "n_silences": 21,
+ "n_words": 603,
+ "face_x": 0.6091796875,
+ "variants": [
+  {
+   "variant_id": "v01",
+   "hook": "chrono",
+   "length": 45,
+   "pacing": "raw",
+   "captions": "none",
+   "hook_title": false,
+   "ending": "fade",
+   "hook_idx": 0,
+   "hook_text": "One of my favorite things about being an epidemiologist is just the variety to the job.",
+   "length_s": 40.92,
+   "n_cuts": 7,
+   "cuts_per_10s": 1.71,
+   "spans": [
+    [
+     0.55,
+     6.236
+    ],
+    [
+     5.886,
+     13.76
+    ],
+    [
+     13.41,
+     17.954
+    ],
+    [
+     17.604,
+     20.051
+    ],
+    [
+     19.701,
+     23.413
+    ],
+    [
+     23.063,
+     25.632
+    ],
+    [
+     25.282,
+     29.551
+    ],
+    [
+     29.201,
+     38.751
+    ]
+   ],
+   "file": "runs/v2_niosh/v01.mp4"
+  },
+  {
+   "variant_id": "v02",
+   "hook": "best",
+   "length": 15,
+   "pacing": "tight_punch",
+   "captions": "word_pop",
+   "hook_title": true,
+   "ending": "loop",
+   "hook_idx": 11,
+   "hook_text": "I never expected to be in epidemiology.",
+   "length_s": 11.42,
+   "n_cuts": 5,
+   "cuts_per_10s": 4.38,
+   "spans": [
+    [
+     57.826,
+     59.167
+    ],
+    [
+     59.087,
+     62.087
+    ],
+    [
+     62.087,
+     65.087
+    ],
+    [
+     65.087,
+     65.845
+    ],
+    [
+     65.765,
+     67.674
+    ],
+    [
+     68.0,
+     69.288
+    ]
+   ],
+   "file": "runs/v2_niosh/v02.mp4"
+  },
+  {
+   "variant_id": "v03",
+   "hook": "second",
+   "length": 15,
+   "pacing": "tight",
+   "captions": "word_pop",
+   "hook_title": false,
+   "ending": "fade",
+   "hook_idx": 6,
+   "hook_text": "There's just no price you can put on that.",
+   "length_s": 16.42,
+   "n_cuts": 7,
+   "cuts_per_10s": 4.26,
+   "spans": [
+    [
+     25.282,
+     27.583
+    ],
+    [
+     32.058,
+     33.032
+    ],
+    [
+     33.302,
+     35.901
+    ],
+    [
+     36.101,
+     37.024
+    ],
+    [
+     37.216,
+     38.267
+    ],
+    [
+     38.593,
+     39.45
+    ],
+    [
+     39.844,
+     45.987
+    ],
+    [
+     46.204,
+     47.568
+    ]
+   ],
+   "file": "runs/v2_niosh/v03.mp4"
+  },
+  {
+   "variant_id": "v04",
+   "hook": "second",
+   "length": 45,
+   "pacing": "tight_punch",
+   "captions": "sentence",
+   "hook_title": false,
+   "ending": "loop",
+   "hook_idx": 6,
+   "hook_text": "There's just no price you can put on that.",
+   "length_s": 41.55,
+   "n_cuts": 22,
+   "cuts_per_10s": 5.29,
+   "spans": [
+    [
+     25.282,
+     27.583
+    ],
+    [
+     32.058,
+     33.032
+    ],
+    [
+     33.302,
+     35.901
+    ],
+    [
+     36.101,
+     37.024
+    ],
+    [
+     37.216,
+     38.267
+    ],
+    [
+     38.593,
+     39.45
+    ],
+    [
+     39.844,
+     42.844
+    ],
+    [
+     42.844,
+     45.987
+    ],
+    [
+     46.204,
+     47.568
+    ],
+    [
+     47.488,
+     50.488
+    ],
+    [
+     50.488,
+     51.705
+    ],
+    [
+     51.625,
+     51.881
+    ],
+    [
+     52.04,
+     53.819
+    ],
+    [
+     57.826,
+     59.167
+    ],
+    [
+     59.087,
+     62.087
+    ],
+    [
+     62.087,
+     65.087
+    ],
+    [
+     65.087,
+     65.845
+    ],
+    [
+     65.765,
+     67.674
+    ],
+    [
+     68.0,
+     69.288
+    ],
+    [
+     69.208,
+     72.208
+    ],
+    [
+     72.208,
+     74.006
+    ],
+    [
+     74.381,
+     76.313
+    ],
+    [
+     76.233,
+     76.693
+    ]
+   ],
+   "file": "runs/v2_niosh/v04.mp4"
+  },
+  {
+   "variant_id": "v05",
+   "hook": "second",
+   "length": 30,
+   "pacing": "tight_punch",
+   "captions": "none",
+   "hook_title": true,
+   "ending": "fade",
+   "hook_idx": 6,
+   "hook_text": "There's just no price you can put on that.",
+   "length_s": 32.95,
+   "n_cuts": 17,
+   "cuts_per_10s": 5.16,
+   "spans": [
+    [
+     25.282,
+     27.583
+    ],
+    [
+     32.058,
+     33.032
+    ],
+    [
+     33.302,
+     35.901
+    ],
+    [
+     36.101,
+     37.024
+    ],
+    [
+     37.216,
+     38.267
+    ],
+    [
+     38.593,
+     39.45
+    ],
+    [
+     39.844,
+     42.844
+    ],
+    [
+     42.844,
+     45.987
+    ],
+    [
+     46.204,
+     47.568
+    ],
+    [
+     47.488,
+     50.488
+    ],
+    [
+     50.488,
+     51.705
+    ],
+    [
+     51.625,
+     51.881
+    ],
+    [
+     52.04,
+     53.819
+    ],
+    [
+     57.826,
+     59.167
+    ],
+    [
+     59.087,
+     62.087
+    ],
+    [
+     62.087,
+     65.087
+    ],
+    [
+     65.087,
+     65.845
+    ],
+    [
+     65.765,
+     67.674
+    ]
+   ],
+   "file": "runs/v2_niosh/v05.mp4"
+  },
+  {
+   "variant_id": "v06",
+   "hook": "chrono",
+   "length": 30,
+   "pacing": "tight",
+   "captions": "sentence",
+   "hook_title": true,
+   "ending": "loop",
+   "hook_idx": 0,
+   "hook_text": "One of my favorite things about being an epidemiologist is just the variety to the job.",
+   "length_s": 31.92,
+   "n_cuts": 15,
+   "cuts_per_10s": 4.7,
+   "spans": [
+    [
+     0.55,
+     4.129
+    ],
+    [
+     4.371,
+     5.966
+    ],
+    [
+     5.886,
+     7.259
+    ],
+    [
+     7.745,
+     10.995
+    ],
+    [
+     11.172,
+     13.49
+    ],
+    [
+     13.41,
+     16.551
+    ],
+    [
+     17.09,
+     17.684
+    ],
+    [
+     17.604,
+     19.781
+    ],
+    [
+     19.701,
+     21.781
+    ],
+    [
+     22.07,
+     23.143
+    ],
+    [
+     23.063,
+     25.362
+    ],
+    [
+     25.282,
+     27.583
+    ],
+    [
+     32.058,
+     33.032
+    ],
+    [
+     33.302,
+     35.901
+    ],
+    [
+     36.101,
+     37.024
+    ],
+    [
+     37.216,
+     38.267
+    ]
+   ],
+   "file": "runs/v2_niosh/v06.mp4"
+  }
+ ]
+}

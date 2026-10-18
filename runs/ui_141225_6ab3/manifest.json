@@ -1,0 +1,100 @@
+{
+ "source": "/workspace/clipcut/samples/talking_head_niosh.mp4",
+ "source_duration_s": 120.0529,
+ "transcriber": "human-srt(interpolated words)",
+ "n_silences": 21,
+ "n_words": 603,
+ "face_x": 0.6091796875,
+ "variants": [
+  {
+   "variant_id": "v01",
+   "hook": "chrono",
+   "length": 45,
+   "pacing": "raw",
+   "captions": "none",
+   "hook_title": false,
+   "ending": "fade",
+   "hook_idx": 0,
+   "hook_text": "One of my favorite things about being an epidemiologist is just the variety to the job.",
+   "length_s": 40.92,
+   "n_cuts": 7,
+   "cuts_per_10s": 1.71,
+   "spans": [
+    [
+     0.55,
+     6.236
+    ],
+    [
+     5.886,
+     13.76
+    ],
+    [
+     13.41,
+     17.954
+    ],
+    [
+     17.604,
+     20.051
+    ],
+    [
+     19.701,
+     23.413
+    ],
+    [
+     23.063,
+     25.632
+    ],
+    [
+     25.282,
+     29.551
+    ],
+    [
+     29.201,
+     38.751
+    ]
+   ],
+   "file": "/workspace/clipcut/runs/ui_141225_6ab3/v01.mp4"
+  },
+  {
+   "variant_id": "v02",
+   "hook": "best",
+   "length": 15,
+   "pacing": "tight_punch",
+   "captions": "word_pop",
+   "hook_title": true,
+   "ending": "loop",
+   "hook_idx": 11,
+   "hook_text": "I never expected to be in epidemiology.",
+   "length_s": 11.42,
+   "n_cuts": 5,
+   "cuts_per_10s": 4.38,
+   "spans": [
+    [
+     57.826,
+     59.167
+    ],
+    [
+     59.087,
+     62.087
+    ],
+    [
+     62.087,
+     65.087
+    ],
+    [
+     65.087,
+     65.845
+    ],
+    [
+     65.765,
+     67.674
+    ],
+    [
+     68.0,
+     69.288
+    ]
+   ],
+   "file": "/workspace/clipcut/runs/ui_141225_6ab3/v02.mp4"
+  }
+ ]
+}

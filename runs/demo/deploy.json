@@ -1,0 +1,43 @@
+{
+  "winner": "v06",
+  "variant": {
+    "variant_id": "v06",
+    "hook_start": 20.0,
+    "hook_text": "Number 1.",
+    "hook_score": 1.1,
+    "target_length_s": 15,
+    "length_s": 15.0,
+    "jump_cuts": true,
+    "n_cuts": 5,
+    "cuts_per_min": 20.0,
+    "caption_style": "white_box",
+    "hook_zoom": false,
+    "spans": [
+      [
+        20.0,
+        23.0
+      ],
+      [
+        24.083,
+        27.241
+      ],
+      [
+        28.541,
+        31.01
+      ],
+      [
+        32.319,
+        34.157
+      ],
+      [
+        35.464,
+        37.636
+      ],
+      [
+        38.947,
+        41.31
+      ]
+    ],
+    "file": "runs/demo/v06.mp4"
+  }
+}

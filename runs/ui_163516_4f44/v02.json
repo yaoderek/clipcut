@@ -1,0 +1,166 @@
+{
+ "variant_id": "v02",
+ "recipe": {
+  "hook": "m2",
+  "length": 30,
+  "pacing": "raw_punch",
+  "captions": "sentence",
+  "hook_title": true,
+  "ending": "loop",
+  "channel": "Shorts",
+  "aspect": "9:16"
+ },
+ "hook_text": "My mother works at NIOSH and has been there since I was a young child.",
+ "hook_phrase": "My mother works at NIOSH and",
+ "hook_boundary": "word",
+ "aspect": "9:16",
+ "resolution": [
+  1080,
+  1920
+ ],
+ "hook_src_start": 3.95,
+ "channel": "Shorts",
+ "duration_s": 31.92,
+ "video_path": "/workspace/clipcut/runs/ui_163516_4f44/v02.mp4",
+ "segments": [
+  {
+   "src_start": 3.95,
+   "src_end": 6.81,
+   "out_start": 0.0,
+   "punch_in": 1.08
+  },
+  {
+   "src_start": 6.81,
+   "src_end": 9.81,
+   "out_start": 2.86,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 9.81,
+   "src_end": 10.54,
+   "out_start": 5.86,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 10.51,
+   "src_end": 13.51,
+   "out_start": 6.59,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 13.51,
+   "src_end": 14.64,
+   "out_start": 9.59,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 15.19,
+   "src_end": 18.19,
+   "out_start": 10.72,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 18.19,
+   "src_end": 21.19,
+   "out_start": 13.72,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 21.19,
+   "src_end": 23.4,
+   "out_start": 16.72,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 23.89,
+   "src_end": 25.9,
+   "out_start": 18.93,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 29.64,
+   "src_end": 32.53,
+   "out_start": 20.94,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 32.44,
+   "src_end": 35.44,
+   "out_start": 23.83,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 35.44,
+   "src_end": 35.77,
+   "out_start": 26.83,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 35.42,
+   "src_end": 38.42,
+   "out_start": 27.16,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 38.42,
+   "src_end": 39.69,
+   "out_start": 30.16,
+   "punch_in": 1.2
+  }
+ ],
+ "captions": [
+  {
+   "start": 0.0,
+   "end": 6.24,
+   "text": "My mother works at NIOSH and has been there since I was a young child."
+  },
+  {
+   "start": 6.56,
+   "end": 10.37,
+   "text": "My mom brought me in for mother, daughter, day, probably in my mid teens."
+  },
+  {
+   "start": 10.72,
+   "end": 18.58,
+   "text": "And I got to see what epidemiologists do and I got to hang out with industrial hygienists and other researchers and kind of see what they"
+  },
+  {
+   "start": 18.93,
+   "end": 20.59,
+   "text": "And that was sort of my first introduction."
+  },
+  {
+   "start": 20.94,
+   "end": 23.48,
+   "text": "I never expected to be an epidemiology."
+  },
+  {
+   "start": 23.74,
+   "end": 26.81,
+   "text": "I started out wanting to be a teacher and then I couldn't afford to go to school."
+  },
+  {
+   "start": 26.81,
+   "end": 31.08,
+   "text": "And then when I could afford to go to school, I thought, I'm going to be a clinical psychologist."
+  }
+ ],
+ "hook_end_s": 2.86,
+ "cut_times_s": [
+  2.86,
+  5.86,
+  6.59,
+  9.59,
+  10.72,
+  13.72,
+  16.72,
+  18.93,
+  20.94,
+  23.83,
+  26.83,
+  27.16,
+  30.16
+ ],
+ "silence_removed_s": 1.04,
+ "loop_end": true
+}

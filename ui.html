@@ -1,0 +1,144 @@
+<!doctype html><html><head><meta charset="utf-8"><title>ClipCut — one video, many shorts</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{--bg:#0b0d12;--panel:#141821;--panel2:#1b2030;--line:#262c3d;--txt:#e7eaf2;--mut:#8b93a7;--acc:#7c5cff;--acc2:#22d3ee;--win:#facc15;--ok:#34d399}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.5 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{display:flex;align-items:center;gap:16px;padding:18px 32px;border-bottom:1px solid var(--line);background:linear-gradient(90deg,#141821,#0b0d12)}
+.logo{font-weight:800;font-size:22px;letter-spacing:-.5px}.logo span{background:linear-gradient(90deg,var(--acc),var(--acc2));-webkit-background-clip:text;color:transparent}
+.sub{color:var(--mut)}main{padding:24px 32px;max-width:1500px;margin:auto}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:20px}
+.row{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+select,input,button{background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:9px;padding:9px 12px;font:inherit}
+button{cursor:pointer;font-weight:600}button.pri{background:linear-gradient(90deg,var(--acc),#5b8cff);border:0}button.win{background:var(--win);color:#111;border:0}
+button:disabled{opacity:.5;cursor:default}
+h2{margin:0 0 12px;font-size:16px;letter-spacing:.2px}.mut{color:var(--mut)}
+.bar{height:8px;background:var(--panel2);border-radius:9px;overflow:hidden;flex:1;min-width:200px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));transition:width .4s}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.v{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;position:relative}
+.v.winner{border:2px solid var(--win);box-shadow:0 0 0 4px #facc1522,0 10px 30px #facc1522}
+.vbox{aspect-ratio:9/16;background:#05060a;display:flex;align-items:center}.v video{width:100%;display:block;background:#000;object-fit:cover}.fmt{background:#f472b622;color:#f472b6;border-color:#f472b655}
+.v .b{padding:10px 12px}.v .t{display:flex;justify-content:space-between;align-items:baseline}.v .id{font-weight:700}.v .sc{font-variant-numeric:tabular-nums;font-weight:700;color:var(--acc2)}
+.tag{display:inline-block;font-size:11px;padding:2px 7px;border-radius:99px;background:var(--panel2);border:1px solid var(--line);color:#c7cde0;margin:3px 3px 0 0}
+.badge{position:absolute;top:10px;left:10px;background:var(--win);color:#111;font-weight:800;font-size:11px;padding:3px 8px;border-radius:99px;z-index:2}
+.rank{position:absolute;top:10px;right:10px;background:#000a;font-weight:700;font-size:11px;padding:3px 8px;border-radius:99px;z-index:2}
+.m{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:8px;font-size:11px;color:var(--mut)}.m b{display:block;color:var(--txt);font-size:13px}
+.charts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}canvas{width:100%;height:240px;background:var(--panel2);border-radius:10px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--mut);margin-top:8px}.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+a{color:var(--acc2)}.hero{display:flex;gap:20px;align-items:center}.hero video{height:300px;aspect-ratio:9/16;border-radius:12px;background:#000}
+.pill{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px;background:#fb923c22;color:#fb923c;border:1px solid #fb923c55;margin-left:8px}.ch{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;background:#22d3ee22;color:#22d3ee;border:1px solid #22d3ee55;margin:4px 0 0}
+svg text{font:11px system-ui;fill:#c7cde0}.why{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-top:8px;font-size:11.5px;line-height:1.45}.why>div{background:#1b2030;border:1px solid #262c3d;border-radius:8px;padding:6px 8px}
+.chgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:14px}.chb{background:#1b2030;border:1px solid #262c3d;border-radius:12px;padding:12px 14px}
+.chb h3{margin:0 0 2px;font-size:15px}.chb table{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums}.chb td,.chb th{padding:4px 5px;text-align:right;border-top:1px solid #262c3d}.chb th{color:#8b93a7;font-weight:500}.chb td:first-child,.chb th:first-child{text-align:left}
+.chb tr.w td{color:#facc15;font-weight:700}.pb{display:inline-block;height:6px;background:linear-gradient(90deg,#7c5cff,#22d3ee);border-radius:4px;vertical-align:middle;margin-right:4px}
+.split{display:flex;height:10px;border-radius:6px;overflow:hidden;margin:8px 0}.split i{display:block;height:100%}
+.note{font-size:12px;color:var(--mut)}
+</style></head><body>
+<header><div class="logo">Clip<span>Cut</span></div><div class="sub">One raw video → 12 short-form cuts → simulated audience picks the winner</div></header>
+<main>
+<div class="card"><h2>New run</h2>
+ <form id="f" class="row"><input type="file" name="video" accept="video/*"><span class="mut">or</span>
+  <select name="sample" id="sample"><option value="">pick a sample…</option></select>
+  <label class="mut">variants <input name="n" value="12" size="2" style="width:56px"></label>
+  <button class="pri">Cut + score</button>
+  <span class="mut" style="margin-left:auto">Open run</span><select id="runsel"></select></form>
+ <div id="prog" class="row" style="margin-top:14px;display:none"><div class="bar"><i id="pb" style="width:0"></i></div><span id="pt" class="mut"></span></div>
+</div>
+<div class="card" id="wincard" style="display:none"><div class="hero"><video id="winvid" controls muted loop playsinline></video>
+ <div><div class="mut">A/B winner</div><div style="font-size:30px;font-weight:800" id="winid"></div><div id="wintags"></div>
+ <div id="winstats" class="m" style="max-width:360px"></div><p class="note" id="winnote"></p><div id="winwhy"></div>
+ <div class="row"><button class="win" id="deploy">Deploy winner</button><span id="dl"></span></div></div></div></div>
+<div class="card"><h2>Fan-out <span class="mut" style="font-weight:400">source → moments → top clips → formats</span></h2><div id="sankey"></div></div>
+<div class="card"><h2>Channels · simulated A/B <span class="pill">simulated estimates</span></h2><div id="chsrc" class="note"></div><div id="chblocks" class="chgrid"></div></div>
+<div class="card"><h2>Predictions per clip <span id="modlabel" class="pill"></span> <label class="mut" style="font-weight:400;margin-left:12px;font-size:12px"><input type="checkbox" id="perstog"> split by persona</label></h2><div class="charts"><div><div class="mut">p_swipe3s (lower is better)</div><canvas id="c1"></canvas></div>
+ <div><div class="mut">watch %</div><canvas id="c2"></canvas></div><div><div class="mut">p_share</div><canvas id="c3"></canvas></div></div>
+ <div class="legend" id="legend"></div>
+ <p class="note" id="scorenote">Scores come from <code>clipcut/scorer.py</code> (stub, low confidence): <code>score</code> = edit-aware engagement model trained on MicroLens; <code>p_share</code> is a like-rate proxy; <code>p_swipe3s</code> and <code>watch_pct</code> come from the length-only KuaiRand model, so they are identical across personas.</p></div>
+<div class="card"><h2>Variants <span class="mut" id="runname"></span></h2><div class="grid" id="grid"></div></div>
+</main>
+<script>
+const $=s=>document.querySelector(s), COLORS=["#7c5cff","#22d3ee","#f472b6","#34d399","#fb923c"];
+let RUN=null, timer=null;
+async function j(u,o){const r=await fetch(u,o);if(!r.ok)throw new Error(await r.text());return r.json()}
+async function init(){
+ (await j('/api/samples')).forEach(s=>$('#sample').add(new Option(s,s)));
+ const runs=await j('/api/runs'); runs.forEach(r=>$('#runsel').add(new Option(r,r)));
+ $('#runsel').onchange=e=>load(e.target.value); if(runs.length) load(runs[0]);
+}
+function tags(r){const x=r.recipe;return (r.aspect&&r.aspect!=='9:16'?`<span class="tag fmt">${r.aspect} ${x.channel}</span>`:'')+[`hook: ${x.hook}`,`${x.length}s target`,x.pacing,`captions: ${x.captions}`,x.hook_title?'hook title':null,x.ending].filter(Boolean).map(t=>`<span class="tag">${t}</span>`).join('')}
+async function load(run){RUN=run;$('#runname').textContent='· '+run;$('#dl').innerHTML='';clearTimeout(timer);
+ const s=await j('/api/run/'+run);
+ if(s.running||!s.results){$('#prog').style.display='flex';const tot=(s.n||12)*2;$('#pb').style.width=Math.round(100*(s.rendered+s.scored)/tot)+'%';
+  $('#pt').textContent=s.error?('failed: '+s.error+' — '+s.tail.join(' ')):`rendered ${s.rendered}/${s.n} · scored ${s.scored}/${s.n}`;
+  if(!s.error) timer=setTimeout(()=>load(run),3000);return}
+ $('#prog').style.display='none';render(s)}
+function render(s){WIN=s.winner;const res=s.results,w=res.find(r=>r.variant_id===s.winner);
+ $('#wincard').style.display='block';$('#winvid').src=w.video;$('#winvid').poster=w.poster;$('#winid').innerHTML=`${w.variant_id} · ${w.duration_s.toFixed(1)}s`+(s.too_close?' <span class="pill">too close to call</span>':'');$('#wintags').innerHTML=chan(w)+tags(w);
+ $('#winstats').innerHTML=stats(w);$('#winwhy').innerHTML=(w.hook_phrase?`<div class="mut" style="margin-top:8px">Cold-open hook (ends ${w.hook_end_s}s): <b style="color:#e7eaf2">“${w.hook_phrase}”</b></div>`:'')+chanlist(w)+why(w,true);
+ $('#winnote').textContent=s.winner!==s.model_winner?`Model's top pick ${s.model_winner} is within 0.005 but uncaptioned, so the tie-break picks captioned ${s.winner}.`:'Top overall.score.';
+ if(s.deployed)$('#dl').innerHTML=`<a href="${s.deployed}" download>⬇ winner.mp4</a>`;
+ $('#grid').innerHTML=res.map(r=>`<div class="v ${r.variant_id===s.winner?'winner':''}">${r.variant_id===s.winner?'<span class="badge">★ WINNER</span>':''}<span class="rank">#${r.rank}</span>
+  <div class="vbox"><video style="aspect-ratio:${(r.aspect||'9:16').replace(':','/')}" src="${r.video}" poster="${r.poster}" controls preload="none" playsinline></video></div><div class="b"><div class="t"><span class="id">${r.variant_id} <span class="mut">${r.duration_s.toFixed(1)}s</span></span><span class="sc" title="batch_score 0-100 (raw ${r.overall.score.toFixed(3)})">${r.batch_score!=null?r.batch_score.toFixed(0)+'<span class=mut style=font-size:10px>/100</span>':r.overall.score.toFixed(3)}</span></div>
+  ${chan(r)}${tags(r)}${'<div class="m">'+stats(r).replace('<div class="m">','')}<div class="tag" style="color:#facc15" data-pb="${r.variant_id}"></div>${why(r,false)}</div></div>`).join('');
+ charts(res);sankey(res);meta(res[0]);loadChannels(RUN)}
+function why(r,full){const R=r.reasons;if(!Array.isArray(R)||!R.length)return'';
+ const pick=full?R:R.filter(x=>x.persona===r.best_persona).concat(R).slice(0,1);
+ return `<div class="why">${pick.map(x=>`<div><b>${x.persona}${x.persona===r.best_persona?' ★':''}</b> <span class="mut">${x.length||''}</span><br>${(x.top||[]).map(t=>'· '+t).join('<br>')}</div>`).join('')}</div>`}
+function chanlist(r){const C=r.channels;if(!Array.isArray(C))return'';return `<div class="why">${C.map((c,i)=>`<div><b>${i?'':'Best: '}${c.channel}</b>${c.alt?` <span class="mut">alt ${c.alt}</span>`:''} <span class="mut">· ${c.persona} ${c.persona_score!=null?c.persona_score.toFixed(2):''}</span><br><span class="mut">${c.reason||''}</span></div>`).join('')}</div>`}
+function chan(r){const c=r.target_channel||r.suggested;const hint=r.suggested&&r.target_channel&&r.suggested!==r.target_channel?`<span class="tag" style="color:#34d399;border-color:#34d39955">better fit: ${r.suggested}</span>`:'';return (c?`<div class="ch">▶ ${c}</div>${hint}${r.best_persona?` <span class="tag">best persona: ${r.best_persona}</span>`:''} `:'');return c?`<div class="ch">▶ ${r.suggested?'best channel: ':''}${c}${r.suggested?'':' (target)'}</div>${r.best_persona?` <span class="tag">best persona: ${r.best_persona}</span>`:''} `:''}
+function meta(r){const lab=[r.label,r.model_version,r.confidence].filter(Boolean).join(' · ');$('#modlabel').textContent=lab;$('#modlabel').style.display=lab?'inline-block':'none';
+ if(r.model_version&&!String(r.model_version).startsWith('stub'))$('#scorenote').textContent=`Scorer: clipcut/scorer.py → ${r.model_version}. ${r.confidence?('Confidence: '+r.confidence+'. '):''}Channel = scorer's top suggested channel when provided, otherwise the cutter's target channel.`}
+function sankey(res){const W=$('#sankey').clientWidth||1300,TOP=6,X=[10,230,560,W-210],nw=12;
+ const chOf=r=>(r.target_channel||r.suggested||'—'),fmtOf=r=>`${r.recipe.channel||chOf(r)} ${r.aspect||'9:16'}`;
+ const sorted=[...res].sort((a,b)=>b.overall.score-a.overall.score),top=sorted.slice(0,TOP),rest=sorted.slice(TOP);
+ const moments=[...new Set(res.map(r=>r.recipe.hook))].sort(),outs=[...new Set(res.map(fmtOf))].sort();
+ const H=Math.max(340,Math.max(moments.length,outs.length,TOP+1)*52+20);
+ const col=(arr)=>{const g=(H-20)/arr.length;return Object.fromEntries(arr.map((k,j)=>[k,{y:10+g*j,h:g-10}]))};
+ const M=col(moments),O=col(outs),K=col([...top.map(r=>r.variant_id),...(rest.length?['rest']:[])]);
+ const pal=["#7c5cff","#22d3ee","#f472b6","#34d399","#fb923c","#facc15"],mc=Object.fromEntries(moments.map((m,i)=>[m,pal[i%6]]));
+ const link=(x1,y1,x2,y2,w,c,o=.35)=>{const mx=(x1+x2)/2;return `<path d="M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}" stroke="${c}" stroke-width="${w}" fill="none" opacity="${o}"/>`};
+ let s=`<svg width="${W}" height="${H}">`;
+ moments.forEach(m=>{const n=res.filter(r=>r.recipe.hook===m).length;s+=link(X[0]+nw,H/2,X[1],M[m].y+M[m].h/2,n*3,mc[m],.25)});
+ const node=r=>top.includes(r)?r.variant_id:'rest';
+ // moment->clip links aggregated
+ const agg={};res.forEach(r=>{const k=r.recipe.hook+'|'+node(r);agg[k]=(agg[k]||0)+1});
+ Object.entries(agg).forEach(([k,n])=>{const [m,c]=k.split('|');s+=link(X[1]+nw,M[m].y+M[m].h/2,X[2],K[c].y+K[c].h/2,n*3,mc[m])});
+ const agg2={};res.forEach(r=>{const k=node(r)+'|'+fmtOf(r);agg2[k]=(agg2[k]||0)+1});
+ Object.entries(agg2).forEach(([k,n])=>{const [c,o]=k.split('|');const win=c===WIN;s+=link(X[2]+200,K[c].y+K[c].h/2,X[3],O[o].y+O[o].h/2,win?6:n*3,win?'#facc15':'#8b93a7',win?.9:.3)});
+ s+=`<rect x="${X[0]}" y="10" width="${nw}" height="${H-20}" rx="4" fill="#e7eaf2"/><text x="${X[0]+18}" y="${H/2-6}" style="font-weight:700">source</text><text x="${X[0]+18}" y="${H/2+10}" style="fill:#8b93a7">${res.length} clips</text>`;
+ moments.forEach(m=>{const r=res.find(r=>r.recipe.hook===m),t=(r.hook_phrase||r.hook_text||'');const n=res.filter(r=>r.recipe.hook===m).length;
+  s+=`<rect x="${X[1]}" y="${M[m].y}" width="${nw}" height="${M[m].h}" rx="4" fill="${mc[m]}"/><text x="${X[1]+18}" y="${M[m].y+M[m].h/2-4}" style="font-weight:700">moment ${m.slice(1)} · ${n} clips</text><text x="${X[1]+18}" y="${M[m].y+M[m].h/2+11}" style="fill:#8b93a7">“${t.slice(0,32)}${t.length>32?'…':''}”</text>`});
+ top.forEach((r,i)=>{const k=K[r.variant_id],win=r.variant_id===WIN;s+=`<rect x="${X[2]}" y="${k.y}" width="200" height="${k.h}" rx="6" fill="${win?'#facc1533':'#1b2030'}" stroke="${win?'#facc15':'#262c3d'}"/><text x="${X[2]+10}" y="${k.y+k.h/2-3}" style="font-weight:700">${win?'★ ':'#'+(i+1)+' '}${r.variant_id} · ${r.batch_score!=null?r.batch_score.toFixed(0)+'/100':r.overall.score.toFixed(3)}</text><text x="${X[2]+10}" y="${k.y+k.h/2+12}" style="fill:#8b93a7">${r.duration_s.toFixed(0)}s · ${r.aspect||'9:16'} · ${r.recipe.captions} · ${r.suggested&&r.suggested!==r.target_channel?'better fit '+r.suggested:'fits '+(r.target_channel||chOf(r))}</text>`});
+ if(rest.length){const k=K.rest;s+=`<rect x="${X[2]}" y="${k.y}" width="200" height="${k.h}" rx="6" fill="#141821" stroke="#262c3d" stroke-dasharray="4 3"/><text x="${X[2]+10}" y="${k.y+k.h/2+4}" style="fill:#8b93a7">+ ${rest.length} more clips</text>`}
+ outs.forEach(o=>{const n=res.filter(r=>fmtOf(r)===o).length;s+=`<rect x="${X[3]}" y="${O[o].y}" width="${nw}" height="${O[o].h}" rx="4" fill="#22d3ee"/><text x="${X[3]+18}" y="${O[o].y+O[o].h/2-3}" style="font-weight:700">${o}</text><text x="${X[3]+18}" y="${O[o].y+O[o].h/2+12}" style="fill:#8b93a7">${n} clips</text>`});
+ $('#sankey').innerHTML=s+'</svg><p class="note">Right column = rendered format (channel + aspect). Top 6 clips by score labeled; the rest are collapsed. Each card below also shows the scorer\'s suggested best channel.</p>'}
+let WIN=null,PB={};const kfmt=x=>x>=1000?(x/1000).toFixed(x>=10000?0:1)+'k':String(x);const rng=a=>Array.isArray(a)?`${kfmt(a[0])}–${kfmt(a[1])}`:'';
+async function loadChannels(run){let d;try{d=await j('/api/channels/'+run)}catch(e){$('#chblocks').innerHTML='<span class="mut">channel blocks unavailable</span>';return}
+ $('#chsrc').textContent=`Channels from ${d.channels_source}. A/B: ${d.simulate_ab_available?'retention-modeler simulate_ab':'ClipCut fallback simulation'} (fixed seed). All numbers are simulated estimates, not real platform data.`;
+ PB={};const pal=["#7c5cff","#22d3ee","#f472b6","#34d399","#fb923c","#facc15","#a3e635","#e879f9"];
+ const f=(x,d,m=1,suf='')=>x==null?'–':(x*m).toFixed(d)+suf;
+ $('#chblocks').innerHTML=d.blocks.map(b=>{b.items.forEach(i=>{(PB[i.variant_id]=PB[i.variant_id]||[]).push([b.channel,i.ab.p_best])});
+  const sp=b.spec,ideal=sp.ideal_s?`${sp.ideal_s[0]}–${sp.ideal_s[1]}s ideal`:'';
+  return `<div class="chb"><h3>${b.channel} <span class="mut" style="font-weight:400;font-size:12px">${(sp.aspect||[]).join('/')} · ${ideal}</span></h3>
+  <div class="mut" style="font-size:12px">${b.too_close?`<b style="color:#fb923c">too close to call</b> (${b.too_close.between.join(' vs ')}; Δfit ${b.too_close.score_diff}, ΔP ${b.too_close.p_best_diff}) · leader ${b.winner}`:`A/B winner: <b style="color:#facc15">★ ${b.winner}</b>`} · ${b.items.length} candidates · ${b.ab_source}</div>
+  <div class="split" title="traffic split">${b.items.map((i,k)=>`<i title="${i.variant_id} ${i.ab.traffic_pct}%" style="width:${i.ab.traffic_pct||0}%;background:${pal[k%8]}"></i>`).join('')}</div>
+  <table><tr><th>clip</th><th>P(best)</th><th>traffic</th><th>views*</th><th>watch*</th><th>swipe 3s*</th><th>shares*</th><th>fit</th></tr>
+  ${b.items.map((i,k)=>`<tr class="${i.variant_id===b.winner&&!b.too_close?'w':''}"><td><i class="pb" style="width:8px;background:${pal[k%8]}"></i>${i.variant_id===b.winner&&!b.too_close?'★ ':''}${i.variant_id} <span class="mut">${i.duration_s.toFixed(0)}s</span></td>
+   <td><span class="pb" style="width:${Math.round((i.ab.p_best||0)*60)}px"></span>${f(i.ab.p_best,0,100,'%')}</td><td>${f(i.ab.traffic_pct,0,1,'%')}</td><td>${rng(i.pred.views_range)||(i.ab.views??'–')}</td>
+   <td>${f(i.pred.watch_pct??i.ab.watch_pct,0,1,'%')}</td><td>${f(i.pred.p_swipe3s??i.pred.swipe_away??i.ab.swipe_away,0,100,'%')}</td><td>${rng(i.pred.shares_range)||(i.ab.shares??'–')}</td><td>${f(i.pred.fit,2)}</td></tr>`).join('')}</table><div class="note" style="margin-top:6px">* simulated estimate (scorer per-channel prediction; ranges = views/shares). P(best) &amp; traffic = simulated Thompson A/B.</div></div>`}).join('');
+ document.querySelectorAll('[data-pb]').forEach(el=>{const v=el.dataset.pb,a=(PB[v]||[]).sort((x,y)=>y[1]-x[1])[0];el.innerHTML=a?`P(best) ${(a[1]*100).toFixed(0)}% on ${a[0]} <span class="mut">(sim)</span>`:''})}
+
+function stats(r){const o=r.overall;return `<div class="m"><div>swipe 3s<b>${(o.p_swipe3s*100).toFixed(1)}%</b></div><div>watch<b>${o.watch_pct.toFixed(1)}%</b></div><div>share*<b>${(o.p_share*100).toFixed(2)}%</b></div></div>`}
+let RES=null;function charts(res){RES=res;const split=$('#perstog').checked;const pers=split?Object.keys(res[0].personas):['overall'];const val=(r,p,k)=>p==='overall'?r.overall[k]:r.personas[p][k];
+ $('#legend').innerHTML=pers.map((p,i)=>`<span><i style="background:${COLORS[i]}"></i>${p}</span>`).join('');
+ [['c1','p_swipe3s',100],['c2','watch_pct',1],['c3','p_share',100]].forEach(([id,k,mul])=>bars($('#'+id),res.map(r=>r.variant_id),pers.map(p=>res.map(r=>val(r,p,k)*mul))))}
+function bars(cv,labels,series){const d=devicePixelRatio||1,W=cv.clientWidth,H=cv.clientHeight;cv.width=W*d;cv.height=H*d;const c=cv.getContext('2d');c.scale(d,d);
+ const pad={l:34,b:22,t:10,r:6},mx=Math.max(...series.flat())*1.1||1,gw=(W-pad.l-pad.r)/labels.length,bw=gw*.8/series.length;
+ c.font='10px system-ui';c.fillStyle='#8b93a7';c.strokeStyle='#262c3d';
+ for(let i=0;i<=4;i++){const y=pad.t+(H-pad.t-pad.b)*i/4;c.beginPath();c.moveTo(pad.l,y);c.lineTo(W-pad.r,y);c.stroke();c.fillText((mx*(1-i/4)).toFixed(mx<2?2:0),2,y+3)}
+ labels.forEach((l,i)=>{series.forEach((s,k)=>{const h=(H-pad.t-pad.b)*s[i]/mx;c.fillStyle=COLORS[k];c.fillRect(pad.l+gw*i+gw*.1+bw*k,H-pad.b-h,bw-1,h)});
+  c.fillStyle='#8b93a7';c.fillText(l,pad.l+gw*i+gw*.2,H-6)})}
+$('#f').onsubmit=async e=>{e.preventDefault();const fd=new FormData(e.target);if(!fd.get('video').name)fd.delete('video');
+ try{const r=await j('/api/cut',{method:'POST',body:fd});$('#runsel').add(new Option(r.run,r.run));$('#runsel').value=r.run;$('#wincard').style.display='none';$('#grid').innerHTML='';load(r.run)}catch(err){alert(err.message)}};
+$('#deploy').onclick=async()=>{const r=await j('/api/deploy/'+RUN,{method:'POST'});$('#dl').innerHTML=`<a href="${r.url}" download>⬇ winner.mp4 (${r.winner})</a>`};
+$('#perstog').onchange=()=>RES&&charts(RES);init();
+</script></body></html>

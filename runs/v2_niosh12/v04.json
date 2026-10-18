@@ -1,0 +1,232 @@
+{
+ "variant_id": "v04",
+ "recipe": {
+  "hook": "second",
+  "length": 45,
+  "pacing": "tight_punch",
+  "captions": "sentence",
+  "hook_title": false,
+  "ending": "loop"
+ },
+ "duration_s": 41.55,
+ "video_path": "/workspace/clipcut/runs/v2_niosh12/v04.mp4",
+ "segments": [
+  {
+   "src_start": 25.282,
+   "src_end": 27.583,
+   "out_start": 0.0,
+   "punch_in": 1.08
+  },
+  {
+   "src_start": 32.058,
+   "src_end": 33.032,
+   "out_start": 2.301,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 33.302,
+   "src_end": 35.901,
+   "out_start": 3.275,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 36.101,
+   "src_end": 37.024,
+   "out_start": 5.874,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 37.216,
+   "src_end": 38.267,
+   "out_start": 6.797,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 38.593,
+   "src_end": 39.45,
+   "out_start": 7.848,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 39.844,
+   "src_end": 42.844,
+   "out_start": 8.705,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 42.844,
+   "src_end": 45.987,
+   "out_start": 11.705,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 46.204,
+   "src_end": 47.568,
+   "out_start": 14.848,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 47.488,
+   "src_end": 50.488,
+   "out_start": 16.212,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 50.488,
+   "src_end": 51.705,
+   "out_start": 19.212,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 51.625,
+   "src_end": 51.881,
+   "out_start": 20.429,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 52.04,
+   "src_end": 53.819,
+   "out_start": 20.685,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 57.826,
+   "src_end": 59.167,
+   "out_start": 22.464,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 59.087,
+   "src_end": 62.087,
+   "out_start": 23.805,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 62.087,
+   "src_end": 65.087,
+   "out_start": 26.805,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 65.087,
+   "src_end": 65.845,
+   "out_start": 29.805,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 65.765,
+   "src_end": 67.674,
+   "out_start": 30.563,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 68.0,
+   "src_end": 69.288,
+   "out_start": 32.472,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 69.208,
+   "src_end": 72.208,
+   "out_start": 33.76,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 72.208,
+   "src_end": 74.006,
+   "out_start": 36.76,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 74.381,
+   "src_end": 76.313,
+   "out_start": 38.558,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 76.233,
+   "src_end": 76.693,
+   "out_start": 40.49,
+   "punch_in": 1.0
+  }
+ ],
+ "captions": [
+  {
+   "start": 0.0,
+   "end": 2.19,
+   "text": "There's just no price you can put on that."
+  },
+  {
+   "start": 2.48,
+   "end": 7.6,
+   "text": "My mother works at NIOSH and has been there since I was a young child."
+  },
+  {
+   "start": 8.04,
+   "end": 16.13,
+   "text": "My mom brought me in for mother-daughter day probably in my mid-teens, and I got to see what epidemiologists do and I got to hang out"
+  },
+  {
+   "start": 16.13,
+   "end": 20.35,
+   "text": "with industrial hygienists and other researchers and kind of see what they do."
+  },
+  {
+   "start": 20.91,
+   "end": 22.41,
+   "text": "That was sort of my first introduction."
+  },
+  {
+   "start": 22.54,
+   "end": 23.73,
+   "text": "I never expected to be in epidemiology."
+  },
+  {
+   "start": 23.73,
+   "end": 30.48,
+   "text": "I started out wanting to be a teacher, and then I couldn't afford to go to school, and then when I could afford to go to"
+  },
+  {
+   "start": 30.48,
+   "end": 32.35,
+   "text": "school, I thought, I'm going to be a clinical psychologist."
+  },
+  {
+   "start": 32.47,
+   "end": 33.68,
+   "text": "So I went into psychology."
+  },
+  {
+   "start": 33.68,
+   "end": 40.41,
+   "text": "One of the reasons I went into psychology was there was no math or science, or so I thought."
+  }
+ ],
+ "hook_end_s": 3.92,
+ "cut_times_s": [
+  2.301,
+  3.275,
+  5.874,
+  6.797,
+  7.848,
+  8.705,
+  11.705,
+  14.848,
+  16.212,
+  19.212,
+  20.429,
+  20.685,
+  22.464,
+  23.805,
+  26.805,
+  29.805,
+  30.563,
+  32.472,
+  33.76,
+  36.76,
+  38.558,
+  40.49
+ ],
+ "silence_removed_s": 2.46,
+ "loop_end": true
+}

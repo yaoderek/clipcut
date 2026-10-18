@@ -1,0 +1,252 @@
+{
+ "variant_id": "v11",
+ "recipe": {
+  "hook": "m3",
+  "length": 45,
+  "pacing": "tight_punch",
+  "captions": "sentence",
+  "hook_title": true,
+  "ending": "loop",
+  "channel": "Shorts"
+ },
+ "hook_text": "That was sort of my first introduction.",
+ "hook_phrase": "That was sort of my first",
+ "hook_src_start": 51.62529411764706,
+ "channel": "Shorts",
+ "duration_s": 44.79,
+ "video_path": "/workspace/clipcut/runs/v2_niosh_house/v11.mp4",
+ "segments": [
+  {
+   "src_start": 51.625,
+   "src_end": 51.881,
+   "out_start": 0.0,
+   "punch_in": 1.08
+  },
+  {
+   "src_start": 52.04,
+   "src_end": 53.819,
+   "out_start": 0.256,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 57.826,
+   "src_end": 59.167,
+   "out_start": 2.035,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 59.087,
+   "src_end": 62.087,
+   "out_start": 3.376,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 62.087,
+   "src_end": 65.087,
+   "out_start": 6.376,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 65.087,
+   "src_end": 65.845,
+   "out_start": 9.376,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 65.765,
+   "src_end": 67.674,
+   "out_start": 10.134,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 68.0,
+   "src_end": 69.288,
+   "out_start": 12.043,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 69.208,
+   "src_end": 72.208,
+   "out_start": 13.331,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 72.208,
+   "src_end": 74.006,
+   "out_start": 16.331,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 74.381,
+   "src_end": 76.313,
+   "out_start": 18.129,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 76.233,
+   "src_end": 76.693,
+   "out_start": 20.061,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 81.47,
+   "src_end": 84.47,
+   "out_start": 20.521,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 84.47,
+   "src_end": 87.47,
+   "out_start": 23.521,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 87.47,
+   "src_end": 88.35,
+   "out_start": 26.521,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 88.27,
+   "src_end": 90.465,
+   "out_start": 27.401,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 90.385,
+   "src_end": 93.385,
+   "out_start": 29.596,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 93.385,
+   "src_end": 96.095,
+   "out_start": 32.596,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 96.289,
+   "src_end": 97.919,
+   "out_start": 35.306,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 97.839,
+   "src_end": 98.098,
+   "out_start": 36.936,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 98.325,
+   "src_end": 99.355,
+   "out_start": 37.195,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 99.275,
+   "src_end": 102.08,
+   "out_start": 38.225,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 102.0,
+   "src_end": 105.197,
+   "out_start": 41.03,
+   "punch_in": 1.0
+  }
+ ],
+ "captions": [
+  {
+   "start": 0.48,
+   "end": 1.98,
+   "text": "That was sort of my first introduction."
+  },
+  {
+   "start": 2.11,
+   "end": 3.3,
+   "text": "I never expected to be in epidemiology."
+  },
+  {
+   "start": 3.3,
+   "end": 10.05,
+   "text": "I started out wanting to be a teacher, and then I couldn't afford to go to school, and then when I could afford to go to"
+  },
+  {
+   "start": 10.05,
+   "end": 11.92,
+   "text": "school, I thought, I'm going to be a clinical psychologist."
+  },
+  {
+   "start": 12.04,
+   "end": 13.25,
+   "text": "So I went into psychology."
+  },
+  {
+   "start": 13.25,
+   "end": 19.98,
+   "text": "One of the reasons I went into psychology was there was no math or science, or so I thought."
+  },
+  {
+   "start": 20.52,
+   "end": 27.32,
+   "text": "The teaching assistant for that course really had a huge influence on my trajectory into the field of science."
+  },
+  {
+   "start": 27.32,
+   "end": 29.52,
+   "text": "She got me through that course."
+  },
+  {
+   "start": 29.52,
+   "end": 35.23,
+   "text": "She really helped me with statistics, but more than that, she said, look you need to be a research assistant."
+  },
+  {
+   "start": 35.53,
+   "end": 36.86,
+   "text": "You need to get into the honors program."
+  },
+  {
+   "start": 36.86,
+   "end": 38.14,
+   "text": "You need to be a teaching assistant."
+  },
+  {
+   "start": 38.14,
+   "end": 40.95,
+   "text": "Here are the things you need to do to go forward."
+  },
+  {
+   "start": 40.95,
+   "end": 44.15,
+   "text": "And without her, I don't think I would have done well."
+  }
+ ],
+ "hook_end_s": 0.26,
+ "cut_times_s": [
+  0.256,
+  2.035,
+  3.376,
+  6.376,
+  9.376,
+  10.134,
+  12.043,
+  13.331,
+  16.331,
+  18.129,
+  20.061,
+  20.521,
+  23.521,
+  26.521,
+  27.401,
+  29.596,
+  32.596,
+  35.306,
+  36.936,
+  37.195,
+  38.225,
+  41.03
+ ],
+ "silence_removed_s": 1.28,
+ "loop_end": true
+}

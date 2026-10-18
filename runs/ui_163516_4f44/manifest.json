@@ -1,0 +1,626 @@
+{
+ "source": "/workspace/clipcut/runs/ui_163516_4f44/src_short_upload_test.mp4",
+ "source_duration_s": 45.044633,
+ "transcriber": "faster-whisper:base",
+ "n_silences": 10,
+ "n_words": 129,
+ "face_x": 0.62421875,
+ "variants": [
+  {
+   "variant_id": "v01",
+   "hook": "m1",
+   "length": 15,
+   "pacing": "tight_punch",
+   "captions": "word_pop",
+   "hook_title": true,
+   "ending": "loop",
+   "hook_idx": 3,
+   "channel": "IG_Stories",
+   "_hook": {
+    "cut": 25.57,
+    "text": "And that was sort of my first introduction.",
+    "kind": "punct"
+   },
+   "hook_text": "And that was sort of my first introduction.",
+   "length_s": 16.89,
+   "n_cuts": 8,
+   "cuts_per_10s": 4.74,
+   "spans": [
+    [
+     24.04,
+     25.63
+    ],
+    [
+     29.826,
+     32.26
+    ],
+    [
+     32.44,
+     35.5
+    ],
+    [
+     35.42,
+     38.42
+    ],
+    [
+     38.42,
+     39.42
+    ],
+    [
+     4.058,
+     5.032
+    ],
+    [
+     5.302,
+     7.901
+    ],
+    [
+     8.101,
+     9.024
+    ],
+    [
+     9.216,
+     10.27
+    ]
+   ],
+   "file": "/workspace/clipcut/runs/ui_163516_4f44/v01.mp4"
+  },
+  {
+   "variant_id": "v02",
+   "hook": "m2",
+   "length": 30,
+   "pacing": "raw_punch",
+   "captions": "sentence",
+   "hook_title": true,
+   "ending": "loop",
+   "hook_idx": 0,
+   "channel": "Shorts",
+   "_hook": {
+    "cut": 6.81,
+    "text": "My mother works at NIOSH and",
+    "kind": "word"
+   },
+   "hook_text": "My mother works at NIOSH and has been there since I was a young child.",
+   "length_s": 31.92,
+   "n_cuts": 13,
+   "cuts_per_10s": 4.07,
+   "spans": [
+    [
+     3.95,
+     6.81
+    ],
+    [
+     6.81,
+     9.81
+    ],
+    [
+     9.81,
+     10.54
+    ],
+    [
+     10.51,
+     13.51
+    ],
+    [
+     13.51,
+     14.64
+    ],
+    [
+     15.19,
+     18.19
+    ],
+    [
+     18.19,
+     21.19
+    ],
+    [
+     21.19,
+     23.4
+    ],
+    [
+     23.89,
+     25.9
+    ],
+    [
+     29.64,
+     32.53
+    ],
+    [
+     32.44,
+     35.44
+    ],
+    [
+     35.44,
+     35.77
+    ],
+    [
+     35.42,
+     38.42
+    ],
+    [
+     38.42,
+     39.69
+    ]
+   ],
+   "file": "/workspace/clipcut/runs/ui_163516_4f44/v02.mp4"
+  },
+  {
+   "variant_id": "v03",
+   "hook": "m1",
+   "length": 15,
+   "pacing": "raw_punch",
+   "captions": "sentence",
+   "hook_title": false,
+   "ending": "loop",
+   "hook_idx": 3,
+   "channel": "Reels",
+   "_hook": {
+    "cut": 25.57,
+    "text": "And that was sort of my first introduction.",
+    "kind": "punct"
+   },
+   "hook_text": "And that was sort of my first introduction.",
+   "length_s": 12.79,
+   "n_cuts": 6,
+   "cuts_per_10s": 4.69,
+   "spans": [
+    [
+     23.89,
+     25.57
+    ],
+    [
+     25.57,
+     25.9
+    ],
+    [
+     29.64,
+     32.53
+    ],
+    [
+     32.44,
+     35.44
+    ],
+    [
+     35.44,
+     35.77
+    ],
+    [
+     35.42,
+     38.42
+    ],
+    [
+     38.42,
+     39.69
+    ]
+   ],
+   "file": "/workspace/clipcut/runs/ui_163516_4f44/v03.mp4"
+  },
+  {
+   "variant_id": "v04",
+   "hook": "m2",
+   "length": 45,
+   "pacing": "tight_punch",
+   "captions": "sentence",
+   "hook_title": false,
+   "ending": "loop",
+   "hook_idx": 0,
+   "channel": "FB_Reels",
+   "_hook": {
+    "cut": 6.81,
+    "text": "My mother works at NIOSH and",
+    "kind": "word"
+   },
+   "hook_text": "My mother works at NIOSH and has been there since I was a young child.",
+   "length_s": 28.22,
+   "n_cuts": 14,
+   "cuts_per_10s": 4.96,
+   "spans": [
+    [
+     4.058,
+     5.032
+    ],
+    [
+     5.302,
+     6.81
+    ],
+    [
+     6.81,
+     7.901
+    ],
+    [
+     8.101,
+     9.024
+    ],
+    [
+     9.216,
+     10.27
+    ],
+    [
+     10.593,
+     11.452
+    ],
+    [
+     11.844,
+     14.37
+    ],
+    [
+     15.19,
+     17.987
+    ],
+    [
+     18.204,
+     21.204
+    ],
+    [
+     21.204,
+     23.13
+    ],
+    [
+     24.04,
+     25.63
+    ],
+    [
+     29.826,
+     32.26
+    ],
+    [
+     32.44,
+     35.5
+    ],
+    [
+     35.42,
+     38.42
+    ],
+    [
+     38.42,
+     39.42
+    ]
+   ],
+   "file": "/workspace/clipcut/runs/ui_163516_4f44/v04.mp4"
+  },
+  {
+   "variant_id": "v05",
+   "hook": "m1",
+   "length": 30,
+   "pacing": "tight_punch",
+   "captions": "sentence",
+   "hook_title": true,
+   "ending": "loop",
+   "hook_idx": 3,
+   "channel": "X",
+   "aspect": "1:1",
+   "resolution": [
+    1080,
+    1080
+   ],
+   "_hook": {
+    "cut": 25.57,
+    "text": "And that was sort of my first introduction.",
+    "kind": "punct"
+   },
+   "hook_text": "And that was sort of my first introduction.",
+   "length_s": 28.15,
+   "n_cuts": 13,
+   "cuts_per_10s": 4.62,
+   "spans": [
+    [
+     24.04,
+     25.63
+    ],
+    [
+     29.826,
+     32.26
+    ],
+    [
+     32.44,
+     35.5
+    ],
+    [
+     35.42,
+     38.42
+    ],
+    [
+     38.42,
+     39.42
+    ],
+    [
+     4.058,
+     5.032
+    ],
+    [
+     5.302,
+     7.901
+    ],
+    [
+     8.101,
+     9.024
+    ],
+    [
+     9.216,
+     10.27
+    ],
+    [
+     10.593,
+     11.452
+    ],
+    [
+     11.844,
+     14.37
+    ],
+    [
+     15.19,
+     17.987
+    ],
+    [
+     18.204,
+     21.204
+    ],
+    [
+     21.204,
+     23.13
+    ]
+   ],
+   "file": "/workspace/clipcut/runs/ui_163516_4f44/v05.mp4"
+  },
+  {
+   "variant_id": "v06",
+   "hook": "m2",
+   "length": 30,
+   "pacing": "tight_punch",
+   "captions": "sentence",
+   "hook_title": true,
+   "ending": "loop",
+   "hook_idx": 0,
+   "channel": "X",
+   "aspect": "1:1",
+   "resolution": [
+    1080,
+    1080
+   ],
+   "_hook": {
+    "cut": 6.81,
+    "text": "My mother works at NIOSH and",
+    "kind": "word"
+   },
+   "hook_text": "My mother works at NIOSH and has been there since I was a young child.",
+   "length_s": 28.22,
+   "n_cuts": 14,
+   "cuts_per_10s": 4.96,
+   "spans": [
+    [
+     4.058,
+     5.032
+    ],
+    [
+     5.302,
+     6.81
+    ],
+    [
+     6.81,
+     7.901
+    ],
+    [
+     8.101,
+     9.024
+    ],
+    [
+     9.216,
+     10.27
+    ],
+    [
+     10.593,
+     11.452
+    ],
+    [
+     11.844,
+     14.37
+    ],
+    [
+     15.19,
+     17.987
+    ],
+    [
+     18.204,
+     21.204
+    ],
+    [
+     21.204,
+     23.13
+    ],
+    [
+     24.04,
+     25.63
+    ],
+    [
+     29.826,
+     32.26
+    ],
+    [
+     32.44,
+     35.5
+    ],
+    [
+     35.42,
+     38.42
+    ],
+    [
+     38.42,
+     39.42
+    ]
+   ],
+   "file": "/workspace/clipcut/runs/ui_163516_4f44/v06.mp4"
+  },
+  {
+   "variant_id": "v07",
+   "hook": "m1",
+   "length": 45,
+   "pacing": "tight_punch",
+   "captions": "sentence",
+   "hook_title": true,
+   "ending": "loop",
+   "hook_idx": 3,
+   "channel": "LinkedIn",
+   "aspect": "4:5",
+   "resolution": [
+    1080,
+    1350
+   ],
+   "_hook": {
+    "cut": 25.57,
+    "text": "And that was sort of my first introduction.",
+    "kind": "punct"
+   },
+   "hook_text": "And that was sort of my first introduction.",
+   "length_s": 28.15,
+   "n_cuts": 13,
+   "cuts_per_10s": 4.62,
+   "spans": [
+    [
+     24.04,
+     25.63
+    ],
+    [
+     29.826,
+     32.26
+    ],
+    [
+     32.44,
+     35.5
+    ],
+    [
+     35.42,
+     38.42
+    ],
+    [
+     38.42,
+     39.42
+    ],
+    [
+     4.058,
+     5.032
+    ],
+    [
+     5.302,
+     7.901
+    ],
+    [
+     8.101,
+     9.024
+    ],
+    [
+     9.216,
+     10.27
+    ],
+    [
+     10.593,
+     11.452
+    ],
+    [
+     11.844,
+     14.37
+    ],
+    [
+     15.19,
+     17.987
+    ],
+    [
+     18.204,
+     21.204
+    ],
+    [
+     21.204,
+     23.13
+    ]
+   ],
+   "file": "/workspace/clipcut/runs/ui_163516_4f44/v07.mp4"
+  },
+  {
+   "variant_id": "v08",
+   "hook": "m2",
+   "length": 45,
+   "pacing": "tight_punch",
+   "captions": "sentence",
+   "hook_title": true,
+   "ending": "loop",
+   "hook_idx": 0,
+   "channel": "LinkedIn",
+   "aspect": "4:5",
+   "resolution": [
+    1080,
+    1350
+   ],
+   "_hook": {
+    "cut": 6.81,
+    "text": "My mother works at NIOSH and",
+    "kind": "word"
+   },
+   "hook_text": "My mother works at NIOSH and has been there since I was a young child.",
+   "length_s": 28.22,
+   "n_cuts": 14,
+   "cuts_per_10s": 4.96,
+   "spans": [
+    [
+     4.058,
+     5.032
+    ],
+    [
+     5.302,
+     6.81
+    ],
+    [
+     6.81,
+     7.901
+    ],
+    [
+     8.101,
+     9.024
+    ],
+    [
+     9.216,
+     10.27
+    ],
+    [
+     10.593,
+     11.452
+    ],
+    [
+     11.844,
+     14.37
+    ],
+    [
+     15.19,
+     17.987
+    ],
+    [
+     18.204,
+     21.204
+    ],
+    [
+     21.204,
+     23.13
+    ],
+    [
+     24.04,
+     25.63
+    ],
+    [
+     29.826,
+     32.26
+    ],
+    [
+     32.44,
+     35.5
+    ],
+    [
+     35.42,
+     38.42
+    ],
+    [
+     38.42,
+     39.42
+    ]
+   ],
+   "file": "/workspace/clipcut/runs/ui_163516_4f44/v08.mp4"
+  }
+ ]
+}

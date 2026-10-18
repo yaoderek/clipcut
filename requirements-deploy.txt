@@ -1,0 +1,14 @@
+# Runtime deps for app.py + cutter_v2 + scorer(dummy heuristic) + channels + faster-whisper (pinned from .venv freeze)
+fastapi==0.143.3
+starlette==1.8.0
+uvicorn==0.54.0
+python-multipart==0.0.32
+pydantic==2.14.1
+numpy==2.5.4
+opencv-python-headless==4.14.0.94
+faster-whisper==1.2.1
+ctranslate2==4.8.3
+av==19.0.1
+onnxruntime==1.31.0
+tokenizers==0.23.3
+huggingface_hub==2.2.0

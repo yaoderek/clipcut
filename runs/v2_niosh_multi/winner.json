@@ -1,0 +1,5 @@
+{
+ "winner": "v07",
+ "model_top": "v07",
+ "tie_rule": "captioned preferred within 0.005"
+}

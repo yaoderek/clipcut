@@ -1,0 +1,166 @@
+{
+ "variant_id": "v07",
+ "recipe": {
+  "hook": "m1",
+  "length": 45,
+  "pacing": "tight_punch",
+  "captions": "sentence",
+  "hook_title": true,
+  "ending": "loop",
+  "channel": "LinkedIn",
+  "aspect": "4:5"
+ },
+ "hook_text": "And that was sort of my first introduction.",
+ "hook_phrase": "And that was sort of my first introduction.",
+ "hook_boundary": "punct",
+ "aspect": "4:5",
+ "resolution": [
+  1080,
+  1350
+ ],
+ "hook_src_start": 23.89,
+ "channel": "LinkedIn",
+ "duration_s": 28.15,
+ "video_path": "/workspace/clipcut/runs/ui_163516_4f44/v07.mp4",
+ "segments": [
+  {
+   "src_start": 24.04,
+   "src_end": 25.63,
+   "out_start": 0.0,
+   "punch_in": 1.08
+  },
+  {
+   "src_start": 29.826,
+   "src_end": 32.26,
+   "out_start": 1.59,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 32.44,
+   "src_end": 35.5,
+   "out_start": 4.024,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 35.42,
+   "src_end": 38.42,
+   "out_start": 7.084,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 38.42,
+   "src_end": 39.42,
+   "out_start": 10.084,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 4.058,
+   "src_end": 5.032,
+   "out_start": 11.084,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 5.302,
+   "src_end": 7.901,
+   "out_start": 12.058,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 8.101,
+   "src_end": 9.024,
+   "out_start": 14.657,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 9.216,
+   "src_end": 10.27,
+   "out_start": 15.58,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 10.593,
+   "src_end": 11.452,
+   "out_start": 16.634,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 11.844,
+   "src_end": 14.37,
+   "out_start": 17.493,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 15.19,
+   "src_end": 17.987,
+   "out_start": 20.019,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 18.204,
+   "src_end": 21.204,
+   "out_start": 22.816,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 21.204,
+   "src_end": 23.13,
+   "out_start": 25.816,
+   "punch_in": 1.2
+  }
+ ],
+ "captions": [
+  {
+   "start": 11.48,
+   "end": 16.55,
+   "text": "My mother works at NIOSH and has been there since I was a young child."
+  },
+  {
+   "start": 16.79,
+   "end": 19.94,
+   "text": "My mom brought me in for mother, daughter, day, probably in my mid teens."
+  },
+  {
+   "start": 20.02,
+   "end": 27.66,
+   "text": "And I got to see what epidemiologists do and I got to hang out with industrial hygienists and other researchers and kind of see what they"
+  },
+  {
+   "start": 0.13,
+   "end": 1.51,
+   "text": "And that was sort of my first introduction."
+  },
+  {
+   "start": 1.72,
+   "end": 3.94,
+   "text": "I never expected to be an epidemiology."
+  },
+  {
+   "start": 4.02,
+   "end": 7.0,
+   "text": "I started out wanting to be a teacher and then I couldn't afford to go to school."
+  },
+  {
+   "start": 7.0,
+   "end": 11.0,
+   "text": "And then when I could afford to go to school, I thought, I'm going to be a clinical psychologist."
+  }
+ ],
+ "hook_end_s": 1.53,
+ "cut_times_s": [
+  1.59,
+  4.024,
+  7.084,
+  10.084,
+  11.084,
+  12.058,
+  14.657,
+  15.58,
+  16.634,
+  17.493,
+  20.019,
+  22.816,
+  25.816
+ ],
+ "silence_removed_s": 2.59,
+ "loop_end": true
+}

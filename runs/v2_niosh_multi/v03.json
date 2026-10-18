@@ -1,0 +1,282 @@
+{
+ "variant_id": "v03",
+ "recipe": {
+  "hook": "m2",
+  "length": 45,
+  "pacing": "tight_punch",
+  "captions": "sentence",
+  "hook_title": false,
+  "ending": "loop",
+  "channel": "Shorts",
+  "aspect": "9:16"
+ },
+ "hook_text": "One of my favorite things about being an epidemiologist is just the variety to the job.",
+ "hook_phrase": "One of my favorite things about being an",
+ "hook_boundary": "word",
+ "aspect": "9:16",
+ "resolution": [
+  1080,
+  1920
+ ],
+ "hook_src_start": 0.5500000000000007,
+ "channel": "Shorts",
+ "duration_s": 48.25,
+ "video_path": "/workspace/clipcut/runs/v2_niosh_multi/v03.mp4",
+ "segments": [
+  {
+   "src_start": 0.55,
+   "src_end": 3.238,
+   "out_start": 0.0,
+   "punch_in": 1.08
+  },
+  {
+   "src_start": 3.238,
+   "src_end": 4.129,
+   "out_start": 2.688,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 4.371,
+   "src_end": 5.966,
+   "out_start": 3.579,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 5.886,
+   "src_end": 7.259,
+   "out_start": 5.174,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 7.745,
+   "src_end": 10.745,
+   "out_start": 6.547,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 10.745,
+   "src_end": 10.995,
+   "out_start": 9.547,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 11.172,
+   "src_end": 13.49,
+   "out_start": 9.797,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 13.41,
+   "src_end": 16.551,
+   "out_start": 12.115,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 17.09,
+   "src_end": 17.684,
+   "out_start": 15.256,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 17.604,
+   "src_end": 19.781,
+   "out_start": 15.85,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 19.701,
+   "src_end": 21.781,
+   "out_start": 18.027,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 22.07,
+   "src_end": 23.143,
+   "out_start": 20.107,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 23.063,
+   "src_end": 25.362,
+   "out_start": 21.18,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 25.282,
+   "src_end": 27.583,
+   "out_start": 23.479,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 32.058,
+   "src_end": 33.032,
+   "out_start": 25.78,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 33.302,
+   "src_end": 35.901,
+   "out_start": 26.754,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 36.101,
+   "src_end": 37.024,
+   "out_start": 29.353,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 37.216,
+   "src_end": 38.267,
+   "out_start": 30.276,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 38.593,
+   "src_end": 39.45,
+   "out_start": 31.327,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 39.844,
+   "src_end": 42.844,
+   "out_start": 32.184,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 42.844,
+   "src_end": 45.987,
+   "out_start": 35.184,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 46.204,
+   "src_end": 47.568,
+   "out_start": 38.327,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 47.488,
+   "src_end": 50.488,
+   "out_start": 39.691,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 50.488,
+   "src_end": 51.705,
+   "out_start": 42.691,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 51.625,
+   "src_end": 51.881,
+   "out_start": 43.908,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 52.04,
+   "src_end": 53.819,
+   "out_start": 44.164,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 57.826,
+   "src_end": 59.167,
+   "out_start": 45.943,
+   "punch_in": 1.0
+  }
+ ],
+ "captions": [
+  {
+   "start": 0.0,
+   "end": 5.09,
+   "text": "One of my favorite things about being an epidemiologist is just the variety to the job."
+  },
+  {
+   "start": 5.09,
+   "end": 12.03,
+   "text": "There's never a boring day, and really being able to go after those answers to research questions."
+  },
+  {
+   "start": 12.03,
+   "end": 15.77,
+   "text": "That I myself can go out and try to find the answers."
+  },
+  {
+   "start": 15.77,
+   "end": 17.95,
+   "text": "And I absolutely love my job."
+  },
+  {
+   "start": 17.95,
+   "end": 21.1,
+   "text": "I feel like I'm doing a good thing."
+  },
+  {
+   "start": 21.1,
+   "end": 23.4,
+   "text": "I'm impacting, potentially, workers' lives."
+  },
+  {
+   "start": 23.4,
+   "end": 25.67,
+   "text": "There's just no price you can put on that."
+  },
+  {
+   "start": 25.95,
+   "end": 31.08,
+   "text": "My mother works at NIOSH and has been there since I was a young child."
+  },
+  {
+   "start": 31.52,
+   "end": 39.61,
+   "text": "My mom brought me in for mother-daughter day probably in my mid-teens, and I got to see what epidemiologists do and I got to hang out"
+  },
+  {
+   "start": 39.61,
+   "end": 43.83,
+   "text": "with industrial hygienists and other researchers and kind of see what they do."
+  },
+  {
+   "start": 44.39,
+   "end": 45.89,
+   "text": "That was sort of my first introduction."
+  },
+  {
+   "start": 46.02,
+   "end": 47.2,
+   "text": "I never expected to be in epidemiology."
+  }
+ ],
+ "hook_end_s": 2.69,
+ "cut_times_s": [
+  2.688,
+  3.579,
+  5.174,
+  6.547,
+  9.547,
+  9.797,
+  12.115,
+  15.256,
+  15.85,
+  18.027,
+  20.107,
+  21.18,
+  23.479,
+  25.78,
+  26.754,
+  29.353,
+  30.276,
+  31.327,
+  32.184,
+  35.184,
+  38.327,
+  39.691,
+  42.691,
+  43.908,
+  44.164,
+  45.943
+ ],
+ "silence_removed_s": 3.49,
+ "loop_end": true
+}

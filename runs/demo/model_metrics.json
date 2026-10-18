@@ -1,0 +1,62 @@
+{
+  "0": {
+    "n_users": 9128,
+    "n_train": 590407,
+    "n_test": 170292,
+    "watch_ratio_MAE": 0.1104,
+    "baseline_MAE": 0.1447,
+    "watch_ratio_R2": 0.1365,
+    "skip_AUC": 0.5963,
+    "mean_watch_ratio": 0.1474,
+    "skip_rate": 0.669,
+    "like_rate": 0.0041
+  },
+  "1": {
+    "n_users": 11176,
+    "n_train": 901054,
+    "n_test": 205158,
+    "watch_ratio_MAE": 0.2206,
+    "baseline_MAE": 0.2811,
+    "watch_ratio_R2": 0.119,
+    "skip_AUC": 0.6095,
+    "mean_watch_ratio": 0.2862,
+    "skip_rate": 0.4153,
+    "like_rate": 0.0083
+  },
+  "2": {
+    "n_users": 438,
+    "n_train": 27843,
+    "n_test": 5941,
+    "watch_ratio_MAE": 0.3151,
+    "baseline_MAE": 0.4154,
+    "watch_ratio_R2": 0.065,
+    "skip_AUC": 0.5804,
+    "mean_watch_ratio": 0.4555,
+    "skip_rate": 0.2944,
+    "like_rate": 0.3296
+  },
+  "3": {
+    "n_users": 339,
+    "n_train": 13331,
+    "n_test": 3059,
+    "watch_ratio_MAE": 0.3006,
+    "baseline_MAE": 0.3604,
+    "watch_ratio_R2": -0.01,
+    "skip_AUC": 0.5335,
+    "mean_watch_ratio": 0.3528,
+    "skip_rate": 0.3968,
+    "like_rate": 0.0226
+  },
+  "4": {
+    "n_users": 6199,
+    "n_train": 377783,
+    "n_test": 70310,
+    "watch_ratio_MAE": 0.3357,
+    "baseline_MAE": 0.4365,
+    "watch_ratio_R2": 0.0977,
+    "skip_AUC": 0.6167,
+    "mean_watch_ratio": 0.4889,
+    "skip_rate": 0.2395,
+    "like_rate": 0.0153
+  }
+}

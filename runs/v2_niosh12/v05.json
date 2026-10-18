@@ -1,0 +1,146 @@
+{
+ "variant_id": "v05",
+ "recipe": {
+  "hook": "second",
+  "length": 30,
+  "pacing": "tight_punch",
+  "captions": "none",
+  "hook_title": true,
+  "ending": "fade"
+ },
+ "duration_s": 32.95,
+ "video_path": "/workspace/clipcut/runs/v2_niosh12/v05.mp4",
+ "segments": [
+  {
+   "src_start": 25.282,
+   "src_end": 27.583,
+   "out_start": 0.0,
+   "punch_in": 1.08
+  },
+  {
+   "src_start": 32.058,
+   "src_end": 33.032,
+   "out_start": 2.301,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 33.302,
+   "src_end": 35.901,
+   "out_start": 3.275,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 36.101,
+   "src_end": 37.024,
+   "out_start": 5.874,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 37.216,
+   "src_end": 38.267,
+   "out_start": 6.797,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 38.593,
+   "src_end": 39.45,
+   "out_start": 7.848,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 39.844,
+   "src_end": 42.844,
+   "out_start": 8.705,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 42.844,
+   "src_end": 45.987,
+   "out_start": 11.705,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 46.204,
+   "src_end": 47.568,
+   "out_start": 14.848,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 47.488,
+   "src_end": 50.488,
+   "out_start": 16.212,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 50.488,
+   "src_end": 51.705,
+   "out_start": 19.212,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 51.625,
+   "src_end": 51.881,
+   "out_start": 20.429,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 52.04,
+   "src_end": 53.819,
+   "out_start": 20.685,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 57.826,
+   "src_end": 59.167,
+   "out_start": 22.464,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 59.087,
+   "src_end": 62.087,
+   "out_start": 23.805,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 62.087,
+   "src_end": 65.087,
+   "out_start": 26.805,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 65.087,
+   "src_end": 65.845,
+   "out_start": 29.805,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 65.765,
+   "src_end": 67.674,
+   "out_start": 30.563,
+   "punch_in": 1.2
+  }
+ ],
+ "captions": [],
+ "hook_end_s": 3.92,
+ "cut_times_s": [
+  2.301,
+  3.275,
+  5.874,
+  6.797,
+  7.848,
+  8.705,
+  11.705,
+  14.848,
+  16.212,
+  19.212,
+  20.429,
+  20.685,
+  22.464,
+  23.805,
+  26.805,
+  29.805,
+  30.563
+ ],
+ "silence_removed_s": 1.76,
+ "loop_end": false
+}

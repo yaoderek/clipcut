@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+data/
+models/
+runs/**
+!runs/*/
+!runs/**/*.json
+*.mp4
+*.log
+.env
+.secrets
+/tmp

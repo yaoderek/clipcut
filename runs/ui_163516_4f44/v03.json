@@ -1,0 +1,102 @@
+{
+ "variant_id": "v03",
+ "recipe": {
+  "hook": "m1",
+  "length": 15,
+  "pacing": "raw_punch",
+  "captions": "sentence",
+  "hook_title": false,
+  "ending": "loop",
+  "channel": "Reels",
+  "aspect": "9:16"
+ },
+ "hook_text": "And that was sort of my first introduction.",
+ "hook_phrase": "And that was sort of my first introduction.",
+ "hook_boundary": "punct",
+ "aspect": "9:16",
+ "resolution": [
+  1080,
+  1920
+ ],
+ "hook_src_start": 23.89,
+ "channel": "Reels",
+ "duration_s": 12.79,
+ "video_path": "/workspace/clipcut/runs/ui_163516_4f44/v03.mp4",
+ "segments": [
+  {
+   "src_start": 23.89,
+   "src_end": 25.57,
+   "out_start": 0.0,
+   "punch_in": 1.08
+  },
+  {
+   "src_start": 25.57,
+   "src_end": 25.9,
+   "out_start": 1.68,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 29.64,
+   "src_end": 32.53,
+   "out_start": 2.01,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 32.44,
+   "src_end": 35.44,
+   "out_start": 4.9,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 35.44,
+   "src_end": 35.77,
+   "out_start": 7.9,
+   "punch_in": 1.0
+  },
+  {
+   "src_start": 35.42,
+   "src_end": 38.42,
+   "out_start": 8.23,
+   "punch_in": 1.2
+  },
+  {
+   "src_start": 38.42,
+   "src_end": 39.69,
+   "out_start": 11.23,
+   "punch_in": 1.0
+  }
+ ],
+ "captions": [
+  {
+   "start": 0.0,
+   "end": 1.66,
+   "text": "And that was sort of my first introduction."
+  },
+  {
+   "start": 2.01,
+   "end": 4.55,
+   "text": "I never expected to be an epidemiology."
+  },
+  {
+   "start": 4.81,
+   "end": 7.88,
+   "text": "I started out wanting to be a teacher and then I couldn't afford to go to school."
+  },
+  {
+   "start": 7.88,
+   "end": 12.15,
+   "text": "And then when I could afford to go to school, I thought, I'm going to be a clinical psychologist."
+  }
+ ],
+ "hook_end_s": 1.68,
+ "cut_times_s": [
+  1.68,
+  2.01,
+  4.9,
+  7.9,
+  8.23,
+  11.23
+ ],
+ "silence_removed_s": 0,
+ "loop_end": true
+}

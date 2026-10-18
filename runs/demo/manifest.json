@@ -1,0 +1,457 @@
+{
+  "source": "samples/raw_test.mp4",
+  "source_duration_s": 61.76,
+  "transcriber": "faster-whisper:tiny",
+  "n_transcript_segments": 19,
+  "n_silences": 17,
+  "variants": [
+    {
+      "variant_id": "v01",
+      "hook_start": 20.0,
+      "hook_text": "Number 1.",
+      "hook_score": 1.1,
+      "target_length_s": 15,
+      "length_s": 15.0,
+      "jump_cuts": false,
+      "n_cuts": 1,
+      "cuts_per_min": 4.0,
+      "caption_style": "minimal",
+      "hook_zoom": false,
+      "spans": [
+        [
+          20.0,
+          23.0
+        ],
+        [
+          23.0,
+          35.0
+        ]
+      ],
+      "file": "runs/demo/v01.mp4"
+    },
+    {
+      "variant_id": "v02",
+      "hook_start": 20.0,
+      "hook_text": "Number 1.",
+      "hook_score": 1.1,
+      "target_length_s": 30,
+      "length_s": 30.0,
+      "jump_cuts": true,
+      "n_cuts": 11,
+      "cuts_per_min": 22.0,
+      "caption_style": "minimal",
+      "hook_zoom": false,
+      "spans": [
+        [
+          20.0,
+          23.0
+        ],
+        [
+          24.083,
+          27.241
+        ],
+        [
+          28.541,
+          31.01
+        ],
+        [
+          32.319,
+          34.157
+        ],
+        [
+          35.464,
+          37.636
+        ],
+        [
+          38.947,
+          42.17
+        ],
+        [
+          43.479,
+          47.035
+        ],
+        [
+          48.331,
+          51.745
+        ],
+        [
+          53.039,
+          56.176
+        ],
+        [
+          57.508,
+          60.464
+        ],
+        [
+          0.0,
+          0.499
+        ],
+        [
+          0.905,
+          1.482
+        ]
+      ],
+      "file": "runs/demo/v02.mp4"
+    },
+    {
+      "variant_id": "v03",
+      "hook_start": 20.0,
+      "hook_text": "Number 1.",
+      "hook_score": 1.1,
+      "target_length_s": 45,
+      "length_s": 41.36,
+      "jump_cuts": true,
+      "n_cuts": 16,
+      "cuts_per_min": 23.21,
+      "caption_style": "none",
+      "hook_zoom": true,
+      "spans": [
+        [
+          20.0,
+          23.0
+        ],
+        [
+          24.083,
+          27.241
+        ],
+        [
+          28.541,
+          31.01
+        ],
+        [
+          32.319,
+          34.157
+        ],
+        [
+          35.464,
+          37.636
+        ],
+        [
+          38.947,
+          42.17
+        ],
+        [
+          43.479,
+          47.035
+        ],
+        [
+          48.331,
+          51.745
+        ],
+        [
+          53.039,
+          56.176
+        ],
+        [
+          57.508,
+          60.464
+        ],
+        [
+          0.0,
+          0.499
+        ],
+        [
+          0.905,
+          4.558
+        ],
+        [
+          5.85,
+          8.357
+        ],
+        [
+          9.667,
+          10.622
+        ],
+        [
+          11.945,
+          12.34
+        ],
+        [
+          12.744,
+          16.074
+        ],
+        [
+          17.403,
+          18.504
+        ]
+      ],
+      "file": "runs/demo/v03.mp4"
+    },
+    {
+      "variant_id": "v04",
+      "hook_start": 21.0,
+      "hook_text": "Talk to 10 customers this week.",
+      "hook_score": 1.1,
+      "target_length_s": 15,
+      "length_s": 15.0,
+      "jump_cuts": false,
+      "n_cuts": 1,
+      "cuts_per_min": 4.0,
+      "caption_style": "white_box",
+      "hook_zoom": false,
+      "spans": [
+        [
+          21.0,
+          24.0
+        ],
+        [
+          24.0,
+          36.0
+        ]
+      ],
+      "file": "runs/demo/v04.mp4"
+    },
+    {
+      "variant_id": "v05",
+      "hook_start": 21.0,
+      "hook_text": "Talk to 10 customers this week.",
+      "hook_score": 1.1,
+      "target_length_s": 30,
+      "length_s": 30.0,
+      "jump_cuts": true,
+      "n_cuts": 11,
+      "cuts_per_min": 22.0,
+      "caption_style": "white_box",
+      "hook_zoom": true,
+      "spans": [
+        [
+          21.0,
+          24.0
+        ],
+        [
+          24.083,
+          27.241
+        ],
+        [
+          28.541,
+          31.01
+        ],
+        [
+          32.319,
+          34.157
+        ],
+        [
+          35.464,
+          37.636
+        ],
+        [
+          38.947,
+          42.17
+        ],
+        [
+          43.479,
+          47.035
+        ],
+        [
+          48.331,
+          51.745
+        ],
+        [
+          53.039,
+          56.176
+        ],
+        [
+          57.508,
+          60.464
+        ],
+        [
+          0.0,
+          0.499
+        ],
+        [
+          0.905,
+          1.482
+        ]
+      ],
+      "file": "runs/demo/v05.mp4"
+    },
+    {
+      "variant_id": "v06",
+      "hook_start": 20.0,
+      "hook_text": "Number 1.",
+      "hook_score": 1.1,
+      "target_length_s": 15,
+      "length_s": 15.0,
+      "jump_cuts": true,
+      "n_cuts": 5,
+      "cuts_per_min": 20.0,
+      "caption_style": "white_box",
+      "hook_zoom": false,
+      "spans": [
+        [
+          20.0,
+          23.0
+        ],
+        [
+          24.083,
+          27.241
+        ],
+        [
+          28.541,
+          31.01
+        ],
+        [
+          32.319,
+          34.157
+        ],
+        [
+          35.464,
+          37.636
+        ],
+        [
+          38.947,
+          41.31
+        ]
+      ],
+      "file": "runs/demo/v06.mp4"
+    },
+    {
+      "variant_id": "v07",
+      "hook_start": 21.0,
+      "hook_text": "Talk to 10 customers this week.",
+      "hook_score": 1.1,
+      "target_length_s": 30,
+      "length_s": 30.0,
+      "jump_cuts": true,
+      "n_cuts": 11,
+      "cuts_per_min": 22.0,
+      "caption_style": "none",
+      "hook_zoom": false,
+      "spans": [
+        [
+          21.0,
+          24.0
+        ],
+        [
+          24.083,
+          27.241
+        ],
+        [
+          28.541,
+          31.01
+        ],
+        [
+          32.319,
+          34.157
+        ],
+        [
+          35.464,
+          37.636
+        ],
+        [
+          38.947,
+          42.17
+        ],
+        [
+          43.479,
+          47.035
+        ],
+        [
+          48.331,
+          51.745
+        ],
+        [
+          53.039,
+          56.176
+        ],
+        [
+          57.508,
+          60.464
+        ],
+        [
+          0.0,
+          0.499
+        ],
+        [
+          0.905,
+          1.482
+        ]
+      ],
+      "file": "runs/demo/v07.mp4"
+    },
+    {
+      "variant_id": "v08",
+      "hook_start": 32.0,
+      "hook_text": "Do you want to know the secret?",
+      "hook_score": 2.6,
+      "target_length_s": 45,
+      "length_s": 42.48,
+      "jump_cuts": true,
+      "n_cuts": 16,
+      "cuts_per_min": 22.6,
+      "caption_style": "bold_yellow",
+      "hook_zoom": true,
+      "spans": [
+        [
+          32.0,
+          35.0
+        ],
+        [
+          35.464,
+          37.636
+        ],
+        [
+          38.947,
+          42.17
+        ],
+        [
+          43.479,
+          47.035
+        ],
+        [
+          48.331,
+          51.745
+        ],
+        [
+          53.039,
+          56.176
+        ],
+        [
+          57.508,
+          60.464
+        ],
+        [
+          0.0,
+          0.499
+        ],
+        [
+          0.905,
+          4.558
+        ],
+        [
+          5.85,
+          8.357
+        ],
+        [
+          9.667,
+          10.622
+        ],
+        [
+          11.945,
+          12.34
+        ],
+        [
+          12.744,
+          16.074
+        ],
+        [
+          17.403,
+          18.504
+        ],
+        [
+          19.794,
+          22.749
+        ],
+        [
+          24.083,
+          27.241
+        ],
+        [
+          28.541,
+          31.01
+        ]
+      ],
+      "file": "runs/demo/v08.mp4"
+    }
+  ]
+}
