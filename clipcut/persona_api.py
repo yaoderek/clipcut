@@ -1,9 +1,9 @@
-"""Scoring entry point for the canvas UI. See docs/PERSONA_API.md.
+"""Scoring and hook rewriting for the canvas UI. See docs/PERSONA_API.md.
 
-score_variants() is deterministic and offline in heuristic mode. mode \"auto\"
-uses an LLM-simulated judgment only when a key is configured and the call
-returns usable JSON; otherwise it keeps the rule-based personas. Neither path
-is a trained model or a real A/B result.
+score_variants() and rewrite_hooks() are deterministic and offline in heuristic
+mode. mode "auto" uses an LLM only when a key is configured and the call
+returns usable JSON; otherwise it keeps the rule-based path. Neither path is a
+trained model or a real A/B result.
 """
 from __future__ import annotations
 
@@ -12,6 +12,7 @@ import re
 from pathlib import Path
 
 from . import llm_persona
+from .channels import CHANNEL_SPECS
 from .persona_models import FEATURE_KEYS, PERSONA_ORDER, PERSONAS, channel_fits, heuristic_variant, score_persona
 
 DISCLAIMER = (
@@ -37,6 +38,96 @@ def score_variants(run=None, variant_ids=None, manifests=None, mode="auto", *, r
     """
     if not isinstance(mode, str) or mode not in MODES:
         raise PersonaScoreError("mode must be one of heuristic, llm, auto")
+    items = _resolve_items(run, variant_ids, manifests, runs_root)
+    use_llm = _use_llm(mode, llm_client)
+    client = llm_client if use_llm else None
+    variants = [_score_one(m, client) for m in items]
+    return _envelope(variants)
+
+
+def rewrite_hooks(run=None, variant_ids=None, manifests=None, personas=None, channels=None, n=3, mode="auto", *, runs_root=None, llm_client=None):
+    """Suggest opening lines. Same object as POST /api/persona/hooks.
+
+    Pass either run (a directory name under runs/) or manifests. personas and
+    channels filter the suggestions. n is the count per persona, and per channel
+    when channels is set (default 3, max 4). llm_client is an optional
+    complete(prompt) -> str object for tests; it is not part of the JSON contract.
+    """
+    if not isinstance(mode, str) or mode not in MODES:
+        raise PersonaScoreError("mode must be one of heuristic, llm, auto")
+    selected = _persona_ids(personas)
+    selected_channels = _channel_ids(channels)
+    count = _suggestion_count(n)
+    items = _resolve_items(run, variant_ids, manifests, runs_root, empty_message="no variants to rewrite")
+    client = _rewrite_client(mode, llm_client)
+    from .hook_rewrite import rewrite_variant
+
+    variants, origins = [], []
+    for manifest in items:
+        variant, origin = rewrite_variant(manifest, selected, selected_channels, count, client)
+        variants.append(variant)
+        origins.append(origin)
+    return _hook_envelope(variants, origins)
+
+
+def _rewrite_client(mode, llm_client):
+    use_llm = _use_llm(mode, llm_client)
+    if not use_llm:
+        return None
+    if llm_client is not None:
+        return llm_client
+    client = llm_persona.default_client()
+    if client is not None:
+        return client
+    if mode == "llm":
+        raise PersonaScoreError("LLM hook rewriting requires XAI_API_KEY or GROK_API_KEY", 503)
+    return None
+
+
+def _persona_ids(personas):
+    if personas is None:
+        return list(PERSONA_ORDER)
+    if not isinstance(personas, list) or not personas or not all(isinstance(p, str) and p for p in personas):
+        raise PersonaScoreError("personas must be a list of persona ids")
+    unknown = [p for p in personas if p not in PERSONAS]
+    if unknown:
+        raise PersonaScoreError("unknown personas: " + ", ".join(unknown))
+    if len(set(personas)) != len(personas):
+        raise PersonaScoreError("personas contains duplicates")
+    return list(personas)
+
+
+def _channel_ids(channels):
+    if channels is None:
+        return []
+    if not isinstance(channels, list) or not all(isinstance(c, str) and c.strip() for c in channels):
+        raise PersonaScoreError("channels must be a list of channel ids")
+    if not channels:
+        raise PersonaScoreError("channels is empty")
+    known = {name.lower() for name in CHANNEL_SPECS}
+    out, unknown = [], []
+    for raw in channels:
+        key = raw.strip().lower()
+        if key not in known:
+            unknown.append(raw)
+        else:
+            out.append(key)
+    if unknown:
+        raise PersonaScoreError("unknown channels: " + ", ".join(unknown))
+    if len(set(out)) != len(out):
+        raise PersonaScoreError("channels contains duplicates")
+    return out
+
+
+def _suggestion_count(n):
+    if n is None:
+        return 3
+    if isinstance(n, bool) or not isinstance(n, int) or not 1 <= n <= 4:
+        raise PersonaScoreError("n must be an integer from 1 to 4")
+    return n
+
+
+def _resolve_items(run, variant_ids, manifests, runs_root, empty_message="no variants to score"):
     if variant_ids is not None:
         if not isinstance(variant_ids, list) or not all(isinstance(v, str) and v for v in variant_ids):
             raise PersonaScoreError("variant_ids must be a list of strings")
@@ -50,11 +141,8 @@ def score_variants(run=None, variant_ids=None, manifests=None, mode="auto", *, r
     if variant_ids is not None:
         items = _select(items, variant_ids)
     if not items:
-        raise PersonaScoreError("no variants to score")
-    use_llm = _use_llm(mode, llm_client)
-    client = llm_client if use_llm else None
-    variants = [_score_one(m, client) for m in items]
-    return _envelope(variants)
+        raise PersonaScoreError(empty_message)
+    return items
 
 
 def _use_llm(mode, llm_client):
@@ -199,6 +287,19 @@ def _from_llm(persona_id, judgment, score):
         reasons=reasons,
         contributions=contributions,
     )
+
+
+def _hook_envelope(variants, origins):
+    from .hook_rewrite import DISCLAIMER as HOOK_DISCLAIMER, HOOK_VERSION
+
+    kinds = set(origins)
+    if kinds == {"llm"}:
+        source = "llm"
+    elif kinds == {"heuristic"}:
+        source = "heuristic"
+    else:
+        source = "mixed"
+    return dict(source=source, model_version=HOOK_VERSION[source], disclaimer=HOOK_DISCLAIMER, variants=variants)
 
 
 def _envelope(variants):

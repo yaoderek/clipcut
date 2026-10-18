@@ -176,6 +176,27 @@ def judgment_score(data):
     return 0.0 if score < 0 else 1.0 if score > 1 else score
 
 
+def parse_rewrites(text):
+    """Pull {"suggestions": [...]} out of a model reply. None when it is not usable."""
+    if not isinstance(text, str) or "{" not in text:
+        return None
+    start, end = text.find("{"), text.rfind("}")
+    if end <= start:
+        return None
+    try:
+        data = json.loads(text[start:end + 1])
+    except json.JSONDecodeError:
+        return None
+    if not isinstance(data, dict):
+        return None
+    rows = data.get("suggestions")
+    if not isinstance(rows, list) or not rows:
+        return None
+    if not any(isinstance(row, dict) and row.get("hook") for row in rows):
+        return None
+    return data
+
+
 def rate(persona_desc, variant, model=None, client=None):
     """Role-play persona_desc on variant. Returns parsed JSON, or None when skipped or failed.
 

@@ -165,6 +165,35 @@ async def api_persona_score(request: Request):
     except PersonaScoreError as exc:
         return JSONResponse({"error": str(exc)}, status_code=exc.status)
 
+@app.post("/api/persona/hooks")
+async def api_persona_hooks(request: Request):
+    """Persona-specific opening lines. See docs/PERSONA_API.md. Does not replace POST /api/score or POST /api/persona/score."""
+    from clipcut.persona_api import PersonaScoreError, rewrite_hooks
+    try:
+        body = await request.json()
+    except Exception:
+        return JSONResponse({"error": "JSON object required"}, status_code=400)
+    if not isinstance(body, dict):
+        return JSONResponse({"error": "JSON object required"}, status_code=400)
+    mode = body.get("mode", "auto")
+    if mode is None:
+        mode = "auto"
+    n = body.get("n", 3)
+    if n is None:
+        n = 3
+    try:
+        return rewrite_hooks(
+            run=body.get("run"),
+            variant_ids=body.get("variant_ids"),
+            manifests=body.get("manifests"),
+            personas=body.get("personas"),
+            channels=body.get("channels"),
+            n=n,
+            mode=mode,
+        )
+    except PersonaScoreError as exc:
+        return JSONResponse({"error": str(exc)}, status_code=exc.status)
+
 if __name__ == "__main__":  # container / `python app.py`: bind all interfaces, port from $PORT (default 8000)
     import os, uvicorn
     uvicorn.run(app, host=os.environ.get("HOST", "0.0.0.0"), port=int(os.environ.get("PORT", "8000")))

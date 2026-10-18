@@ -2,6 +2,8 @@
 
 Contract for the audience-persona lane. The canvas / classic UI should call this and should not depend on `POST /api/score`.
 
+Opening-line suggestions are a separate call, [`POST /api/persona/hooks`](#post-apipersonahooks).
+
 `POST /api/score` stays as it is (external editor). It still returns the legacy `clipcut.retention.score` payload (`overall`, `personas` as a map of `p_swipe3s` / `watch_pct` / `p_share`, `channels` with display names such as `"TikTok"`).
 
 Python entry point:
@@ -215,6 +217,274 @@ The model is asked for only this JSON:
 Unparseable replies, HTTP errors, and timeouts become a heuristic fallback for that variant. Nothing in this layer is a measurement of real viewers.
 
 `cli.py score` still calls `llm_persona.rate` for its v1 path. A missing key skips the check, same as before. A bad reply prints nothing useful and does not abort the CLI.
+
+## `POST /api/persona/hooks`
+
+Suggest stronger opening lines for a variant, one set per persona, with an optional on-screen title card and a short reason. This does not render video and it does not change the file on disk.
+
+Python entry point:
+
+```python
+from clipcut.persona_api import rewrite_hooks
+
+rewrite_hooks(run="v2_niosh_multi", variant_ids=["v07"], mode="heuristic")
+rewrite_hooks(manifests=[variant_dict], personas=["sharer_engager"], channels=["x"], n=2, mode="auto")
+```
+
+`rewrite_hooks` returns the same object as the HTTP response. Invalid input raises `clipcut.persona_api.PersonaScoreError` (`.status` is the HTTP status, `str(err)` is the `error` message).
+
+`Content-Type: application/json`.
+
+### Request
+
+Provide **either** `run` **or** `manifests`, not both. Loading rules match [`POST /api/persona/score`](#post-apipersonascore) (`runs/<run>/vNN.json`, v1 `variants` arrays, safe single path segment).
+
+| Field | Type | Required | Meaning |
+| --- | --- | --- | --- |
+| `run` | string | one of `run` / `manifests` | Directory name under `runs/`. |
+| `manifests` | array of objects | one of `run` / `manifests` | Same shapes as the score endpoint. |
+| `variant_ids` | array of strings | no | Subset, in this order. Unknown id is 404. |
+| `personas` | array of strings | no | Persona ids. Default: `fast_swiper`, `casual_browser`, `completionist`, `sharer_engager`, in that order. Unknown id, duplicates, or an empty list is 400. |
+| `channels` | array of strings | no | Channel ids (`tiktok`, `reels`, `shorts`, `x`, `linkedin`, `youtube`, `ig_feed`, `ig_stories`, `fb_reels`, `fb_feed`). Display labels such as `"TikTok"` are accepted and returned as the id. Omit the field for persona-only lines. Unknown id, duplicates, or `[]` is 400. |
+| `n` | integer | no | Suggestions per persona. When `channels` is set, this count is per persona **and** per channel. Default 3. Allowed 1–4. `null` means the default. |
+| `mode` | string | no | `"heuristic"`, `"llm"`, or `"auto"`. Default `"auto"`. |
+
+`mode` matches the score endpoint:
+
+- `"heuristic"` — templates only. No network, even if `XAI_API_KEY` or `GROK_API_KEY` is set.
+- `"llm"` — ask the model for the lines. Requires `XAI_API_KEY` or `GROK_API_KEY`. Missing key is **503**. A failed call or unusable JSON falls back to the templates for that variant (the pipeline does not raise).
+- `"auto"` — `"llm"` when a key is set and the reply has usable suggestions; otherwise `"heuristic"`. No key is not an error.
+
+### Response `200`
+
+```json
+{
+  "source": "heuristic",
+  "model_version": "hook-heuristic-v1",
+  "disclaimer": "These hook suggestions are template rewrites, or LLM-simulated lines when source is \"llm\" or \"mixed\". They are not trained and they are not validated on real viewers. predicted_delta is a heuristic rescore of the rewritten opening with the persona scorer (predicted_delta_label is \"heuristic_estimate\"), not a measured lift.",
+  "variants": [
+    {
+      "id": "v07",
+      "original_hook": "There's just no price you can put on that.",
+      "suggestions": [
+        {
+          "persona": "fast_swiper",
+          "hook": "Wait — did you know there's just no price you can put on that?",
+          "title_card": "NO PRICE",
+          "reason": "Question form of this variant's hook line. Written in a fast-swiper voice (short and immediate). Template rewrite, not a trained or validated line. predicted_delta is a heuristic rescore, not a measured lift.",
+          "predicted_delta": 0.0967,
+          "predicted_delta_label": "heuristic_estimate",
+          "origin": "heuristic"
+        }
+      ]
+    }
+  ]
+}
+```
+
+The object above is the shape. A full heuristic response for `runs/v2_niosh_multi` variant `v07` is in the example at the end of this section. There is no `winner`. These lines are not a ranking of variants.
+
+| Field | Type | Meaning |
+| --- | --- | --- |
+| `source` | `"heuristic"` \| `"llm"` \| `"mixed"` | `"llm"` only when every suggestion in the response came from the model. `"mixed"` when a reply filled some slots and templates filled the rest, or variants disagreed. |
+| `model_version` | string | `"hook-heuristic-v1"`, `"llm-hook-v1"`, or `"hook-mixed-v1"`. |
+| `disclaimer` | string | Always the sentence in the example. Do not present suggestions as trained or validated. |
+| `variants[].id` | string | Same id rules as the score endpoint. |
+| `variants[].original_hook` | string | `hook_text`, else `hook_phrase`, else the opening caption cues (start ≤ 8s), else a transcript excerpt. `""` when none of those exist. Truncated at 280 characters. |
+| `suggestions[].persona` | string | One of the four ids. |
+| `suggestions[].channel` | string | Present only when the request included `channels`. |
+| `suggestions[].hook` | string | The suggested spoken open. `""` when there was no source text to rewrite. |
+| `suggestions[].title_card` | string | Optional. A few words from the source line, uppercased, for an on-screen card. Omitted when there is no source text. |
+| `suggestions[].reason` | string | Why this frame was used. Heuristic reasons say they are a template, not a trained or validated line. |
+| `suggestions[].predicted_delta` | float | Change in that persona's score from `clipcut.persona_models.score_persona` after replacing `hook_text` with `hook`. Rounded to 4 decimal places. Can be negative. `0.0` when `hook` is empty. |
+| `suggestions[].predicted_delta_label` | string | Always `"heuristic_estimate"`. This is not a measured lift, including when `origin` is `"llm"`. The model is not asked for a delta, and a delta in the model JSON is ignored. |
+| `suggestions[].origin` | `"heuristic"` \| `"llm"` | Which writer produced this line. |
+
+Order: personas in request order (or the default four), then channels in request order, then `predicted_delta` descending inside that group. Equal deltas keep the persona's frame preference.
+
+### Heuristic templates
+
+The heuristic does not invent events, names, or statistics. It rewrites words that are already on the variant.
+
+Source line, in order: `hook_text`, `hook_phrase`, opening captions, transcript. A line longer than 18 words is cut on a comma, semicolon, dash, or `but`. The kept clause is the one with the highest `channels.hook_strength` (a hand-set rule). The reason says when that cut happened.
+
+Four frames:
+
+| Frame | What it does |
+| --- | --- |
+| Question | `Did you know …?`, or a voice-specific question. An opening that is already a question can be kept. |
+| Number-first | `One thing: …` when the line does not already lead with a number. The word "one" is the template. Digits that are not in the source are not added. |
+| Direct "you" | `This is for you: …` or `You — …`. A line that already opens on "you" is not wrapped as "You — you …". |
+| Bold claim | `The truth: …`, `Stop — …`, or `Here's why: …`. |
+
+Voice when `channels` is omitted:
+
+| Persona | Voice | Question | Number-first | "you" | Claim |
+| --- | --- | --- | --- | --- | --- |
+| `fast_swiper` | short, immediate | `Wait — did you know …?` | `One thing: …` | `You — …` | `Stop — …` |
+| `casual_browser` | plain | `Did you know …?` | `One thing: …` | `This is for you: …` | `The truth: …` |
+| `completionist` | informative | `Why does this matter: …?` | `One reason this matters: …` | `For you: …` | `Here's why: …` |
+| `sharer_engager` | claim-shaped | `Would you share this: …?` | `One thing worth passing on: …` | `You could pass this on: …` | `The truth: …` |
+
+A channel overrides that voice. `tiktok` and `ig_stories` use the fast-swiper frames. `linkedin` and `youtube` use the completionist frames. `x` and `fb_feed` use the sharer frames. `reels`, `shorts`, `ig_feed`, and `fb_reels` keep the persona voice. The reason names the channel when one was requested (`Shaped for TikTok.`).
+
+Each persona scores all four frames. `n` is the count kept, highest `predicted_delta` first. A frame that only repeats the source words is used only when fewer than `n` frames actually change the line. That is why the default three lines for one persona are not always question, then "you", then claim: a frame the heuristic rescore does not like falls out of the top `n`.
+
+`predicted_delta` is `round(new_score - old_score, 4)` from `score_persona` on that persona. The copy used for `new_score` changes `hook_text` only. `hook_strength` and `hook_score`, if present, are removed on the copy so the new sentence is what gets read. The caller's manifest is not modified. Title-card text is not fed back into the score. A template word can move `hook_strength` and also `topic_match` when it hits that persona's interest list (`Wait` for a fast swiper, `share` for a sharer). That is still the heuristic rescore, not a measured lift.
+
+No source text: `n` suggestions per requested slot, `hook` `""`, no `title_card`, `predicted_delta` `0.0`, and a reason that says no line was invented. The LLM is not called for that variant.
+
+### LLM hook layer
+
+Same client as the [LLM persona layer](#llm-persona-layer): `XAI_API_KEY` or `GROK_API_KEY`, `POST https://api.x.ai/v1/chat/completions`, model `XAI_MODEL` or `grok-4`. The prompt includes `variant_brief` (v1 and v2 manifests) plus the original hook, and it tells the model not to invent facts and not to call a line trained or validated.
+
+The model is asked for:
+
+```json
+{"suggestions": [{"persona": "fast_swiper", "channel": "tiktok", "hook": "...", "title_card": "NO PRICE", "reason": "..."}]}
+```
+
+`channel` is omitted when the request did not ask for channels. The server rescores whatever hook text comes back. A reason that claims the line is trained or validated, without saying it is not, is replaced with `LLM-simulated rewrite. Not a trained or validated line.` Missing title cards are filled from source words with the same title-card helper as the templates.
+
+If the reply is missing, unusable, or has no row that matches a requested persona (and channel, when channels were requested), that variant is entirely templates. If some slots match and others do not, the gaps are templates and `source` is `"mixed"`. Nothing in this layer is a measurement of real viewers.
+
+### Errors
+
+Body is always `{"error": "<message>"}`. No `detail` wrapper.
+
+| Status | When |
+| --- | --- |
+| 400 | Not a JSON object. Both `run` and `manifests` set, or neither. `mode` not in `heuristic` / `llm` / `auto`. `manifests` not a list of objects. `variant_ids` not a list of strings. `run` is not a single safe path segment. Empty variant list. `personas` or `channels` not a list of known ids, empty, or containing duplicates. `n` not an integer from 1 to 4. |
+| 404 | `run` directory does not exist, has no `vNN.json`, or a requested `variant_id` is missing. |
+| 503 | `mode` is `"llm"` and neither `XAI_API_KEY` nor `GROK_API_KEY` is set. |
+
+### Example: `v2_niosh_multi` / `v07`, heuristic
+
+`rewrite_hooks(run="v2_niosh_multi", variant_ids=["v07"], mode="heuristic")` returns this object. The same call without `variant_ids` returns `v01` through `v16` in that order, each with the same envelope. Re-running it is byte-for-byte the same.
+
+```json
+{
+  "source": "heuristic",
+  "model_version": "hook-heuristic-v1",
+  "disclaimer": "These hook suggestions are template rewrites, or LLM-simulated lines when source is \"llm\" or \"mixed\". They are not trained and they are not validated on real viewers. predicted_delta is a heuristic rescore of the rewritten opening with the persona scorer (predicted_delta_label is \"heuristic_estimate\"), not a measured lift.",
+  "variants": [
+    {
+      "id": "v07",
+      "original_hook": "There's just no price you can put on that.",
+      "suggestions": [
+        {
+          "persona": "fast_swiper",
+          "hook": "Wait — did you know there's just no price you can put on that?",
+          "title_card": "NO PRICE",
+          "reason": "Question form of this variant's hook line. Written in a fast-swiper voice (short and immediate). Template rewrite, not a trained or validated line. predicted_delta is a heuristic rescore, not a measured lift.",
+          "predicted_delta": 0.0967,
+          "predicted_delta_label": "heuristic_estimate",
+          "origin": "heuristic"
+        },
+        {
+          "persona": "fast_swiper",
+          "hook": "One thing: there's just no price you can put on that.",
+          "title_card": "NO PRICE",
+          "reason": "Number-first frame in front of this variant's hook line. The word \"one\" is the template, not a count from the video. Written in a fast-swiper voice (short and immediate). Template rewrite, not a trained or validated line. predicted_delta is a heuristic rescore, not a measured lift.",
+          "predicted_delta": 0.0444,
+          "predicted_delta_label": "heuristic_estimate",
+          "origin": "heuristic"
+        },
+        {
+          "persona": "fast_swiper",
+          "hook": "Stop — there's just no price you can put on that.",
+          "title_card": "NO PRICE",
+          "reason": "Bold-claim frame (\"stop\") around this variant's hook line. Written in a fast-swiper voice (short and immediate). Template rewrite, not a trained or validated line. predicted_delta is a heuristic rescore, not a measured lift.",
+          "predicted_delta": 0.0333,
+          "predicted_delta_label": "heuristic_estimate",
+          "origin": "heuristic"
+        },
+        {
+          "persona": "casual_browser",
+          "hook": "Did you know there's just no price you can put on that?",
+          "title_card": "NO PRICE",
+          "reason": "Question form of this variant's hook line. Written in a casual-browser voice. Template rewrite, not a trained or validated line. predicted_delta is a heuristic rescore, not a measured lift.",
+          "predicted_delta": 0.0533,
+          "predicted_delta_label": "heuristic_estimate",
+          "origin": "heuristic"
+        },
+        {
+          "persona": "casual_browser",
+          "hook": "One thing: there's just no price you can put on that.",
+          "title_card": "NO PRICE",
+          "reason": "Number-first frame in front of this variant's hook line. The word \"one\" is the template, not a count from the video. Written in a casual-browser voice. Template rewrite, not a trained or validated line. predicted_delta is a heuristic rescore, not a measured lift.",
+          "predicted_delta": 0.0356,
+          "predicted_delta_label": "heuristic_estimate",
+          "origin": "heuristic"
+        },
+        {
+          "persona": "casual_browser",
+          "hook": "The truth: there's just no price you can put on that.",
+          "title_card": "NO PRICE",
+          "reason": "Bold-claim frame (\"the truth\") around this variant's hook line. Written in a casual-browser voice. Template rewrite, not a trained or validated line. predicted_delta is a heuristic rescore, not a measured lift.",
+          "predicted_delta": 0.0267,
+          "predicted_delta_label": "heuristic_estimate",
+          "origin": "heuristic"
+        },
+        {
+          "persona": "completionist",
+          "hook": "Why does this matter: there's just no price you can put on that?",
+          "title_card": "NO PRICE",
+          "reason": "Question form of this variant's hook line. Written in a completionist voice (plain and informative). Template rewrite, not a trained or validated line. predicted_delta is a heuristic rescore, not a measured lift.",
+          "predicted_delta": 0.0533,
+          "predicted_delta_label": "heuristic_estimate",
+          "origin": "heuristic"
+        },
+        {
+          "persona": "completionist",
+          "hook": "One reason this matters: there's just no price you can put on that.",
+          "title_card": "NO PRICE",
+          "reason": "Number-first frame in front of this variant's hook line. The word \"one\" is the template, not a count from the video. Written in a completionist voice (plain and informative). Template rewrite, not a trained or validated line. predicted_delta is a heuristic rescore, not a measured lift.",
+          "predicted_delta": 0.0356,
+          "predicted_delta_label": "heuristic_estimate",
+          "origin": "heuristic"
+        },
+        {
+          "persona": "completionist",
+          "hook": "Here's why: there's just no price you can put on that.",
+          "title_card": "NO PRICE",
+          "reason": "Bold-claim frame (\"here's why\") around this variant's hook line. Written in a completionist voice (plain and informative). Template rewrite, not a trained or validated line. predicted_delta is a heuristic rescore, not a measured lift.",
+          "predicted_delta": 0.0267,
+          "predicted_delta_label": "heuristic_estimate",
+          "origin": "heuristic"
+        },
+        {
+          "persona": "sharer_engager",
+          "hook": "Would you share this: there's just no price you can put on that?",
+          "title_card": "NO PRICE",
+          "reason": "Question form of this variant's hook line. Written in a sharer voice (claim-shaped). Template rewrite, not a trained or validated line. predicted_delta is a heuristic rescore, not a measured lift.",
+          "predicted_delta": 0.1534,
+          "predicted_delta_label": "heuristic_estimate",
+          "origin": "heuristic"
+        },
+        {
+          "persona": "sharer_engager",
+          "hook": "The truth: there's just no price you can put on that.",
+          "title_card": "NO PRICE",
+          "reason": "Bold-claim frame (\"the truth\") around this variant's hook line. Written in a sharer voice (claim-shaped). Template rewrite, not a trained or validated line. predicted_delta is a heuristic rescore, not a measured lift.",
+          "predicted_delta": 0.1067,
+          "predicted_delta_label": "heuristic_estimate",
+          "origin": "heuristic"
+        },
+        {
+          "persona": "sharer_engager",
+          "hook": "One thing worth passing on: there's just no price you can put on that.",
+          "title_card": "NO PRICE",
+          "reason": "Number-first frame in front of this variant's hook line. The word \"one\" is the template, not a count from the video. Written in a sharer voice (claim-shaped). Template rewrite, not a trained or validated line. predicted_delta is a heuristic rescore, not a measured lift.",
+          "predicted_delta": 0.0623,
+          "predicted_delta_label": "heuristic_estimate",
+          "origin": "heuristic"
+        }
+      ]
+    }
+  ]
+}
+```
 
 ## Later calibration (not implemented)
 
