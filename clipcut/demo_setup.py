@@ -111,30 +111,38 @@ def media_missing(root=None, run=PRIMARY_RUN):
         return True
     if any(not _big(directory / f"{vid}.mp4", _MIN_VIDEO) for vid in ids):
         return True
-    if (directory / "results.json").is_file():
-        for spec in EXTRA_RUNS:
-            extra = root / "runs" / spec["run"]
-            if not (extra / "results.json").is_file() or not (extra / "metrics.json").is_file():
-                return True
-            if (extra / "v01.json").is_file() and not _big(extra / "v01.mp4", _MIN_VIDEO):
-                return True
     return False
+
+
+def run_is_visible(directory):
+    """False while an extra demo run is still a NIOSH JSON clone.
+
+    Those runs stay off ``/api/runs`` (and therefore the canvas) until a real
+    cutter render writes ``.rendered`` and the manifest no longer says
+    ``reused_from``.
+    """
+    directory = Path(directory)
+    if directory.name not in {item["run"] for item in EXTRA_RUNS}:
+        return True
+    if not (directory / ".rendered").is_file():
+        return False
+    manifest_path = directory / "manifest.json"
+    if not manifest_path.is_file():
+        return False
+    try:
+        manifest = json.loads(manifest_path.read_text())
+    except (OSError, json.JSONDecodeError):
+        return False
+    if not isinstance(manifest, dict) or manifest.get("reused_from"):
+        return False
+    return True
 
 
 def setup(root=None, origin=LIVE_ORIGIN, runs=None, timeout=45):
     """Seed metrics, then download missing media. Always returns a summary."""
     root = Path(root) if root is not None else repo_root()
-    try:
-        ensure_extra_runs(root)
-    except Exception as exc:
-        # Recorded after summary exists; a missing primary run is not an error.
-        extra_error = exc
-    else:
-        extra_error = None
-    runs = tuple(runs) if runs is not None else (PRIMARY_RUN,) + tuple(item["run"] for item in EXTRA_RUNS)
+    runs = tuple(runs) if runs is not None else (PRIMARY_RUN,)
     summary = {"ok": True, "seeded": [], "present": [], "downloaded": [], "failed": [], "newest": None}
-    if extra_error is not None:
-        summary["failed"].append(f"extra runs: {extra_error}")
     for run in runs:
         try:
             seeded = seed_run(run, root)
@@ -150,10 +158,7 @@ def setup(root=None, origin=LIVE_ORIGIN, runs=None, timeout=45):
         summary["failed"].append(f"samples: {exc}")
     for run in runs:
         try:
-            if run == PRIMARY_RUN:
-                _fetch_run_media(root, origin, run, timeout, summary)
-            else:
-                _reuse_primary_media(root, run, summary)
+            _fetch_run_media(root, origin, run, timeout, summary)
         except Exception as exc:
             summary["failed"].append(f"{run} media: {exc}")
     primary = PRIMARY_RUN if PRIMARY_RUN in runs else (runs[0] if runs else None)
@@ -314,93 +319,6 @@ def _load_manifests(directory):
 
 def _variant_ids(directory):
     return [path.stem for path in sorted(directory.glob("v[0-9][0-9].json"))]
-
-
-def ensure_extra_runs(root):
-    """Clone the preload run's JSON into the extra demo runs. No-op without that run.
-
-    Variant mp4s are not rendered here. ``setup`` hardlinks them from the preload
-    run after that run's media is on disk. Returns the run names created this call.
-    """
-    root = Path(root)
-    primary = root / "runs" / PRIMARY_RUN
-    if not (primary / "results.json").is_file():
-        return []
-    created = []
-    for spec in EXTRA_RUNS:
-        run = spec["run"]
-        dest = root / "runs" / run
-        if not (dest / "results.json").is_file():
-            dest.mkdir(parents=True, exist_ok=True)
-            _clone_run_json(primary, dest, run, spec["sample"])
-            created.append(run)
-    return created
-
-
-def _clone_run_json(primary, dest, run, sample):
-    paths = [primary / name for name in ("manifest.json", "results.json", "winner.json")]
-    paths.extend(sorted(primary.glob("v[0-9][0-9].json")))
-    for path in paths:
-        if not path.is_file():
-            continue
-        data = json.loads(path.read_text())
-        data = _retarget(data, run, sample)
-        if path.name == "manifest.json" and isinstance(data, dict):
-            data["source"] = f"samples/{sample}"
-            data["demo"] = True
-            data["simulated"] = True
-            data["reused_from"] = PRIMARY_RUN
-            data["note"] = (
-                "JSON clone of v2_niosh_multi. Variant mp4s are the NIOSH renders, reused. "
-                "Metrics are simulated."
-            )
-        (dest / path.name).write_text(json.dumps(data, indent=2) + "\n")
-
-
-def _retarget(value, run, sample):
-    if isinstance(value, dict):
-        out = {key: _retarget(item, run, sample) for key, item in value.items()}
-        vid = out.get("variant_id")
-        if isinstance(vid, str) and vid:
-            out["video_path"] = f"runs/{run}/{vid}.mp4"
-        return out
-    if isinstance(value, list):
-        return [_retarget(item, run, sample) for item in value]
-    if isinstance(value, str):
-        text = value.replace(f"/{PRIMARY_RUN}/", f"/{run}/")
-        text = text.replace(f"runs/{PRIMARY_RUN}", f"runs/{run}")
-        return text.replace("samples/talking_head_niosh.mp4", f"samples/{sample}")
-    return value
-
-
-def _reuse_primary_media(root, run, summary):
-    """Hardlink preload variant mp4s and posters into an extra run. Copy if link fails."""
-    if run == PRIMARY_RUN:
-        return
-    dest = Path(root) / "runs" / run
-    src = Path(root) / "runs" / PRIMARY_RUN
-    if not dest.is_dir():
-        return
-    ids = _variant_ids(dest) or _variant_ids(src)
-    names = [f"{vid}.mp4" for vid in ids]
-    names.extend(f".{vid}_poster.jpg" for vid in ids)
-    names.append("winner.mp4")
-    for name in names:
-        target = dest / name
-        origin = src / name
-        minimum = _MIN_POSTER if name.endswith(".jpg") else _MIN_VIDEO
-        label = f"{run}/{name}"
-        if _big(target, minimum):
-            summary["present"].append(label)
-            continue
-        if not _big(origin, minimum):
-            summary["failed"].append(label)
-            continue
-        try:
-            os.link(origin, target)
-        except OSError:
-            shutil.copyfile(origin, target)
-        summary["downloaded"].append(label)
 
 
 def _fetch_samples(root, origin, timeout, summary):

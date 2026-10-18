@@ -53,7 +53,9 @@ def run_state(run):
 
 @app.get("/api/runs")
 def runs():
-    return sorted([p.name for p in RUNS.iterdir() if (p / "results.json").exists() or p.name in JOBS], key=lambda r: (r != "v2_niosh_multi", r != "v2_niosh_house", r != "v2_niosh12", r))
+    from clipcut.demo_setup import run_is_visible
+    names = [p.name for p in RUNS.iterdir() if p.is_dir() and ((p / "results.json").exists() or p.name in JOBS) and run_is_visible(p)]
+    return sorted(names, key=lambda r: (r != "v2_niosh_multi", r != "v2_niosh_house", r != "v2_niosh12", r))
 
 @app.get("/api/samples")
 def samples(): return [p.name for p in SAMPLES.glob("*.mp4")]
