@@ -101,6 +101,21 @@ def test_two_run_names_get_different_metrics():
     assert channels == {row["channel"] for row in _metrics_payload(manifests, PRIMARY_RUN)["metrics"].values()}
 
 
+def test_seed_rewrites_simulated_metrics_from_another_run(tmp_path):
+    src = ROOT / "runs" / PRIMARY_RUN
+    directory = tmp_path / "runs" / "demo_pd_calvin"
+    directory.mkdir(parents=True)
+    for path in src.glob("v[0-9][0-9].json"):
+        (directory / path.name).write_text(path.read_text())
+    borrowed = json.loads((src.parent / PRIMARY_RUN / "metrics.json").read_text())
+    (directory / "metrics.json").write_text(json.dumps(borrowed))
+    assert seed_run("demo_pd_calvin", tmp_path) is True
+    stored = json.loads((directory / "metrics.json").read_text())
+    assert stored["v01"]["views"] != borrowed["v01"]["views"]
+    assert stored["_meta"]["demo"] is True and stored["v01"]["demo"] is True
+    assert seed_run("demo_pd_calvin", tmp_path) is False
+
+
 def test_seed_does_not_replace_real_metrics(tmp_path):
     directory = tmp_path / "runs" / "kept"
     directory.mkdir(parents=True)

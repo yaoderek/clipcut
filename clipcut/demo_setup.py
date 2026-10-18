@@ -205,10 +205,12 @@ def seed_run(run, root=None):
         if isinstance(existing, dict):
             meta = existing.get("_meta") if isinstance(existing.get("_meta"), dict) else {}
             if meta.get("simulated") is True or meta.get("demo") is True:
-                _write_demo_meta(directory)
-                _stamp_demo_flags(path, existing)
-                return False
-            if any(isinstance(row, dict) and "views" in row for row in existing.values()):
+                fresh = _metrics_payload(_load_manifests(directory), run)
+                if _metrics_match(existing, fresh["metrics"]):
+                    _write_demo_meta(directory)
+                    _stamp_demo_flags(path, existing)
+                    return False
+            elif any(isinstance(row, dict) and "views" in row for row in existing.values()):
                 return False
     manifests = _load_manifests(directory)
     if len(manifests) < 1:
@@ -260,6 +262,18 @@ def main(argv=None):
         if len(failed) > 8:
             print(f"[demo]   … {len(failed) - 8} more", file=sys.stderr)
     return 0
+
+
+def _metrics_match(stored, fresh):
+    """True when the saved rows already carry this run's seeded numbers."""
+    for vid, row in fresh.items():
+        current = stored.get(vid)
+        if not isinstance(current, dict):
+            return False
+        for key in ("views", "avg_watch_pct", "shares", "channel"):
+            if current.get(key) != row.get(key):
+                return False
+    return True
 
 
 def _rng_for(run):
