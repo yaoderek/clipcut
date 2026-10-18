@@ -1,4 +1,9 @@
 {
+  "_meta": {
+    "simulated": true,
+    "generator": "make_mock_metrics.py",
+    "note": "Simulated from audience_score by make_mock_metrics.py. Not platform data."
+  },
   "v06": {
     "views": 1131,
     "avg_watch_pct": 61.22647257400463,

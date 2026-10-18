@@ -370,8 +370,18 @@ async def api_persona_score(request: Request):
     mode = body.get("mode", "auto")
     if mode is None:
         mode = "auto"
+    calibration = body.get("calibration", "none")
+    if calibration is None:
+        calibration = "none"
     try:
-        return score_variants(run=body.get("run"), variant_ids=body.get("variant_ids"), manifests=body.get("manifests"), mode=mode)
+        return score_variants(
+            run=body.get("run"),
+            variant_ids=body.get("variant_ids"),
+            manifests=body.get("manifests"),
+            mode=mode,
+            calibration=calibration,
+            runs_root=RUNS,
+        )
     except PersonaScoreError as exc:
         return JSONResponse({"error": str(exc)}, status_code=exc.status)
 
@@ -401,6 +411,48 @@ async def api_persona_hooks(request: Request):
             n=n,
             mode=mode,
         )
+    except PersonaScoreError as exc:
+        return JSONResponse({"error": str(exc)}, status_code=exc.status)
+
+# ---- observed metrics, weight calibration, predicted vs actual (persona lane) ----
+@app.post("/api/persona/metrics")
+async def api_persona_metrics(request: Request):
+    """Store per-variant metrics under runs/<run>/metrics.json. See docs/PERSONA_API.md."""
+    from clipcut.persona_api import PersonaScoreError, store_metrics
+    ctype = request.headers.get("content-type", "")
+    try:
+        if "multipart/form-data" in ctype or "application/x-www-form-urlencoded" in ctype:
+            form = await request.form()
+            upload = form.get("file")
+            if upload is None or not hasattr(upload, "read"):
+                return JSONResponse({"error": "CSV upload requires a file field"}, status_code=400)
+            raw = await upload.read()
+            filename = getattr(upload, "filename", "") or ""
+            return store_metrics(
+                run=form.get("run"),
+                csv_bytes=raw,
+                filename=filename,
+                simulated=form.get("simulated"),
+                scope=form.get("scope"),
+                runs_root=RUNS,
+            )
+        try:
+            body = await request.json()
+        except Exception:
+            return JSONResponse({"error": "JSON object or CSV upload required"}, status_code=400)
+        if not isinstance(body, dict):
+            return JSONResponse({"error": "JSON object required"}, status_code=400)
+        run = body.get("run", request.query_params.get("run"))
+        return store_metrics(run=run, payload=body, runs_root=RUNS)
+    except PersonaScoreError as exc:
+        return JSONResponse({"error": str(exc)}, status_code=exc.status)
+
+@app.get("/api/persona/compare/{run}")
+def api_persona_compare(run: str):
+    """Predicted vs actual, Spearman, and the Thompson winner. See docs/PERSONA_API.md."""
+    from clipcut.persona_api import PersonaScoreError, compare_run
+    try:
+        return compare_run(run, runs_root=RUNS)
     except PersonaScoreError as exc:
         return JSONResponse({"error": str(exc)}, status_code=exc.status)
 

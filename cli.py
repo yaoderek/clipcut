@@ -61,7 +61,8 @@ def cmd_demo(a):
     for v, s in rank["audience_score"].items():
         views = int(rng.integers(800, 1500)); met[v] = {"views": views, "avg_watch_pct": float(np.clip(rng.normal(s, 0.04), 0, 1)) * 100,
                                                         "shares": int(rng.binomial(views, 0.01 + 0.03 * s))}
-    json.dump(met, open(out / "mock_metrics.json", "w"), indent=2)
+    payload = {"_meta": {"simulated": True, "generator": "cli.py demo", "note": "Simulated from predicted scores. Not platform data."}, **met}
+    json.dump(payload, open(out / "mock_metrics.json", "w"), indent=2)
     print("\n[A/B] on MOCK metrics (simulated, not real platform data):")
     cmd_ab(argparse.Namespace(metrics=out / "mock_metrics.json"))
 

@@ -1,10 +1,28 @@
 """A/B harness: Bayesian comparison of variants via Beta posteriors + Thompson sampling."""
 import numpy as np
 
+def variant_metrics(metrics):
+    """Variant rows only. Keys that are not {views, avg_watch_pct, shares} are metadata.
+
+    `runs/<run>/metrics.json` may carry `_meta` (for example `simulated: true`).
+    `python cli.py ab` ignores those keys.
+    """
+    if not isinstance(metrics, dict):
+        raise TypeError("metrics must be an object of variant_id -> {views, avg_watch_pct, shares}")
+    out = {}
+    for key, row in metrics.items():
+        if isinstance(row, dict) and "views" in row and "avg_watch_pct" in row and "shares" in row:
+            out[key] = row
+    if not out:
+        raise ValueError("metrics contained no variant rows")
+    return out
+
 def analyze(metrics, n_draws=20000, w_watch=0.6, w_share=0.4, seed=0):
     """metrics: {variant_id: {views, avg_watch_pct (0-1 or 0-100), shares}}.
     Watch: Beta(1+views*w, 1+views*(1-w)) (pseudo-count approx). Share: Beta(1+shares, 1+views-shares).
-    Combined score = w_watch*watch + w_share*share_rate_normalized. Returns P(best) per variant."""
+    Combined score = w_watch*watch + w_share*share_rate_normalized. Returns P(best) per variant.
+    Non-variant keys (`_meta`, a top-level simulated flag, …) are skipped."""
+    metrics = variant_metrics(metrics)
     rng = np.random.default_rng(seed)
     ids = list(metrics)
     W, S = [], []

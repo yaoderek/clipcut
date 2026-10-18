@@ -4,15 +4,20 @@ Contract for the audience-persona lane. The canvas / classic UI should call this
 
 Opening-line suggestions are a separate call, [`POST /api/persona/hooks`](#post-apipersonahooks).
 
+Observed per-variant metrics are [`POST /api/persona/metrics`](#post-apipersonametrics). Predicted versus actual, Spearman, and the Thompson winner are [`GET /api/persona/compare/<run>`](#get-apipersonacomparerun).
+
 `POST /api/score` stays as it is (external editor). It still returns the legacy `clipcut.retention.score` payload (`overall`, `personas` as a map of `p_swipe3s` / `watch_pct` / `p_share`, `channels` with display names such as `"TikTok"`).
 
 Python entry point:
 
 ```python
-from clipcut.persona_api import score_variants
+from clipcut.persona_api import compare_run, score_variants, store_metrics
 
 score_variants(run="v2_niosh_multi", variant_ids=["v07"], mode="auto")
 score_variants(manifests=[variant_dict], mode="heuristic")
+score_variants(run="v2_niosh_multi", mode="heuristic", calibration="run")
+store_metrics(run="v2_niosh_multi", payload={"metrics": {"v01": {"views": 1200, "avg_watch_pct": 54.3, "shares": 31}}})
+compare_run("v2_niosh_multi")
 ```
 
 `score_variants` returns the same object as the HTTP response. Invalid input raises `clipcut.persona_api.PersonaScoreError` (`.status` is the HTTP status, `str(err)` is the `error` message).
@@ -22,6 +27,8 @@ score_variants(manifests=[variant_dict], mode="heuristic")
 Scores are **rule-based persona heuristics**, or **LLM-simulated judgments** when a variant's `source` is `"llm"`.
 
 They are not trained models. They are not real A/B results, watch-time predictions, or platform analytics. Feature weights are hand-set interpretations of short-form editing practice (hook in the first seconds, cut rate, captions, length versus a platform norm, topic keywords, loop ending). See `clipcut/persona_models.py` for the coefficients.
+
+`calibration: "none"` (the default) does not change that. `calibration: "run"` or `"global"` is the only path that adjusts feature weights and the persona mix, and only from uploaded metrics that are not marked simulated. Persona bases stay hand-set either way.
 
 The four persona ids match the live heuristic scorer: `fast_swiper`, `casual_browser`, `completionist`, `sharer_engager`.
 
@@ -39,12 +46,15 @@ Provide **either** `run` **or** `manifests`, not both.
 | `manifests` | array of objects | one of `run` / `manifests` | Variant manifests. A cutter-v2 `vNN.json` object, or a v1 variant object (`length_s`, `hook_text`, `caption_style`, …). If an object has a `variants` array and no `variant_id`, each child is scored (v1 `manifest.json`). |
 | `variant_ids` | array of strings | no | Subset to score. Default: every variant. With `run`, ids must exist or the call is 404. Order of this array is the order of `variants` in the response. When omitted, response order is `v01`, `v02`, … |
 | `mode` | string | no | `"heuristic"`, `"llm"`, or `"auto"`. Default `"auto"`. |
+| `calibration` | string | no | `"none"` (default), `"run"`, or `"global"`. `"none"` is the response documented below. `"run"` and `"global"` rescore with weights fit from uploaded metrics. `null` means `"none"`. |
 
 `mode`:
 
 - `"heuristic"` — rule-based personas only. No network.
 - `"llm"` — LLM role-plays each persona on the variant transcript and metadata. Requires `XAI_API_KEY` or `GROK_API_KEY`. If the key is missing, **503**. If a call fails or the reply is not usable JSON, that variant falls back to the heuristic and its `source` is `"heuristic"` (the pipeline does not raise).
 - `"auto"` — `"llm"` when a key is set **and** the call returns usable JSON; otherwise `"heuristic"`. No key is not an error.
+
+`calibration` other than `"none"` does not call the LLM, including when `mode` is `"auto"`. It rescores with the heuristic math and the fitted weights. `mode: "llm"` together with `calibration: "run"` or `"global"` is **400**. There is no network on that path.
 
 `model` in the legacy sense (`CLIPCUT_SCORER=model`, KuaiRand / MicroLens pickles) is **not** used here. `data/` and `models/` are not in git. `"model"` remains a legal `source` value for forward compatibility and is not emitted by this endpoint.
 
@@ -104,14 +114,14 @@ Numbers above are illustrative. Implementations return JSON numbers rounded to 4
 
 | Field | Type | Meaning |
 | --- | --- | --- |
-| `source` | `"heuristic"` \| `"llm"` \| `"model"` \| `"mixed"` | How this response was produced. `"mixed"` when variants (or personas inside the LLM path) did not all use the same method. `"model"` is reserved and not emitted. |
-| `model_version` | string | `"persona-heuristic-v1"` (all heuristic), `"llm-persona-v1"` (all LLM), or `"persona-mixed-v1"`. |
-| `disclaimer` | string | Always the sentence in the example. Do not present scores as trained or measured. |
+| `source` | `"heuristic"` \| `"llm"` \| `"model"` \| `"mixed"` \| `"calibrated"` | How this response was produced. `"mixed"` when variants (or personas inside the LLM path) did not all use the same method. `"model"` is reserved and not emitted. `"calibrated"` only when `calibration` is `"run"` or `"global"`. |
+| `model_version` | string | `"persona-heuristic-v1"` (all heuristic), `"llm-persona-v1"` (all LLM), `"persona-mixed-v1"`, or `"persona-calibrated-v1"` when `calibration` is `"run"` or `"global"`. |
+| `disclaimer` | string | The sentence in the example when `calibration` is `"none"`. The calibrated disclaimer, below, when weights were fit from uploaded metrics. Do not present either score as a trained platform model. |
 | `winner` | string | Variant `id` with the highest `aggregate`. Tie: lexicographically smallest id (`v01` before `v02`). |
 | `variants` | array | One object per scored variant. |
 | `variants[].id` | string | `variant_id`, else `id`, else `m01`, `m02`, … in input order. |
 | `variants[].source` | same enum as top-level `source` | Method used for this variant. |
-| `variants[].aggregate` | float in \[0, 1\] | Audience-weighted mean of the four persona scores. Weights are hand-set: fast_swiper 0.30, casual_browser 0.30, completionist 0.30, sharer_engager 0.10 (same mix as `retention.py`). |
+| `variants[].aggregate` | float in \[0, 1\] | Audience-weighted mean of the four persona scores. Default mix is hand-set: fast_swiper 0.30, casual_browser 0.30, completionist 0.30, sharer_engager 0.10 (same mix as `retention.py`). A calibrated score uses the fitted mix. |
 | `variants[].personas` | array of 4 | Fixed order: `fast_swiper`, `casual_browser`, `completionist`, `sharer_engager`. |
 | `personas[].score` | float in \[0, 1\] | That persona's heuristic or simulated judgment. |
 | `personas[].reasons` | array of strings | Short human-readable notes, strongest signals first. At least one string. |
@@ -184,9 +194,60 @@ Body is always `{"error": "<message>"}`. No `detail` wrapper.
 
 | Status | When |
 | --- | --- |
-| 400 | Not a JSON object. Both `run` and `manifests` set, or neither. `mode` not in `heuristic` / `llm` / `auto`. `manifests` not a list of objects. `variant_ids` not a list of strings. `run` is not a single safe path segment. Empty variant list. |
-| 404 | `run` directory does not exist, has no `vNN.json`, or a requested `variant_id` is missing. |
-| 503 | `mode` is `"llm"` and neither `XAI_API_KEY` nor `GROK_API_KEY` is set. |
+| 400 | Not a JSON object. Both `run` and `manifests` set, or neither. `mode` not in `heuristic` / `llm` / `auto`. `manifests` not a list of objects. `variant_ids` not a list of strings. `run` is not a single safe path segment. Empty variant list. `calibration` not in `none` / `run` / `global`. `calibration` is `run` without a `run`. `calibration` is set and `mode` is `llm`. Metrics for that run are simulated. Fewer than 2 variants have both a manifest and metrics. |
+| 404 | `run` directory does not exist, has no `vNN.json`, or a requested `variant_id` is missing. `calibration` is `run` and the run has no `metrics.json`. `calibration` is `global` and there are not enough real metrics anywhere under `runs/` to fit. |
+| 503 | `mode` is `"llm"` and neither `XAI_API_KEY` nor `GROK_API_KEY` is set. `calibration` is not involved. |
+
+### When `calibration` is `"run"` or `"global"`
+
+Omitted or `"none"`: the fields above, and only those fields. `"run"` and `"global"` add three fields and change `source`, `model_version`, and `disclaimer`. Each variant's `source` is `"calibrated"`. Contributions use the fitted feature weights. Persona bases in `clipcut/persona_models.py` are not changed, and the in-memory hand-set weights are not written back.
+
+```json
+{
+  "source": "calibrated",
+  "model_version": "persona-calibrated-v1",
+  "disclaimer": "Feature and persona weights were adjusted from uploaded per-variant metrics (watch percentage and shares) with a ridge prior toward the hand-set weights. The fit is in-sample and bounded. It is not a trained platform model, it does not predict future views, and this path is refused when the metrics file is simulated.",
+  "winner": "v07",
+  "variants": [],
+  "calibration": "run",
+  "n_samples": 12,
+  "fit_quality": {
+    "r2": -0.4,
+    "spearman": 0.31,
+    "rmse": 0.22,
+    "hand_set_r2": -0.8,
+    "hand_set_spearman": 0.2,
+    "in_sample": true,
+    "guard": "ok",
+    "n_prior": 8.0,
+    "weighted_by": "views",
+    "active_features": ["hook_timing"],
+    "active_personas": ["completionist"],
+    "mean_predicted": 0.71,
+    "mean_actual": 0.48
+  }
+}
+```
+
+Numbers above are illustrative. `variants` has the same shape as the heuristic response.
+
+| Field | Meaning |
+| --- | --- |
+| `calibration` | `"run"` or `"global"`, echoing the request. |
+| `n_samples` | Variants that were in the fit (a manifest and a metrics row). Not the number of variants in this response. Global is the pool across runs. |
+| `fit_quality.r2` | In-sample R² of the calibrated aggregate against the watch/share blend. Often negative: the heuristic lives on its own 0–1 scale, and this fit does **not** add an intercept to hide that gap. `null` when actuals do not vary. |
+| `fit_quality.spearman` | Spearman rank correlation of calibrated aggregate vs the blend. This is the ranking check. |
+| `fit_quality.hand_set_r2` / `hand_set_spearman` | The same stats with the hand-set weights, so a reader can see whether the nudge beat the prior. |
+| `fit_quality.rmse` | In-sample RMSE on that same pair of scales. |
+| `fit_quality.in_sample` | Always `true`. There is no holdout. |
+| `fit_quality.guard` | `"ok"` at 8 or more samples. `"shrink"` below 8: the prior is much stronger and the multiplier clip is tight. |
+| `fit_quality.n_prior` | Ridge strength in pseudo-observations. 8 when `guard` is `"ok"`. `48 * (8 / n)²` when `guard` is `"shrink"`. |
+| `fit_quality.weighted_by` | Always `"views"`. A variant with more views pulls the fit harder. |
+| `fit_quality.active_features` | Feature columns that varied across the sample. Flat features stay at multiplier 1, because a flat column cannot be told apart from an intercept and this fit does not learn an intercept. |
+| `fit_quality.active_personas` | Persona-mix columns that varied. |
+| `fit_quality.mean_predicted` / `mean_actual` | Means of the calibrated aggregate and the blend. The gap is reported instead of being absorbed into a scale factor. |
+
+`calibration: "run"` reads `runs/<run>/persona_calibration.json`, refitting when the metrics hash changed. `calibration: "global"` reads `runs/_calibration/global.json` (pooled real runs). Simulated metrics are **400**, not a calibrated score.
 
 ## LLM persona layer
 
@@ -486,14 +547,241 @@ Body is always `{"error": "<message>"}`. No `detail` wrapper.
 }
 ```
 
-## Later calibration (not implemented)
+## `POST /api/persona/metrics`
 
-Real outcomes can be scored with the existing tool, without changing this contract:
+Store observed per-variant metrics for one run. The file is `runs/<run>/metrics.json`. Other files in that directory (`vNN.json`, `results.json`, `manifest.json`, …) are not modified.
 
-```bash
-python cli.py ab metrics.json
+Python:
+
+```python
+store_metrics(run="v2_niosh_multi", payload={"metrics": {"v07": {"views": 1200, "avg_watch_pct": 54.3, "shares": 31, "likes": 80, "channel": "tiktok"}}})
+store_metrics(run="v2_niosh_multi", csv_bytes=open("metrics.csv", "rb").read(), filename="metrics.csv")
 ```
 
-`metrics.json` shape (see README): `{"v01": {"views": 1200, "avg_watch_pct": 54.3, "shares": 31}}`. `clipcut/ab.py` fits Beta posteriors and a Thompson next-round split. Those observed watch and share rates could later rescale the hand-set persona weights or feature weights. That fit is **not** done. Until it is, `model_version` stays `persona-heuristic-v1` / `llm-persona-v1` and the disclaimer stands.
+`Content-Type` is either `application/json` or `multipart/form-data`.
 
-Simulated A/B inside the app (`retention.simulate_ab`, `/api/channels/{run}`) is a different, mocked path. Do not treat it as calibration data.
+### JSON body
+
+Two shapes. `run` may instead be the query `?run=`.
+
+Wrapper:
+
+```json
+{"run": "v2_niosh_multi", "simulated": false, "scope": "run", "metrics": {"v01": {"views": 1200, "avg_watch_pct": 54.3, "shares": 31}}}
+```
+
+Ab format (same object `python cli.py ab` accepts), plus `run` in the body or the query. `_meta` is optional metadata, not a variant:
+
+```json
+{"run": "v2_niosh_multi", "v01": {"views": 1200, "avg_watch_pct": 54.3, "shares": 31}}
+```
+
+| Field | Type | Required | Meaning |
+| --- | --- | --- | --- |
+| `run` | string | yes | Single path segment under `runs/`. The directory must already exist. |
+| `metrics` | object | wrapper shape | Map of variant id → metric row. Unknown sibling fields are 400. |
+| `simulated` | boolean | no | `true` marks the file simulated. `false` does **not** clear a detection (see below). `null` means unspecified. Strings `"true"` / `"false"` are accepted. |
+| `scope` | string | no | `"run"` (default), `"global"`, or `"both"`. Which calibration file to write now. |
+| `_meta` | object | no | Honors `simulated: true` and `generator`. A generator containing `make_mock_metrics`, `mock`, or `simul` forces `simulated: true`. |
+
+A metric row:
+
+| Field | Required | Meaning |
+| --- | --- | --- |
+| `views` | yes | Integer ≥ 1. |
+| `avg_watch_pct` | yes | Number from 0 to 100. Values from 0 to 1 are fractions (so `1` means 100% watch, matching `clipcut/ab.py`). Values above 1 are percents. Above 100 is 400. |
+| `shares` | yes | Integer ≥ 0 and ≤ `views`. |
+| `channel` | no | Short string, stored and returned by compare. Not a fit feature. |
+| `likes` | no | Integer ≥ 0. Stored. Not used in the outcome or the fit. |
+| `simulated` | no | `true` on any row marks the whole file simulated. |
+
+Variant ids match `^[A-Za-z0-9][A-Za-z0-9._-]{0,80}$` and must not start with `_`.
+
+### CSV upload
+
+Multipart fields: `file` (required), `run` (required), `simulated` (optional), `scope` (optional). UTF-8. Header required. Columns: `variant_id`, `views`, `avg_watch_pct`, `shares`, and optional `channel`, `likes`. A filename containing `mock` or `simul` (for example `mock_metrics.csv`) forces `simulated: true`.
+
+### Stored file
+
+`_meta` is written first so the flag is visible before the numbers. Existing variant rows not mentioned in the upload are kept. Mentioned ids are replaced. Unknown top-level keys already in the file (anything that is not `_meta` and not a metric row) are kept. `python cli.py ab runs/<run>/metrics.json` still works: `clipcut/ab.py` skips keys that are not `{views, avg_watch_pct, shares}`.
+
+```json
+{
+  "_meta": {"simulated": false, "source": "json", "n": 2, "updated_at": "2026-10-18T00:00:00Z"},
+  "v01": {"views": 1200, "avg_watch_pct": 54.3, "shares": 31, "channel": "tiktok", "likes": 80}
+}
+```
+
+When the file is simulated, `_meta.simulated` is `true` and each variant row also has `"simulated": true`.
+
+### What counts as simulated
+
+The file is simulated when any of these are true. A caller-supplied `simulated: false` does not override them.
+
+- The upload says `simulated: true`, or `_meta.simulated` is true, or a row says `simulated: true`.
+- `_meta.generator` mentions `make_mock_metrics`, `mock`, or `simul` (`make_mock_metrics.py` and `cli.py demo` both write this).
+- The CSV filename contains `mock` or `simul`.
+- The variant rows match `runs/demo/mock_metrics.json` on id, views, avg_watch_pct, and shares. That file is the checked-in output of `make_mock_metrics.py`.
+- `metrics.json` was already simulated. A later upload cannot relabel it as real. Delete the file to start over.
+
+Simulated metrics are stored. They are not used to fit weights. `POST /api/persona/score` with `calibration` set is 400 on that run. Compare still returns, with `simulated: true` and no `predicted_calibrated`.
+
+`retention.simulate_ab` and `GET /api/channels/{run}` are a different mocked path. They do not write `metrics.json` and they are not calibration data.
+
+### Response `200`
+
+```json
+{
+  "run": "v2_niosh_multi",
+  "file": "metrics.json",
+  "n": 12,
+  "added": ["v07"],
+  "updated": ["v01"],
+  "simulated": false,
+  "simulated_reason": null,
+  "calibration": {
+    "fitted": true,
+    "scope": "run",
+    "guard": "ok",
+    "n_samples": 12,
+    "fit_quality": {},
+    "feature_multipliers": {"hook_timing": 1.0},
+    "persona_weights": {"fast_swiper": 0.3},
+    "file": "persona_calibration.json"
+  }
+}
+```
+
+`fit_quality` has the same fields as the score response. `simulated_reason` is a string when `simulated` is true (`generator make_mock_metrics.py`, `matches make_mock_metrics.py output`, `filename mock_metrics.csv`, `declared`, `already marked simulated`, …) and `null` otherwise.
+
+`calibration.fitted` is false when the metrics are simulated, or when fewer than 2 uploaded variants also have a `vNN.json` manifest. The reason string says which.
+
+### Errors
+
+| Status | When |
+| --- | --- |
+| 400 | Not a JSON object (and not a CSV upload). Missing `run`. Bad `scope`. Bad row (views, shares, watch, likes, channel, variant id). CSV missing required columns, duplicate ids, or not UTF-8. Unknown fields next to `metrics`. Empty metrics. |
+| 404 | Run directory does not exist. |
+| 409 | `metrics.json` exists and is not a JSON object. The file is left untouched. |
+
+## Calibration
+
+Given a run's real metrics and its `vNN.json` manifests, fit a small adjustment of the **feature weights** (one multiplier shared by all four personas) and the **persona mix**. Two stages, both view-weighted and column-centered ridge regressions toward the hand-set weights (delta 0):
+
+1. Feature multipliers. The column for a feature is the derivative of the unclamped audience aggregate with respect to a shared multiplier, at the hand-set weights.
+2. Persona-mix multipliers, using persona scores after step 1. The mix is then renormalized to sum to 1.
+
+Columns that do not vary are left at multiplier 1. After the solve, multipliers are clipped:
+
+| Samples in the fit | `guard` | Feature multiplier | Persona multiplier | `n_prior` |
+| --- | --- | --- | --- | --- |
+| 2–7 | `"shrink"` | 0.92–1.08 | 0.95–1.05 | `48 * (8 / n)²` |
+| 8 or more | `"ok"` | 0.50–1.50 | 0.65–1.35 | 8 |
+
+Fewer than 2 paired variants: no calibration file. The hand-set weights in code are never overwritten. Persona **bases** are not parameters.
+
+The target is not the persona aggregate. It is a hand-set blend, so rank agreement is meaningful and a level gap stays visible:
+
+```
+watch_frac = avg_watch_pct / 100   if avg_watch_pct > 1 else avg_watch_pct
+share_rate = shares / views
+actual = 0.6 * watch_frac + 0.4 * min(1, share_rate / 0.05)
+```
+
+`0.05` (a 5% share rate) saturates the share term. That ceiling is a hand-set scale, not a measured benchmark. The 0.6/0.4 split matches `clipcut/ab.py`. Likes are not in the blend.
+
+Fit quality (`r2`, `spearman`, `rmse`) is **in-sample** on the clamped aggregate versus `actual`. Spearman is the ranking check. R² can be negative because no intercept is fit.
+
+### Where the weights are written
+
+| `scope` on the metrics POST | File |
+| --- | --- |
+| `"run"` (default) | `runs/<run>/persona_calibration.json` |
+| `"global"` | `runs/_calibration/global.json`, pooled across every run whose `metrics.json` is not simulated |
+| `"both"` | Both files. The POST response then has `calibration.fitted` plus `calibration.scopes` (one summary per file) instead of a single summary. |
+
+`_calibration` is not a run name (it starts with `_`). A later `POST /api/persona/score` with `calibration: "run"` refits that run if the file is missing or the metrics hash changed, as long as the metrics are real and at least two variants pair with manifests. `calibration: "global"` does the same for the pool. Marking a run simulated deletes that run's calibration file and refits or deletes the global file so the run cannot linger in the pool.
+
+The calibration JSON includes `schema` (`persona-calibration-v1`), `simulated: false`, `n_samples`, `guard`, `feature_multipliers`, `persona_multipliers`, `feature_weights`, `hand_set_feature_weights`, `persona_weights`, `hand_set_persona_weights`, `bases` (unchanged), `outcome`, `fit_quality`, `metrics_sha256`, and the calibrated disclaimer. `run` is null on the global file; `runs` lists `{run, n, metrics_sha256}` instead.
+
+## `GET /api/persona/compare/<run>`
+
+Predicted versus actual for the dashboard, plus the Thompson-sampling winner from `clipcut/ab.py` (`analyze`, seed 0, 20,000 draws — the same defaults as `python cli.py ab`).
+
+```python
+compare_run("v2_niosh_multi")
+```
+
+### Response `200`
+
+```json
+{
+  "run": "v2_niosh_multi",
+  "simulated": false,
+  "simulated_reason": null,
+  "disclaimer": "predicted is the hand-set persona aggregate. predicted_calibrated is present only when a fit was made from metrics that are not simulated. actual is a hand-set blend of observed avg_watch_pct and share rate (0.6 watch, 0.4 share; share rate saturates at 5%). It is not a platform ranking. thompson_winner is the Beta posterior Thompson estimate from clipcut/ab.py.",
+  "n": 12,
+  "n_paired": 12,
+  "spearman": 0.2,
+  "spearman_calibrated": 0.31,
+  "thompson_winner": "v07",
+  "thompson_confident": false,
+  "ab_seed": 0,
+  "ab_draws": 20000,
+  "thompson": [
+    {"variant_id": "v07", "views": 1200, "watch_mean": 0.54, "share_rate": 0.027, "p_best": 0.41, "expected_loss": 0.01}
+  ],
+  "variants": [
+    {
+      "id": "v01",
+      "predicted": 0.71,
+      "predicted_calibrated": 0.68,
+      "actual": 0.48,
+      "views": 1200,
+      "avg_watch_pct": 54.3,
+      "shares": 31,
+      "likes": null,
+      "channel": "tiktok",
+      "share_rate": 0.025833,
+      "watch_frac": 0.543
+    }
+  ],
+  "outcome": {"watch_weight": 0.6, "share_weight": 0.4, "share_rate_full": 0.05, "note": "actual = 0.6*watch_frac + 0.4*min(1, share_rate/0.05). share_rate_full is a hand-set saturation point, not a measured benchmark. Likes are stored and not used."},
+  "calibration": {
+    "guard": "ok",
+    "n_samples": 12,
+    "fit_quality": {},
+    "feature_multipliers": {},
+    "persona_weights": {},
+    "hand_set_persona_weights": {"fast_swiper": 0.3, "casual_browser": 0.3, "completionist": 0.3, "sharer_engager": 0.1}
+  }
+}
+```
+
+| Field | Meaning |
+| --- | --- |
+| `simulated` | From the rules above. When true, the disclaimer is the simulated sentence below, `predicted_calibrated` is null on every row, `spearman_calibrated` is null, and `calibration` is null. |
+| `spearman` | Hand-set aggregate vs `actual`, over variants that have both a manifest and a metrics row. `null` if fewer than 2. |
+| `spearman_calibrated` | Same, using the run fit. `null` when there is no real fit. |
+| `predicted` | Hand-set persona aggregate. `null` when that id has metrics but no `vNN.json`. |
+| `predicted_calibrated` | Aggregate with the run's fitted weights. `null` when metrics are simulated, when the fit does not exist, or when there is no manifest. |
+| `actual` | The watch/share blend above, rounded to 4 decimals. |
+| `thompson_winner` | `clipcut.ab.analyze` winner on the stored rows. This is not the persona-score winner. |
+| `thompson_confident` | True when that winner's `p_best` is at least 0.95. |
+| `thompson` | The `analyze` table, `p_best` descending. Floats rounded to 6 decimals. |
+| `variants` | Metric rows, sorted by id. |
+
+Simulated disclaimer (exact):
+
+`These metrics are simulated, not platform results. predicted is the hand-set persona aggregate. Weights were not calibrated on this file. thompson_winner is the Beta posterior Thompson estimate from clipcut/ab.py on the simulated rows, not a real test winner.`
+
+When the metrics are real and at least two variants pair with manifests, this GET refits `persona_calibration.json` if it is missing or stale. It does not refit on simulated metrics.
+
+### Errors
+
+Body is always `{"error": "<message>"}`.
+
+| Status | When |
+| --- | --- |
+| 400 | `run` is not a single safe path segment, or a stored row is outside the views/shares/watch bounds. |
+| 404 | No such run, no `metrics.json`, or the file has no variant rows. |

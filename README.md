@@ -14,7 +14,7 @@ mkdir -p data && curl -L -o data/pure.tgz https://zenodo.org/api/records/1043942
 python cli.py train-personas                       # ~15 min on 8 CPUs -> models/personas.pkl, models/metrics.json
 python cli.py cut samples/raw_test.mp4 --out runs/demo -n 8   # variants + manifest.json (~1-2 min)
 python cli.py score runs/demo/manifest.json        # rankings.csv, persona_scores.csv, retention_curves.png, deploy.json
-python cli.py ab runs/demo/mock_metrics.json       # Bayesian/Thompson winner from real metrics JSON
+python cli.py ab runs/demo/mock_metrics.json       # Bayesian/Thompson winner from SIMULATED metrics (mock_metrics.json)
 python cli.py demo samples/raw_test.mp4            # all of the above, with MOCK metrics
 uvicorn app:app --port 8000                        # web UI: upload -> variants, chart, previews
 ```

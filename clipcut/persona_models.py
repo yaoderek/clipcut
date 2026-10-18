@@ -368,18 +368,30 @@ def _qualities(m, persona):
     }
 
 
-def score_persona(manifest, persona_id):
-    """One persona. contributions are signed points; score = clamp(base + sum(contributions), 0, 1)."""
+def feature_qualities(manifest, persona_id):
+    """Quality in [-1, 1] for each feature, before weights are applied."""
     persona = PERSONAS[persona_id]
     quals = _qualities(manifest if isinstance(manifest, dict) else {}, persona)
-    contributions = {k: round(persona["weights"][k] * quals[k][0], 4) for k in FEATURE_KEYS}
+    return {k: quals[k][0] for k in FEATURE_KEYS}
+
+
+def score_persona(manifest, persona_id, *, feature_weights=None):
+    """One persona. contributions are signed points; score = clamp(base + sum(contributions), 0, 1).
+
+    feature_weights overrides the hand-set feature weights for this persona. The
+    base stays hand-set. Omit it and the result matches the hand-set heuristic.
+    """
+    persona = PERSONAS[persona_id]
+    weights = persona["weights"] if feature_weights is None else feature_weights
+    quals = _qualities(manifest if isinstance(manifest, dict) else {}, persona)
+    contributions = {k: round(weights[k] * quals[k][0], 4) for k in FEATURE_KEYS}
     raw = round(persona["base"] + sum(contributions.values()), 4)
     score = 0.0 if raw < 0 else 1.0 if raw > 1 else raw
     ranked = []
     for k in FEATURE_KEYS:
         reason = quals[k][1]
         if reason and abs(contributions[k]) > 0:
-            ranked.append((abs(persona["weights"][k] * quals[k][0]), k, reason))
+            ranked.append((abs(weights[k] * quals[k][0]), k, reason))
     ranked.sort(key=lambda t: (-t[0], t[1]))
     reasons = [t[2] for t in ranked[:4]] or ["no strong edit signals in the manifest"]
     return dict(
@@ -392,13 +404,22 @@ def score_persona(manifest, persona_id):
     )
 
 
-def heuristic_variant(manifest):
-    """Score one variant for every persona. aggregate is the hand-set audience-weighted mean."""
+def heuristic_variant(manifest, *, feature_weights=None, persona_weights=None):
+    """Score one variant for every persona.
+
+    With no overrides, aggregate is the hand-set audience-weighted mean.
+    feature_weights is {persona_id: {feature: weight}}. persona_weights is
+    {persona_id: mix weight}. Bases stay hand-set either way.
+    """
     m = manifest if isinstance(manifest, dict) else {}
-    personas = [score_persona(m, pid) for pid in PERSONA_ORDER]
+    personas = []
+    for pid in PERSONA_ORDER:
+        custom = None if feature_weights is None else feature_weights[pid]
+        personas.append(score_persona(m, pid, feature_weights=custom))
     scores = {p["id"]: p["score"] for p in personas}
-    weight = sum(PERSONAS[pid]["weight"] for pid in PERSONA_ORDER)
-    aggregate = round(sum(PERSONAS[p["id"]]["weight"] * p["score"] for p in personas) / weight, 4)
+    mix = {pid: PERSONAS[pid]["weight"] for pid in PERSONA_ORDER} if persona_weights is None else persona_weights
+    weight = sum(mix[pid] for pid in PERSONA_ORDER)
+    aggregate = round(sum(mix[p["id"]] * p["score"] for p in personas) / weight, 4)
     return dict(source="heuristic", aggregate=aggregate, personas=personas, channels=channel_fits(scores, m))
 
 

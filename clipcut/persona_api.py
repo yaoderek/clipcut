@@ -3,7 +3,9 @@
 score_variants() and rewrite_hooks() are deterministic and offline in heuristic
 mode. mode "auto" uses an LLM only when a key is configured and the call
 returns usable JSON; otherwise it keeps the rule-based path. Neither path is a
-trained model or a real A/B result.
+trained model or a real A/B result. calibration "run" or "global" is a separate
+opt-in: it nudges the hand-set weights from uploaded metrics and refuses
+simulated metrics. See docs/PERSONA_API.md.
 """
 from __future__ import annotations
 
@@ -20,6 +22,7 @@ DISCLAIMER = (
     "They are not trained models and they are not real A/B or platform results."
 )
 MODES = ("heuristic", "llm", "auto")
+CALIBRATIONS = ("none", "run", "global")
 _RUN_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,80}$")
 
 
@@ -29,15 +32,23 @@ class PersonaScoreError(Exception):
         self.status = status
 
 
-def score_variants(run=None, variant_ids=None, manifests=None, mode="auto", *, runs_root=None, llm_client=None):
+def score_variants(run=None, variant_ids=None, manifests=None, mode="auto", calibration="none", *, runs_root=None, llm_client=None):
     """Score variant manifests. Same object as POST /api/persona/score.
 
     Pass either run (a directory name under runs/) or manifests (a list of
-    variant dicts). llm_client is an optional complete(prompt) object for tests;
-    it is not part of the JSON contract.
+    variant dicts). calibration "none" (default) is the hand-set heuristic or
+    the LLM path. "run" and "global" rescore with weights fit from uploaded
+    metrics. llm_client is an optional complete(prompt) object for tests; it
+    is not part of the JSON contract.
     """
+    if calibration is None:
+        calibration = "none"
+    if not isinstance(calibration, str) or calibration not in CALIBRATIONS:
+        raise PersonaScoreError("calibration must be one of none, run, global")
     if not isinstance(mode, str) or mode not in MODES:
         raise PersonaScoreError("mode must be one of heuristic, llm, auto")
+    if calibration != "none":
+        return _score_calibrated(run, variant_ids, manifests, mode, calibration, runs_root)
     items = _resolve_items(run, variant_ids, manifests, runs_root)
     use_llm = _use_llm(mode, llm_client)
     client = llm_client if use_llm else None
@@ -302,7 +313,45 @@ def _hook_envelope(variants, origins):
     return dict(source=source, model_version=HOOK_VERSION[source], disclaimer=HOOK_DISCLAIMER, variants=variants)
 
 
-def _envelope(variants):
+def store_metrics(**kwargs):
+    """Merge metrics into runs/<run>/metrics.json. Same object as POST /api/persona/metrics."""
+    from .persona_calibration import store_metrics as impl
+    return impl(**kwargs)
+
+
+def compare_run(run, *, runs_root=None):
+    """Predicted vs actual. Same object as GET /api/persona/compare/<run>."""
+    from .persona_calibration import compare_run as impl
+    return impl(run, runs_root=runs_root)
+
+
+def _score_calibrated(run, variant_ids, manifests, mode, calibration, runs_root):
+    if mode == "llm":
+        raise PersonaScoreError("calibration uses heuristic feature weights; mode must be heuristic or auto")
+    if calibration == "run" and run is None:
+        raise PersonaScoreError("calibration 'run' requires a run")
+    from .persona_calibration import CALIBRATED_DISCLAIMER, load_for_score
+
+    table = load_for_score(calibration, run, runs_root)
+    items = _resolve_items(run, variant_ids, manifests, runs_root)
+    variants = []
+    for manifest in items:
+        scored = heuristic_variant(
+            manifest,
+            feature_weights=table["feature_weights"],
+            persona_weights=table["persona_weights"],
+        )
+        scored["id"] = manifest["variant_id"]
+        scored["source"] = "calibrated"
+        variants.append(scored)
+    out = _envelope(variants, disclaimer=CALIBRATED_DISCLAIMER)
+    out["calibration"] = calibration
+    out["n_samples"] = table["n_samples"]
+    out["fit_quality"] = table["fit_quality"]
+    return out
+
+
+def _envelope(variants, disclaimer=None):
     sources = {v["source"] for v in variants}
     if sources == {"heuristic"}:
         source, version = "heuristic", "persona-heuristic-v1"
@@ -310,7 +359,9 @@ def _envelope(variants):
         source, version = "llm", "llm-persona-v1"
     elif sources == {"model"}:
         source, version = "model", "persona-model-v1"
+    elif sources == {"calibrated"}:
+        source, version = "calibrated", "persona-calibrated-v1"
     else:
         source, version = "mixed", "persona-mixed-v1"
     winner = min(variants, key=lambda v: (-v["aggregate"], v["id"]))["id"]
-    return dict(source=source, model_version=version, disclaimer=DISCLAIMER, winner=winner, variants=variants)
+    return dict(source=source, model_version=version, disclaimer=disclaimer or DISCLAIMER, winner=winner, variants=variants)
