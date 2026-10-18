@@ -10,6 +10,7 @@ This repo has no ``yt_shorts`` or ``ig_reels`` id.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import random
@@ -213,7 +214,7 @@ def seed_run(run, root=None):
     if len(manifests) < 1:
         return False
     _write_demo_meta(directory)
-    payload = _metrics_payload(manifests)
+    payload = _metrics_payload(manifests, run)
     from clipcut.persona_api import store_metrics
 
     store_metrics(run=run, payload=payload, runs_root=root / "runs")
@@ -261,10 +262,16 @@ def main(argv=None):
     return 0
 
 
-def _metrics_payload(manifests):
+def _rng_for(run):
+    """Stable RNG for one run. Python's hash() is salted per process, so this is SHA-256."""
+    digest = hashlib.sha256(str(run).encode("utf-8")).digest()
+    return random.Random(int.from_bytes(digest[:8], "big"))
+
+
+def _metrics_payload(manifests, run):
     from clipcut.persona_models import heuristic_variant
 
-    rng = random.Random(20261018)
+    rng = _rng_for(run)
     cursor = 0
     metrics = {}
     for manifest in sorted(manifests, key=lambda item: str(item.get("variant_id") or "")):

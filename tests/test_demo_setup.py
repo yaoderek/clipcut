@@ -81,6 +81,26 @@ def test_seed_is_simulated_demo_and_idempotent(tmp_path):
     assert again["v07"]["views"] == stored["v07"]["views"]
 
 
+def test_two_run_names_get_different_metrics():
+    from clipcut.demo_setup import _metrics_payload
+
+    manifests = [json.loads(path.read_text()) for path in sorted((ROOT / "runs" / PRIMARY_RUN).glob("v[0-9][0-9].json"))]
+
+    def series(run):
+        payload = _metrics_payload(manifests, run)
+        return [(vid, row["views"], row["avg_watch_pct"], row["shares"]) for vid, row in sorted(payload["metrics"].items())]
+
+    kendra = series("demo_pd_kendra")
+    calvin = series("demo_pd_calvin")
+    niosh = series(PRIMARY_RUN)
+    assert kendra != calvin
+    assert kendra != niosh
+    assert calvin != niosh
+    assert series("demo_pd_calvin") == calvin
+    channels = {row["channel"] for row in _metrics_payload(manifests, "demo_pd_kendra")["metrics"].values()}
+    assert channels == {row["channel"] for row in _metrics_payload(manifests, PRIMARY_RUN)["metrics"].values()}
+
+
 def test_seed_does_not_replace_real_metrics(tmp_path):
     directory = tmp_path / "runs" / "kept"
     directory.mkdir(parents=True)
@@ -107,12 +127,19 @@ def test_setup_offline_does_not_raise(tmp_path, monkeypatch):
 
 
 def test_checked_in_preload_metrics_are_demo():
+    from clipcut.demo_setup import _metrics_payload
+
     path = ROOT / "runs" / PRIMARY_RUN / "metrics.json"
     assert path.is_file(), "demo-setup should write runs/v2_niosh_multi/metrics.json before commit"
     stored = json.loads(path.read_text())
     assert stored["_meta"]["demo"] is True
     assert stored["_meta"]["simulated"] is True
     assert json.loads((ROOT / "runs" / PRIMARY_RUN / "demo.json").read_text())["simulated"] is True
+    manifests = [json.loads(item.read_text()) for item in sorted((ROOT / "runs" / PRIMARY_RUN).glob("v[0-9][0-9].json"))]
+    expected = _metrics_payload(manifests, PRIMARY_RUN)["metrics"]
+    assert stored["v01"]["views"] == expected["v01"]["views"]
+    assert stored["v01"]["avg_watch_pct"] == expected["v01"]["avg_watch_pct"]
+    assert stored["v01"]["channel"] == expected["v01"]["channel"] == "tiktok"
 
 
 def test_auto_fetch_stays_off_under_pytest(monkeypatch):
