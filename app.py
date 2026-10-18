@@ -1,15 +1,17 @@
 """ClipCut demo web UI.  Run: uvicorn app:app --host 0.0.0.0 --port 8000
 New UI at /  (v2: cut2 -> scorer -> results.json). Legacy v1 form kept at /v1 (POST /process)."""
-import json, shutil, uuid, subprocess, sys, re, time
+import json, shutil, uuid, subprocess, sys, re, time, threading
 from pathlib import Path
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Request
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Body, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 ROOT = Path(__file__).parent.resolve(); RUNS = ROOT / "runs"; RUNS.mkdir(exist_ok=True); SAMPLES = ROOT / "samples"
-SRT = {"talking_head_niosh.mp4": ("niosh_liz.en.srt", 28.0)}
+STATIC = ROOT / "static"; STATIC.mkdir(exist_ok=True); PIPELINES = ROOT / "pipelines"; PIPELINES.mkdir(exist_ok=True)
+SRT = {"talking_head_niosh.mp4": ("niosh_liz.en.srt", 28.0), "demo_talk.mp4": ("demo_talk.srt", 0.0)}
 TIE = 0.005
 app = FastAPI(title="ClipCut"); app.mount("/runs", StaticFiles(directory=str(RUNS)), name="runs")
+app.mount("/static", StaticFiles(directory=str(STATIC)), name="static")
 JOBS = {}  # run -> {proc, n, log}
 
 def pick_winner(res):
@@ -115,6 +117,212 @@ def api_list_channels():
     ch, src = CB.list_channels()
     return dict(source=src, channels=[dict(name=k, platform=v.get("platform"), aspect=v.get("aspect"), ideal_s=v.get("ideal_s")) for k, v in ch.items()])
 
+# ---- pipeline graphs for the canvas editor (does not touch scoring) ----
+_PIPE_NAME = re.compile(r"^[a-z0-9][a-z0-9_-]{0,40}$")
+
+def _pipe_path(name: str) -> Path:
+    if not _PIPE_NAME.fullmatch(name or ""):
+        raise HTTPException(400, "invalid pipeline name")
+    return PIPELINES / f"{name}.json"
+
+@app.get("/api/pipelines")
+def list_pipelines():
+    return {"pipelines": sorted(p.stem for p in PIPELINES.glob("*.json"))}
+
+@app.get("/api/pipelines/{name}")
+def get_pipeline(name: str):
+    p = _pipe_path(name)
+    if not p.is_file(): raise HTTPException(404, "no such pipeline")
+    try: return json.loads(p.read_text())
+    except json.JSONDecodeError: raise HTTPException(500, "pipeline file is not valid JSON")
+
+@app.put("/api/pipelines/{name}")
+def put_pipeline(name: str, body: dict = Body(...)):
+    if not isinstance(body, dict): raise HTTPException(400, "expected an object")
+    nodes, edges = body.get("nodes"), body.get("edges")
+    if not isinstance(nodes, list) or not isinstance(edges, list):
+        raise HTTPException(400, "nodes and edges must be lists")
+    if len(nodes) > 80 or len(edges) > 200: raise HTTPException(400, "pipeline is too large")
+    doc = {"name": str(body.get("name") or name)[:80], "version": 1, "nodes": nodes, "edges": edges}
+    _pipe_path(name).write_text(json.dumps(doc, indent=2))
+    return {"ok": True, "name": name}
+
+@app.delete("/api/pipelines/{name}")
+def delete_pipeline(name: str):
+    if name == "default": raise HTTPException(400, "the default pipeline stays")
+    p = _pipe_path(name)
+    if not p.is_file(): raise HTTPException(404, "no such pipeline")
+    p.unlink(); return {"ok": True}
+
+# ---- edit ideas + one-at-a-time branch renders (real cutter_v2, not a mock) ----
+UPLOADS = ROOT / "runs" / "_uploads"; UPLOADS.mkdir(parents=True, exist_ok=True)
+_UPLOAD_TOKENS = {}
+_BRANCHES = {}
+_QUEUE = []
+_QLOCK = threading.Lock()
+_WORKER_ON = False
+
+def _safe_seg(name: str) -> str:
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,80}", name or ""):
+        raise HTTPException(400, "invalid name")
+    return name
+
+@app.post("/api/edit-idea")
+def api_edit_idea(body: dict = Body(...)):
+    from clipcut.edit_idea import interpret
+    if not isinstance(body, dict):
+        raise HTTPException(400, "expected an object")
+    try:
+        return interpret(str(body.get("text") or ""))
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+
+@app.post("/api/branch/upload")
+def api_branch_upload(video: UploadFile = File(...)):
+    token = uuid.uuid4().hex
+    dest = UPLOADS / f"{token}_{Path(video.filename or 'video').name}"
+    with open(dest, "wb") as f:
+        shutil.copyfileobj(video.file, f)
+    if dest.stat().st_size > MAX_UPLOAD_MB * 2**20:
+        dest.unlink(); raise HTTPException(413, f"Upload too large (max {MAX_UPLOAD_MB} MB).")
+    _UPLOAD_TOKENS[token] = dest
+    return {"token": token, "name": dest.name}
+
+def _resolve_branch_source(body):
+    if body.get("token"):
+        path = _UPLOAD_TOKENS.get(str(body["token"]))
+        if not path or not Path(path).is_file():
+            raise HTTPException(400, "Upload expired. Choose the video again.")
+        return Path(path), None, 0.0
+    if body.get("sample"):
+        name = Path(str(body["sample"])).name
+        path = SAMPLES / name
+        if not path.is_file():
+            raise HTTPException(400, f"Sample video {name} is not in this checkout. Upload a video to render branches.")
+        srt = SRT.get(name)
+        if srt:
+            return path, SAMPLES / srt[0], float(srt[1])
+        return path, None, 0.0
+    if body.get("run"):
+        run = _safe_seg(str(body["run"]))
+        man_path = RUNS / run / "manifest.json"
+        if not man_path.is_file():
+            raise HTTPException(404, "run has no manifest")
+        man = json.loads(man_path.read_text())
+        src = Path(str(man.get("source") or ""))
+        if not src.is_file():
+            alt = SAMPLES / src.name
+            src = alt if alt.is_file() else src
+        if not src.is_file():
+            raise HTTPException(400, f"No video file for run {run} ({man.get('source')}). Upload a video to render branches. Replaying a saved run does not invent footage.")
+        srt = SRT.get(src.name)
+        if srt:
+            return src, SAMPLES / srt[0], float(srt[1])
+        cached = RUNS / run / "transcript.json"
+        return src, cached if cached.is_file() else None, 0.0
+    raise HTTPException(400, "Connect an Ingest step with a video file, a sample, or a run whose source mp4 is on disk.")
+
+def _branch_worker():
+    global _WORKER_ON
+    while True:
+        if busy_job():
+            time.sleep(0.4); continue
+        with _QLOCK:
+            if not _QUEUE:
+                _WORKER_ON = False
+                return
+            item = _QUEUE.pop(0)
+            item["status"] = "running"
+        jobfile = Path(item["outdir"]) / "job.json"
+        log = Path(item["outdir"]) / "job.log"
+        logf = open(log, "w")
+        proc = subprocess.Popen([sys.executable, "-m", "clipcut.branch_render", str(jobfile)], cwd=ROOT, stdout=logf, stderr=subprocess.STDOUT)
+        JOBS[item["run"]] = dict(proc=proc, n=1)
+        code = proc.wait()
+        logf.close()
+        status_path = Path(item["outdir"]) / "status.json"
+        phase = {}
+        if status_path.is_file():
+            try: phase = json.loads(status_path.read_text())
+            except json.JSONDecodeError: phase = {}
+        with _QLOCK:
+            if code == 0 and (Path(item["outdir"]) / "v01.json").is_file():
+                item["status"] = "done"
+                item["variant_id"] = "v01"
+                item["manifest_url"] = f"/runs/{item['run']}/v01.json"
+                item["video"] = f"/runs/{item['run']}/v01.mp4"
+                item["error"] = None
+            else:
+                item["status"] = "error"
+                tail = ""
+                if log.is_file():
+                    lines = [ln for ln in log.read_text(errors="replace").splitlines() if ln.strip()]
+                    tail = lines[-1][:240] if lines else ""
+                item["error"] = phase.get("error") or tail or f"render exited {code}"
+            item["phase"] = phase.get("phase")
+
+def _ensure_worker():
+    global _WORKER_ON
+    with _QLOCK:
+        if _WORKER_ON:
+            return
+        _WORKER_ON = True
+        threading.Thread(target=_branch_worker, daemon=True).start()
+
+@app.post("/api/branch/queue")
+def api_branch_queue(body: dict = Body(...)):
+    if not isinstance(body, dict):
+        raise HTTPException(400, "expected an object")
+    branches = body.get("branches")
+    if not isinstance(branches, list) or not branches:
+        raise HTTPException(400, "branches must be a non-empty list")
+    if len(branches) > 4:
+        raise HTTPException(400, "at most 4 branches at a time")
+    src, srt, offset = _resolve_branch_source(body)
+    if busy_job() and not _QUEUE:
+        pass  # worker waits for the existing cut; still accept the queue
+    batch = uuid.uuid4().hex[:8]
+    queued = []
+    for i, b in enumerate(branches):
+        if not isinstance(b, dict):
+            raise HTTPException(400, "each branch must be an object")
+        key = re.sub(r"[^a-z0-9_-]", "", str(b.get("key") or f"b{i+1}").lower())[:24] or f"b{i+1}"
+        rid = "br_" + time.strftime("%H%M%S") + "_" + uuid.uuid4().hex[:4]
+        outdir = RUNS / rid
+        outdir.mkdir(parents=True)
+        if srt and srt.name == "transcript.json":
+            shutil.copyfile(srt, outdir / "transcript.json")
+            srt_arg = None
+        else:
+            srt_arg = str(srt) if srt else None
+        job = dict(src=str(src), outdir=str(outdir), srt=srt_arg, srt_offset=offset, settings=b.get("settings") or {})
+        (outdir / "job.json").write_text(json.dumps(job))
+        item = dict(batch=batch, key=key, name=str(b.get("name") or key)[:60], run=rid, outdir=str(outdir),
+                    status="queued", phase="queued", error=None, variant_id=None, manifest_url=None, video=None)
+        with _QLOCK:
+            _QUEUE.append(item)
+            _BRANCHES.setdefault(batch, []).append(item)
+        queued.append({k: item[k] for k in ("key", "name", "run", "status")})
+    _ensure_worker()
+    return {"batch": batch, "queued": queued, "note": "One render at a time. Each branch calls cutter v2."}
+
+@app.get("/api/branch/status")
+def api_branch_status(batch: str = ""):
+    with _QLOCK:
+        items = list(_BRANCHES.get(batch) or [])
+        pending = len(_QUEUE)
+    out = []
+    for item in items:
+        phase = item.get("phase")
+        status_path = Path(item["outdir"]) / "status.json"
+        if item["status"] == "running" and status_path.is_file():
+            try: phase = json.loads(status_path.read_text()).get("phase") or phase
+            except json.JSONDecodeError: pass
+        out.append(dict(key=item["key"], name=item["name"], run=item["run"], status=item["status"], phase=phase,
+                        error=item.get("error"), variant_id=item.get("variant_id"),
+                        manifest_url=item.get("manifest_url"), video=item.get("video")))
+    return {"batch": batch, "busy": bool(busy_job()), "pending": pending, "items": out}
+
 # ---- legacy v1 UI (unchanged behaviour) ----
 @app.get("/v1", response_class=HTMLResponse)
 def index_v1():
@@ -140,7 +348,9 @@ def process(video: UploadFile = File(...), n: int = Form(8)):
             f"{rows}</table><p><a href='/runs/{rid}/manifest.json'>manifest.json</a></p>")
 
 # --- retention scoring API (owner: retention agent) ---
-from fastapi import Body
+# POST /api/persona/score and POST /api/persona/hooks below are the live persona
+# routes. The canvas calls them and uses a labelled stub only when they error.
+# POST /api/score stays the legacy channel scorer. Do not mix the two scales.
 @app.post("/api/score")
 def api_score(manifest: dict = Body(...)):
     """POST a variant manifest JSON (or {"video_path": ...}); returns per-persona swipe/watch/share predictions."""
