@@ -9,8 +9,8 @@
 .blk>.hd{padding:9px 12px;font-weight:700;display:flex;align-items:center;gap:8px;cursor:move;border-bottom:1px solid var(--line);user-select:none}
 .blk>.hd .k{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
 .blk .bd{padding:10px 12px}.mut{color:var(--mut)}
-.src{border-color:#3b4560}.src img,.src video,.mom video{width:100%;border-radius:8px;display:block;background:#000}
-.mom video{max-height:148px;object-fit:cover}
+.src{border-color:#3b4560}.src .thumb img,.src .thumb video,.mom .thumb img,.mom .thumb video{width:100%;border-radius:8px;display:block;background:#000}
+.mom .thumb img,.mom .thumb video{max-height:148px;object-fit:cover}
 .mom .bd{font-size:12.5px}.mom q{display:block;color:#c7cde0;font-style:italic;margin-top:4px}
 .clip .thumb{position:relative;background:#000;border-radius:8px;overflow:hidden;cursor:pointer}.clip .thumb img,.clip .thumb video{width:100%;display:block}
 .clip .thumb .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px;color:#fff;opacity:.85;text-shadow:0 2px 10px #000}
@@ -96,18 +96,18 @@ async function load(run){RUN=run;[...world.querySelectorAll('.blk')].forEach(e=>
  const [s,ch,lc]=await Promise.all([j('/api/run/'+run),j('/api/channels/'+run).catch(()=>({blocks:[]})),j('/api/list_channels')]);
  D={s,ch,lc};LISTCH=lc.channels;const res=s.results;if(!res){return}
  // source
- const srcPoster=res[0].poster,srcVid=res[0].video;const srcEl=blk(world,'src','src',0,600,300,`<span class="k">source</span> raw video`,`<div class="thumb" data-v="${srcVid}"><video src="${srcVid}" poster="${srcPoster}" muted loop playsinline autoplay></video></div><div class="mut" style="margin-top:6px">${res.length} clips</div>`);srcEl.dataset.variant=res[0].variant_id;
+ const srcPoster=res[0].poster,srcVid=res[0].video;const srcEl=blk(world,'src','src',0,600,300,`<span class="k">source</span> raw video`,`${thumbBox(srcVid,srcPoster)}<div class="mut" style="margin-top:6px">${res.length} clips</div>`);srcEl.dataset.variant=res[0].variant_id;
  // moments
  const moms=[...new Set(res.map(r=>r.recipe.hook))].sort(),ROW=470;
  blk(world,'pipe','',420,40,180,`<span class="k">pipeline</span>`,`<div class="mut" style="font-size:11.5px">transcribe → pick_moments → cold-open hook ≤3s → captions · punch-ins · loop → render per format</div>`);
  moms.forEach((m,i)=>{const r=res.find(x=>x.recipe.hook===m),t=r.hook_phrase||r.hook_text||'';const n=res.filter(x=>x.recipe.hook===m).length;
-  const md=blk(world,'mom_'+m,'mom',420,200+i*ROW,260,`<span class="k">moment ${m.slice(1)}</span> ${n} clips`,`<div class="thumb" data-v="${r.video}"><video src="${r.video}" poster="${r.poster}" muted loop playsinline autoplay></video></div><q>“${t}”</q>`);md.dataset.variant=r.variant_id;
+  const md=blk(world,'mom_'+m,'mom',420,200+i*ROW,260,`<span class="k">moment ${m.slice(1)}</span> ${n} clips`,`${thumbBox(r.video,r.poster)}<q>“${t}”</q>`);md.dataset.variant=r.variant_id;
   LINKS.push(['src','mom_'+m,PAL[i%8],3,.5])});
  // clips
  moms.forEach((m,i)=>{res.filter(x=>x.recipe.hook===m).sort((a,b)=>b.batch_score-a.batch_score).forEach((r,k)=>{const win=r.variant_id===s.winner,ar=(r.aspect||'9:16').replace(':','/');
   const fit=r.suggested&&r.target_channel&&r.suggested!==r.target_channel?`<span class="tag fit">better fit: ${r.suggested}</span>`:'';
   const d=blk(world,'clip_'+r.variant_id,'clip'+(win?' win':''),760+k*215,200+i*ROW,200,`${win?'<span class="tag wn">★ WINNER</span>':''}${r.variant_id} <span class="mut" style="font-weight:400">${r.duration_s.toFixed(0)}s</span><span class="bs" style="margin-left:auto">${r.batch_score!=null?r.batch_score.toFixed(0):'–'}<span class="mut" style="font-size:10px">/100</span></span>`,
-   `<div class="thumb" style="aspect-ratio:${ar}" data-v="${r.video}"><video src="${r.video}" poster="${r.poster}" muted loop playsinline autoplay></video></div>
+   `${thumbBox(r.video,r.poster,'aspect-ratio:'+ar)}
     <span class="tag ch">▶ ${r.target_channel||'—'} · ${r.aspect||'9:16'}</span>${fit}<span class="tag">${r.recipe.captions}</span><span class="tag">${r.recipe.pacing}</span>`);
   d.dataset.variant=r.variant_id;
   LINKS.push(['mom_'+m,'clip_'+r.variant_id,PAL[i%8],2,.45])})});
@@ -163,17 +163,62 @@ function chipSettings(chips){
   });
   return s;
 }
-function mediaOf(el){
-  const v=el&&el.querySelector('video'); if(!v)return null;
-  return {video:v.getAttribute('src')||v.currentSrc, poster:v.getAttribute('poster')||''};
+function thumbBox(video, poster, style){
+  const st=style?` style="${style}"`:'';
+  const img=poster?`<img alt="" loading="lazy" src="${poster}">`:`<img alt="" loading="lazy">`;
+  return `<div class="thumb"${st} data-v="${video||''}" data-poster="${poster||''}">${img}</div>`;
 }
+function mediaOf(el){
+  const t=el&&el.querySelector('.thumb[data-v]'); if(!t||!t.dataset.v)return null;
+  return {video:t.dataset.v, poster:t.dataset.poster||''};
+}
+let playingThumb=null;
+function stopPlay(){
+  if(!playingThumb)return;
+  const v=playingThumb.querySelector('video');
+  if(v){v.pause(); v.removeAttribute('src'); v.load(); v.remove()}
+  const img=playingThumb.querySelector('img'); if(img)img.hidden=false;
+  playingThumb=null;
+}
+function startPlay(thumb){
+  if(!thumb||chipDrag||!thumb.dataset.v||playingThumb===thumb)return;
+  stopPlay();
+  const img=thumb.querySelector('img'); if(img)img.hidden=true;
+  const v=document.createElement('video');
+  v.muted=true; v.loop=true; v.playsInline=true; v.preload='auto';
+  if(thumb.dataset.poster)v.poster=thumb.dataset.poster;
+  v.src=thumb.dataset.v;
+  thumb.appendChild(v);
+  v.play().catch(()=>{});
+  playingThumb=thumb;
+}
+function setMedia(el, video, poster){
+  const thumb=el&&el.querySelector('.thumb'); if(!thumb)return;
+  if(video)thumb.dataset.v=video;
+  if(poster){thumb.dataset.poster=poster; const img=thumb.querySelector('img'); if(img)img.src=poster}
+}
+world.addEventListener('pointerover',e=>{
+  const thumb=e.target.closest&&e.target.closest('.thumb[data-v]');
+  if(!thumb||chipDrag)return;
+  startPlay(thumb);
+});
+world.addEventListener('pointerout',e=>{
+  const thumb=e.target.closest&&e.target.closest('.thumb[data-v]');
+  if(!thumb||playingThumb!==thumb)return;
+  if(e.relatedTarget&&thumb.contains(e.relatedTarget))return;
+  stopPlay();
+});
+world.addEventListener('click',e=>{
+  const thumb=e.target.closest&&e.target.closest('.thumb[data-v]');
+  if(thumb)startPlay(thumb);
+});
 function setTag(el, text){const t=el.querySelector('[data-srctag]'); if(t)t.textContent=text}
 function spawnNode(parent, chips, label, video, poster, variant){
   const id='x_'+ (seq++);
   const p=pos(parent);
   const x=p.x, y=p.y+parent.offsetHeight+28;
   const head=`<span class="k">${label}</span><span class="tag" data-srctag>simulated</span>`;
-  const body=`<div class="thumb" data-v="${video}"><video src="${video}" poster="${poster}" muted loop playsinline autoplay></video></div>`;
+  const body=thumbBox(video, poster);
   const el=blk(world,id,'clip',x,y,200,head,body);
   el.dataset.chips=chips.join(',');
   el.dataset.variant=variant||'';
@@ -201,14 +246,12 @@ function addDetail(text){
 }
 function applyBranch(el, body){
   if(!body)return;
-  const v=el.querySelector('video'); if(!v)return;
   const st=String(body.status||'');
   const poster=body.thumb_url||body.poster||body.thumbnail;
-  if(poster)v.poster=poster;
   let src=null;
   if(st==='done')src=body.video_url||null;
   else if(st==='preview')src=body.preview_url||body.preview_video||null;
-  if(src && src!==v.getAttribute('src')){v.src=src; v.play().catch(()=>{})}
+  if(src||poster)setMedia(el, src, poster);
   if(st==='preview')el.dataset.sawPreview='1';
   if(st==='done')el.dataset.sawFull='1';
   const srcTag=(body.score&&body.score.source)||body.source;
@@ -403,8 +446,7 @@ async function runExport(el, variant){
     if(zip&&data.bundle_url){zip.hidden=false; zip.href=data.bundle_url}
     const chs=data.channels||[];
     const mine=chs.find(c=>c.variant_id===variant&&c.video&&c.video.url)||chs.find(c=>c.video&&c.video.url);
-    const v=el.querySelector('video');
-    if(mine&&mine.video&&mine.video.url&&v){v.src=mine.video.url; v.play().catch(()=>{})}
+    if(mine&&mine.video&&mine.video.url)setMedia(el, mine.video.url, null);
     try{
       const dr=await fetch('/api/distribution/dashboard/'+encodeURIComponent(RUN));
       if(dr.ok)el._dash=await dr.json();
@@ -418,7 +460,7 @@ function spawnPublish(parent, media, variant){
   const id='pub_'+(seq++);
   const p=pos(parent);
   const head=`<span class="k">Publish</span><span class="tag" data-srctag>export</span><a class="zip" hidden href="#" title="Download bundle">⬇</a>`;
-  const body=`<div class="thumb" data-v="${media.video}"><video src="${media.video}" poster="${media.poster||''}" muted loop playsinline autoplay></video></div>`;
+  const body=thumbBox(media.video, media.poster||'');
   const el=blk(world,id,'clip',p.x,p.y+parent.offsetHeight+28,200,head,body);
   el.dataset.variant=variant||'';
   el.dataset.kind='publish';
@@ -469,7 +511,7 @@ document.querySelectorAll('#chips [data-chip]').forEach(ch=>{
     ghost.style.display='block';
     document.querySelectorAll('.blk.hot').forEach(n=>n.classList.remove('hot'));
     const host=hit&&hit.closest&&hit.closest('.blk');
-    if(host&&host.querySelector('video'))host.classList.add('hot');
+    if(host&&host.querySelector('.thumb[data-v]'))host.classList.add('hot');
   });
   ch.addEventListener('pointerup',e=>{
     if(!chipDrag)return;
@@ -478,7 +520,7 @@ document.querySelectorAll('#chips [data-chip]').forEach(ch=>{
     const hit=document.elementFromPoint(e.clientX,e.clientY);
     const host=hit&&hit.closest&&hit.closest('.blk');
     const chip=chipDrag.chip; chipDrag=null;
-    if(host&&host.querySelector('video'))dropChip(chip, host);
+    if(host&&host.querySelector('.thumb[data-v]'))dropChip(chip, host);
   });
 });
 window.CC.drop=(chip,id)=>dropChip(chip, document.getElementById(id));
