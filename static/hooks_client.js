@@ -1,9 +1,9 @@
-/* Thin client for POST /api/persona/hooks.
-   Contract: docs/PERSONA_API.md on personas/hook-rewrite (not merged, not this branch).
+/* Thin client for the live POST /api/persona/hooks route (docs/PERSONA_API.md).
    Request: {run} or {manifests}, optional variant_ids, personas, channels, n (1–4, default 3), mode.
-   Response source is "heuristic" (template lines), "llm" (Grok, needs XAI_API_KEY or GROK_API_KEY), or "mixed".
-   Each suggestion: hook, title_card, reason, predicted_delta, predicted_delta_label "heuristic_estimate", origin.
-   This file does not implement that route. On 400/404/503/network errors it returns source "stub". */
+   A 200 body with `variants` is returned as-is. source is "heuristic" (template lines),
+   "llm" (Grok, needs XAI_API_KEY or GROK_API_KEY), or "mixed".
+   Each suggestion: hook, title_card, reason, predicted_delta, predicted_delta_label
+   "heuristic_estimate", origin. On 400/404/503/network errors the client returns source "stub". */
 (function (root) {
   var PERSONAS = ["fast_swiper", "casual_browser", "completionist", "sharer_engager"];
   var CHANNELS = ["tiktok", "reels", "shorts", "x", "linkedin", "youtube", "ig_feed", "ig_stories", "fb_reels", "fb_feed"];
