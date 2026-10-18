@@ -199,7 +199,7 @@ never writes metrics: upload observed numbers with `POST /api/persona/metrics` (
   "by_channel_source": "compare",
   "by_channel_note": "...",
   "channels": [
-    {"channel": "tiktok", "label": "TikTok", "variants": ["v01", "v05"], "n": 2,
+    {"channel": "tiktok", "label": "TikTok", "exportable": true, "variants": ["v01", "v05"], "n": 2,
      "winner_actual": {"id": "v05", "actual": 0.55, "predicted": 0.66, "views": 4000},
      "predicted_top": "v01", "agree": false,
      "thompson_winner": "v05", "thompson_confident": false, "spearman": null,
@@ -222,7 +222,7 @@ never writes metrics: upload observed numbers with `POST /api/persona/metrics` (
   variant rows are grouped on their `channel`; `thompson_winner` is `null` per channel and the winner is the top `actual`.
 - `winner_actual` is the highest `actual` in the channel; `predicted_top` the highest hand-set `predicted`; `agree` whether they match.
 - Metric rows with no channel go under `"unassigned"` (listed last). Channels that only have an export or publish entry
-  appear with `n: 0`. Order: tiktok, shorts, reels, x, linkedin, then others.
+  appear with `n: 0`. Order: tiktok, shorts, reels, x, linkedin, then other compare channels (youtube, ig_feed, ...) sorted, with `label` from `CHANNEL_SPECS` and `exportable: false` (no export bundle for them).
 - No `metrics.json`: `metrics_available: false`, `overall: null`, `predicted_vs_actual: []`, `metrics_note` says how to upload;
   export/publish joins still render. 404 only for an unknown run.
 - `simulated` / `disclaimer` are compare's, passed through. The UI must show the disclaimer when `simulated` is true.

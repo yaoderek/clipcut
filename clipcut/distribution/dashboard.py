@@ -10,7 +10,10 @@ from __future__ import annotations
 
 from .bundle import load_export, run_dir
 from .publish import publish_status
+from ..channels import CHANNEL_SPECS
 from .specs import CHANNELS, DistributionError, channel_id
+
+_SPEC_LABEL = {k.lower(): k for k in CHANNEL_SPECS}
 
 NOTE_GROUPED = ("Per-channel winner is the highest `actual` among that channel's metric rows. "
                 "Per-channel Thompson is not computed here; it appears when compare returns by_channel.")
@@ -120,7 +123,7 @@ def dashboard(run, *, root=None):
         e = exp_rows.get(cid)
         p = pub["entries"].get(cid)
         channels.append(dict(
-            channel=cid, label=CHANNELS[cid]["label"] if cid in CHANNELS else cid,
+            channel=cid, label=_SPEC_LABEL.get(cid, cid), exportable=cid in CHANNELS,
             **g,
             export=None if e is None else dict(
                 export_id=export["export_id"], variant_id=e["variant_id"], selection=e["selection"],

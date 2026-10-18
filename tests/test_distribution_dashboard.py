@@ -116,3 +116,24 @@ def test_http_dashboard(run):
         assert TestClient(appmod.app).get("/api/distribution/dashboard/..%2Fx").status_code in (400, 404)
     finally:
         del appmod.app.state.runs_root
+
+
+def test_extra_channels_from_real_compare_by_channel(run):
+    persona_api.store_metrics(run="r1", runs_root=run, payload={"simulated": True, "metrics": {
+        "v01": {"views": 5000, "avg_watch_pct": 40.0, "shares": 50, "channel": "tiktok"},
+        "v02": {"views": 5000, "avg_watch_pct": 62.0, "shares": 120, "channel": "tiktok"},
+        "v03": {"views": 3000, "avg_watch_pct": 55.0, "shares": 30, "channel": "youtube"},
+        "v04": {"views": 2000, "avg_watch_pct": 30.0, "shares": 90, "channel": "IG_Feed"},
+    }})
+    cmp = persona_api.compare_run("r1", runs_root=run)
+    out = dashboard("r1", root=run)
+    if cmp.get("by_channel"):
+        assert out["by_channel_source"] == "compare"
+    ch = {c["channel"]: c for c in out["channels"]}
+    assert list(ch) == ["tiktok", "ig_feed", "youtube"]  # five export channels first, then others sorted
+    assert ch["youtube"]["label"] == "YouTube" and ch["youtube"]["exportable"] is False and ch["youtube"]["n"] == 1
+    assert ch["ig_feed"]["label"] == "IG_Feed" and ch["tiktok"]["exportable"] is True
+    assert ch["tiktok"]["winner_actual"]["id"] == "v02"
+    assert "unassigned" not in ch
+    for c in out["channels"]:
+        assert "thompson_confident" in c
